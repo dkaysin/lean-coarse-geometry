@@ -39,24 +39,3 @@ Milestone M6. Each corollary is a separate pull request and a test of the API.
   $\Z^n$ acts on $\R^n$ (sup norm) by translations, properly discontinuously and with the unit
   cube as a bounded fundamental set.
 \end{proof}
-
-\section{Hyperbolic groups}
-
-The definitions below are copies of open Mathlib pull requests.
-
-\inputleannode{def:hyperbolic-space}
-\inputleannode{def:hyperbolic-group}
-
-\begin{theorem}[Independence of the generating family]
-  \label{thm:hyperbolic-independent}
-  \notready
-  \uses{def:hyperbolic-group, cor:change-of-generators}
-  Whether $G$ with the word metric of a finite generating family is hyperbolic does not depend
-  on the family.
-\end{theorem}
-\begin{proof}
-  Not planned yet. Four-point hyperbolicity is not invariant under quasi-isometries of coarsely
-  geodesic spaces in general (the graph of $|x|$ in $\R^2$ is bilipschitz to $\R$ and not
-  hyperbolic); the argument needs roughly geodesic spaces ($rL = 1$). Check Bonk--Schramm and
-  V\"ais\"al\"a before stating it.
-\end{proof}
