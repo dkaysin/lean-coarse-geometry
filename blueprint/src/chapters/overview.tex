@@ -1,13 +1,31 @@
 \chapter{Overview}
 \label{chap:overview}
 
-The goal is the \v{S}varc--Milnor lemma in a form that is short to prove, yields the standard
-corollaries (finite generation, change of generators, finite-index subgroups,
-$\Z^n \sim_{QI} \R^n$) directly, and provides the quasi-isometry layer that later work on
-hyperbolic groups needs. The reference text is C.~L\"oh, \emph{Geometric Group Theory: An
-Introduction}, Springer, 2017; item numbers below refer to it.
+This blueprint formalizes parts of coarse geometry and geometric group theory in Lean~4, in a
+form that can move into Mathlib. Work is organized by \emph{targets}: definitions and theorems
+chosen one at a time. For each target the blueprint contains its statement and the definitions
+that Mathlib does not have yet and the statement needs, then the results its proof needs.
+Definitions and statements are formalized first, with the proofs left open, and proved later;
+so a node may have its statement formalized long before its proof.
 
-\section*{Statement}
+Each target follows a reference text. The default is C.~L\"oh, \emph{Geometric Group Theory: An
+Introduction}, Springer, 2017; item numbers without a book refer to it. Hyperbolic spaces also
+follow M.~R.~Bridson and A.~Haefliger, \emph{Metric Spaces of Non-Positive Curvature},
+Springer, 1999.
+
+\section*{Targets}
+
+\begin{itemize}
+  \item The \v{S}varc--Milnor lemma (Chapter~\ref{chap:svarc-milnor}) and its corollaries:
+        independence of the word metric from the finite generating family up to
+        quasi-isometry, finite-index subgroups, $\Z^n \sim_{QI} \R^n$
+        (Chapter~\ref{chap:corollaries}).
+  \item The equivalence of slim triangles and Gromov's four-point condition on geodesic spaces,
+        and the independence of hyperbolicity of a group from its generating family
+        (Chapter~\ref{chap:hyperbolic}).
+\end{itemize}
+
+\section*{The \v{S}varc--Milnor lemma}
 
 Let a group $G$ act by isometries on a pseudometric space $X$. Assume that $X$ is
 \emph{coarsely geodesic}: there are constants $r, L, C$ such that any two points $x, y$ are joined
@@ -28,7 +46,7 @@ length is needed for the lower bound in part 2 and cannot be dropped: $\Z$ actin
 translations on $(\R, \sqrt{d})$ satisfies every other hypothesis, but its orbit map is not a
 quasi-isometry.
 
-\section*{Why chains}
+\subsection*{Why chains}
 
 The chain hypothesis replaces quasi-geodesic paths. It makes the proof a finite counting
 argument, needs no theory of geodesic spaces, and holds for word metrics themselves ($r = L = 1$,
