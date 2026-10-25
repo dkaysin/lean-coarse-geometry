@@ -6,7 +6,7 @@ Authors: Dmitry Kaysin
 module
 
 public import Mathlib.Analysis.Normed.Module.Basic
-public import Mathlib.Logic.Relation
+public import Mathlib.Combinatorics.SimpleGraph.Connectivity.Connected
 public import Mathlib.Topology.MetricSpace.Pseudo.Defs
 
 /-!
@@ -19,6 +19,8 @@ any two points are joined by an `r`-chain, and *`(r, L, C)`-coarsely geodesic* i
 
 ## Main definitions
 
+* `Metric.ripsGraph X r`: the simple graph on `X` in which distinct points at distance at most `r`
+  are adjacent.
 * `Metric.IsCoarselyConnectedWith X r`: any two points of `X` are joined by an `r`-chain.
 * `Metric.IsCoarselyGeodesicWith X r L C`: any two points `x`, `y` of `X` are joined by an
   `r`-chain with at most `L * dist x y + C` steps.
@@ -30,12 +32,13 @@ any two points are joined by an `r`-chain, and *`(r, L, C)`-coarsely geodesic* i
 
 ## Implementation notes
 
-A coarsely connected space is described with `Relation.ReflTransGen`, since no count of steps is
-needed. A chain with a count is a map `p : Fin (n + 1) → X` with `n` steps.
+An `r`-chain is a walk in `Metric.ripsGraph X r`, and its number of steps is the length of the
+walk. A walk does not repeat a point in consecutive steps; dropping such repetitions only shortens
+a chain.
 
 ## Tags
 
-coarsely geodesic, coarsely connected, chain, quasi-geodesic, coarse geometry
+coarsely geodesic, coarsely connected, chain, Rips graph, quasi-geodesic, coarse geometry
 -/
 
 @[expose] public section
@@ -44,17 +47,23 @@ open scoped NNReal
 
 namespace Metric
 
+/-- The **Rips graph** of a pseudometric space at scale `r`: distinct points are adjacent if they
+are at distance at most `r`. -/
+def ripsGraph (X : Type*) [PseudoMetricSpace X] (r : ℝ≥0) : SimpleGraph X where
+  Adj x y := x ≠ y ∧ dist x y ≤ r
+  symm := ⟨fun _ _ h ↦ ⟨h.1.symm, (dist_comm (α := X) _ _).trans_le h.2⟩⟩
+  loopless := ⟨fun _ h ↦ h.1 rfl⟩
+
 /-- A pseudometric space is **`r`-coarsely connected** if any two points are joined by a chain
 of points in which consecutive points are at distance at most `r`. -/
 def IsCoarselyConnectedWith (X : Type*) [PseudoMetricSpace X] (r : ℝ≥0) : Prop :=
-  ∀ x y : X, Relation.ReflTransGen (fun a b : X ↦ dist a b ≤ r) x y
+  (ripsGraph X r).Preconnected
 
 /-- A pseudometric space is **`(r, L, C)`-coarsely geodesic** if any two points `x` and `y` are
-joined by a chain `p 0 = x, …, p n = y` with consecutive points at distance at most `r` and with
-at most `L * dist x y + C` steps. -/
+joined by a chain with consecutive points at distance at most `r` and with at most
+`L * dist x y + C` steps. -/
 def IsCoarselyGeodesicWith (X : Type*) [PseudoMetricSpace X] (r L C : ℝ≥0) : Prop :=
-  ∀ x y : X, ∃ (n : ℕ) (p : Fin (n + 1) → X), p 0 = x ∧ p (Fin.last n) = y ∧
-    (∀ i : Fin n, dist (p i.castSucc) (p i.succ) ≤ r) ∧ (n : ℝ) ≤ L * dist x y + C
+  ∀ x y : X, ∃ p : (ripsGraph X r).Walk x y, (p.length : ℝ) ≤ L * dist x y + C
 
 end Metric
 

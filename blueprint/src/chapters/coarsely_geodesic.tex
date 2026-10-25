@@ -2,9 +2,12 @@
 \label{chap:coarsely-geodesic}
 
 Milestone M2. An \emph{$r$-chain} from $x$ to $y$ is a sequence $x = x_0, \dots, x_n = y$ with
-$d(x_i, x_{i+1}) \le r$; $n$ is its number of steps. A chain with a count is a map
-$\mathrm{Fin}(n + 1) \to X$, and coarse connectedness uses the reflexive--transitive closure of
-the relation $d(a, b) \le r$ (design decisions D6, D13).
+$d(x_i, x_{i+1}) \le r$; $n$ is its number of steps. In Lean a chain is a walk in the Rips graph at
+scale $r$, so that $n$ is the length of the walk (design decisions D6, D13). The definitions follow
+Cornulier--de la Harpe, Def.~3.B.1 (a), (c) and Def.~3.B.5; their name for our coarsely geodesic
+spaces is \emph{large-scale geodesic}.
+
+\inputleannode{Metric.ripsGraph}
 
 \inputleannode{Metric.IsCoarselyConnectedWith}
 
