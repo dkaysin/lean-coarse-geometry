@@ -2,7 +2,8 @@
 %
 % Formalized nodes are written in Lean, in the `CoarseBlueprint` library, and inserted here with
 % \inputleannode{label}; `lake build :blueprint` must run first. Nodes not formalized yet are
-% written in LaTeX in the chapter files, with \notready until their statement is agreed.
+% written in LaTeX in the chapter files, without \notready. A Lean node whose statement awaits
+% review is tagged `notReady := true`, which LeanArchitect renders as \notready.
 
 % Makes \inputleannode and \inputleanmodule available.
 \input{../../.lake/build/blueprint/library/CoarseBlueprint}

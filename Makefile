@@ -34,7 +34,7 @@ pdf: blueprint ## Render the blueprint pdf to blueprint/print/print.pdf
 serve: web ## Render and serve the web blueprint at http://localhost:8000 (PORT=… to change)
 	python3 -m http.server $(PORT) --directory blueprint/web
 
-frontier: blueprint ## List the frontier, sorried nodes and blocked nodes
+frontier: blueprint ## List the frontier, nodes awaiting review, sorried nodes and blocked nodes
 	python3 scripts/blueprint_frontier.py
 
 status: blueprint ## List the state of every blueprint node
