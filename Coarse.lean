@@ -1,7 +1,11 @@
 module  -- shake: keep-all --deprecated_module: ignore
 
 public import Coarse.Combinatorics.SimpleGraph.Cayley
+public import Coarse.Combinatorics.SimpleGraph.Paths
+public import Coarse.Data.List.Chain
 public import Coarse.Data.Rel
+public import Coarse.Geometry.Group.CayleySimpleGraph
+public import Coarse.Geometry.Group.ReducedWord
 public import Coarse.Geometry.Group.WordMetric
 public import Coarse.Geometry.Group.WordProd
 public import Coarse.GroupTheory.Generators

@@ -48,3 +48,16 @@ reading it, is not listed.
 - **Copied**: the code the PR adds to `Mathlib/Combinatorics/SimpleGraph/Cayley.lean`, to
   `Coarse/Combinatorics/SimpleGraph/Cayley.lean`
 - **Changes**: in a file of its own, with the PR's import changes applied there
+
+### mathlib4 #45132
+
+- **Source**: <https://github.com/leanprover-community/mathlib4/pull/45132>, commit `9812fde`
+  (stacked on #44853)
+- **Licence**: Apache 2.0
+- **Original authors**: Dmitry Kaysin
+- **Copied**: `Mathlib/Geometry/Group/CayleySimpleGraph.lean` and
+  `Mathlib/Geometry/Group/ReducedWord.lean` to the same paths under `Coarse/`; the section
+  "Non-backtracking walks" of `Mathlib/Combinatorics/SimpleGraph/Paths.lean` to
+  `Coarse/Combinatorics/SimpleGraph/Paths.lean`; `List.IsChain.imp_of_isChain` to
+  `Coarse/Data/List/Chain.lean`
+- **Changes**: imports point to the copies; the two extracts are in files of their own
