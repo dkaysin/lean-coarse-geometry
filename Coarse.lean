@@ -9,6 +9,7 @@ public import Coarse.Geometry.Group.DehnFunction
 public import Coarse.Geometry.Group.Hyperbolic
 public import Coarse.Geometry.Group.ReducedWord
 public import Coarse.Geometry.Group.WordMetric
+public import Coarse.Geometry.Group.WordMetricBounds
 public import Coarse.Geometry.Group.WordProd
 public import Coarse.GroupTheory.Generators
 public import Coarse.GroupTheory.Presentation
@@ -21,6 +22,7 @@ public import Coarse.Topology.CoarseSpace.Metric.Basic
 public import Coarse.Topology.CoarseSpace.Metric.SvarcMilnor
 public import Coarse.Topology.MetricSpace.CoarseAntilipschitz
 public import Coarse.Topology.MetricSpace.CoarseLipschitz
+public import Coarse.Topology.MetricSpace.CoarselyGeodesic
 public import Coarse.Topology.MetricSpace.FiniteDistance
 public import Coarse.Topology.MetricSpace.Hyperbolic
 public import Coarse.Topology.MetricSpace.IsometricSMul

@@ -1,5 +1,6 @@
 import CoarseBlueprint.Actions
 import CoarseBlueprint.CoarseSpace
+import CoarseBlueprint.CoarselyGeodesic
 import CoarseBlueprint.Hyperbolic
 import CoarseBlueprint.QuasiIsometry
 import CoarseBlueprint.WordMetric

@@ -18,38 +18,8 @@ being a node.
 
 \section{Bounds}
 
-\begin{lemma}[Lipschitz principle]
-  \label{Group.Generators.dist_le_mul_wordLength}
-  \notready
-  \uses{Group.Generators.wordLength}
-  Let $\varphi \colon G \to X$ satisfy $d(\varphi(g), \varphi(g s)) \le K$ for all $g \in G$ and
-  every generator or inverse generator $s$. Then
-  $d(\varphi(g), \varphi(h)) \le K\,|g^{-1} h|_P$ for all $g, h$.
-\end{lemma}
-\begin{proof}
-  Write $g^{-1} h$ as a geodesic word and apply the triangle inequality along its prefixes.
-\end{proof}
+\inputleannode{Group.Generators.dist_le_mul_wordLength}
 
-\begin{lemma}[Change of generators, from the proof of L\"oh Prop.~5.2.5]
-  \label{Group.Generators.wordLength_le_mul_wordLength}
-  \notready
-  \uses{Group.Generators.dist_le_mul_wordLength, Group.Generators.groupNorm}
-  Let $P$ be finite and $Q$ another generating family. Then
-  $|g|_Q \le M\,|g|_P$ with $M = \max_i |P_i|_Q$.
-\end{lemma}
-\begin{proof}
-  Lemma~\ref{Group.Generators.dist_le_mul_wordLength} for the identity map $(G, d_P) \to (G, d_Q)$.
-  This is
-  L\"oh's argument: write $g$ as a product of $|g|_P$ generators and inverses, and bound each
-  factor's $Q$-length by $M$.
-\end{proof}
+\inputleannode{Group.Generators.wordLength_le_mul_wordLength}
 
-\begin{lemma}[Finite balls]
-  \label{Group.Generators.finite_setOf_wordLength_le}
-  \notready
-  \uses{Group.Generators.wordLength}
-  If $\iota$ is finite, then $\{g \mid |g|_P \le n\}$ is finite for every $n$.
-\end{lemma}
-\begin{proof}
-  It is the image of the finite set of words of length at most $n$.
-\end{proof}
+\inputleannode{Group.Generators.finite_setOf_wordLength_le}
