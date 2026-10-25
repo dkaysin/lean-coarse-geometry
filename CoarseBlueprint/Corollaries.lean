@@ -20,10 +20,9 @@ attribute [blueprint "Group.Generators.WithWordMetric.isQuasiIsometry_congr"
     $\mathrm{congr}_{P,Q} \colon (G, d_P) \to (G, d_Q)$ is a quasi-isometry (it is even
     bilipschitz). -/)
   (proof := /-- Lemma~\ref{Group.Generators.wordLength_le_mul_wordLength} in both directions, as in
-    L\"oh. -/)
-  (proofUses := ["Group.Generators.wordLength_le_mul_wordLength", "Group.Generators.WithWordMetric",
-    "Metric.IsQuasiIsometry",
-    "Metric.CoarseAntilipschitzWith.isQuasiIsometricEmbedding"])]
+    L\"oh: $\mathrm{congr}_{P,Q}$ is a bijection that is Lipschitz in both directions. A surjective
+    map that is Lipschitz and antilipschitz is a quasi-isometric embedding with quasi-dense range,
+    hence a quasi-isometry by Theorem~\ref{Metric.isQuasiIsometry_iff_quasiDenseRange}. -/)]
   Group.Generators.WithWordMetric.isQuasiIsometry_congr
 
 attribute [blueprint "Subgroup.isQuasiIsometry_subtype" (latexEnv := "corollary")

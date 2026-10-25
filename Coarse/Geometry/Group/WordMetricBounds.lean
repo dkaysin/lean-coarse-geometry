@@ -101,19 +101,57 @@ theorem finite_setOf_wordLength_le [Finite ι] (n : ℕ) : {g | P.wordLength g �
     exact ⟨l, hl, rfl⟩
 
 /-- A group with the word metric of a generating family is `(1, 1, 0)`-coarsely geodesic. -/
-theorem isCoarselyGeodesicWith : Metric.IsCoarselyGeodesicWith P.WithWordMetric 1 1 0 :=
-  sorry
+theorem isCoarselyGeodesicWith : Metric.IsCoarselyGeodesicWith P.WithWordMetric 1 1 0 := by
+  -- Adjacent vertices of the Cayley graph differ by a letter, so they are at distance at most
+  -- `1`: walks in the Cayley graph are `1`-chains.
+  let φ : P.cayleySimpleGraph →g Metric.ripsGraph P.WithWordMetric 1 :=
+    ⟨WithWordMetric.toWordMetric P, fun {g h} hgh ↦ by
+      obtain ⟨hne, x, hx⟩ := (P.cayleySimpleGraph_adj g h).1 hgh
+      refine ⟨fun h' ↦ hne (congrArg WithWordMetric.ofWordMetric h'), ?_⟩
+      rw [WithWordMetric.dist_eq, WithWordMetric.ofWordMetric_toWordMetric,
+        WithWordMetric.ofWordMetric_toWordMetric, ← hx]
+      exact_mod_cast P.wordLength_wordProd_le [x]⟩
+  -- A geodesic word for `x⁻¹ * y` gives a walk in the Cayley graph from `x` to `y`.
+  intro x y
+  obtain ⟨l, hl, hlg⟩ := P.exists_isGeodesic (x.ofWordMetric⁻¹ * y.ofWordMetric)
+  obtain ⟨p, hp⟩ := P.exists_walk_of_word x.ofWordMetric l
+  refine ⟨(p.map φ).copy rfl (by simp [φ, hlg]), ?_⟩
+  rw [SimpleGraph.Walk.length_copy, SimpleGraph.Walk.length_map, WithWordMetric.dist_eq, ← hlg,
+    hl.eq]
+  simpa using hp
 
 namespace WithWordMetric
 
 variable (Q : Generators G κ)
 
+/-- For a finite generating family `P`, the identity of `G` is Lipschitz from the word metric of
+`P` to the word metric of any generating family `Q`. -/
+theorem exists_lipschitzWith_congr [Finite ι] : ∃ K, LipschitzWith K (congr P Q) := by
+  -- Bound the `Q`-lengths of the generators of `P`.
+  obtain ⟨K, hK⟩ := (Set.finite_range fun i ↦ Q.wordLength (P.val i)).bddAbove
+  refine ⟨K, LipschitzWith.of_dist_le_mul fun x y ↦ ?_⟩
+  rw [dist_eq, dist_eq, ofWordMetric_congr, ofWordMetric_congr, NNReal.coe_natCast]
+  exact_mod_cast P.wordLength_le_mul_wordLength Q (fun i ↦ hK ⟨i, rfl⟩) _
+
+/-- A surjective bilipschitz map is a quasi-isometry. -/
+theorem _root_.Metric.isQuasiIsometry_of_bilipschitz {α β : Type*} [PseudoMetricSpace α]
+    [PseudoMetricSpace β] {f : α → β} {K₁ K₂ : ℝ≥0} (hf₁ : AntilipschitzWith K₁ f)
+    (hf₂ : LipschitzWith K₂ f) (hf : Function.Surjective f) : Metric.IsQuasiIsometry f :=
+  Metric.isQuasiIsometry_iff_quasiDenseRange.2
+    ⟨hf₁.coarseAntilipschitzWith.isQuasiIsometricEmbedding hf₂.coarseLipschitzWith, 0, fun y ↦
+      let ⟨x, hx⟩ := hf y
+      ⟨x, by simp [hx]⟩⟩
+
 /-- For finite generating families `P` and `Q` of `G`, the identity of `G` is a quasi-isometry
 from the word metric of `P` to the word metric of `Q`.
 
 [C. Löh, *Geometric Group Theory*][loeh2017], Proposition 5.2.5. -/
-theorem isQuasiIsometry_congr [Finite ι] [Finite κ] : Metric.IsQuasiIsometry (congr P Q) :=
-  sorry
+theorem isQuasiIsometry_congr [Finite ι] [Finite κ] : Metric.IsQuasiIsometry (congr P Q) := by
+  -- `congr P Q` is a bijection, Lipschitz in both directions.
+  obtain ⟨K, hPQ⟩ := exists_lipschitzWith_congr P Q
+  obtain ⟨K', hQP⟩ := exists_lipschitzWith_congr Q P
+  exact Metric.isQuasiIsometry_of_bilipschitz (hQP.to_rightInverse fun _ ↦ rfl) hPQ
+    (congr P Q).surjective
 
 end WithWordMetric
 
