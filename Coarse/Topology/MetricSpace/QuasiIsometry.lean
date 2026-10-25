@@ -196,14 +196,14 @@ so does `g ∘ f`.
 lemma hasFiniteDist_comp_id (hf : IsQuasiIsometricEmbedding f)
     (hfg : HasFiniteDist (f ∘ g) id) : HasFiniteDist (g ∘ f) id := by
   obtain ⟨c, b, hf⟩ := hf
-  obtain ⟨c', hc'⟩ := hfg
-  -- simp only [Function.comp_apply, id_eq] at hc'
-  use c * c' + c * b
-  intro x
-  obtain ⟨xxx,yyy⟩ := hf
-  rw [CoarseLipschitzWith] at xxx
-  rw [CoarseAntilipschitzWith] at yyy
-  sorry
+  obtain ⟨D, hD⟩ := hfg
+  simp only [Function.comp_apply, id_eq] at hD
+  -- `f (g (f x))` is within `D` of `f x`, so the lower bound puts `g (f x)` near `x`.
+  refine ⟨c * D + c * b, fun x ↦ ?_⟩
+  simp only [Function.comp_apply, id_eq]
+  grw [dist_comm, hf.coarseAntilipschitzWith x (g (f x)), dist_comm, hD (f x)]
+  push_cast
+  exact le_rfl
 
 end IsQuasiIsometricEmbedding
 
