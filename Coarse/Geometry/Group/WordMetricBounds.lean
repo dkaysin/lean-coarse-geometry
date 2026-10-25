@@ -10,6 +10,8 @@ public import Coarse.Geometry.Group.WordMetric
 public import Coarse.Topology.MetricSpace.CoarselyGeodesic
 public import Coarse.Topology.MetricSpace.QuasiIsometry
 
+import Mathlib.Data.Set.Finite.List
+
 /-!
 # Bounds for the word metric
 
@@ -99,7 +101,9 @@ theorem wordLength_le_mul_wordLength (Q : Generators G κ) {K : ℕ}
 /-- For a finite generating family, there are finitely many elements of word length at most
 `n`. -/
 theorem finite_setOf_wordLength_le [Finite ι] (n : ℕ) : {g | P.wordLength g ≤ n}.Finite :=
-  sorry
+  ((List.finite_length_le (ι × Bool) n).image P.wordProd).subset fun g hg ↦ by
+    obtain ⟨l, hl, rfl⟩ := (P.wordLength_le_iff g).1 hg
+    exact ⟨l, hl, rfl⟩
 
 /-- A group with the word metric of a generating family is `(1, 1, 0)`-coarsely geodesic. -/
 theorem isCoarselyGeodesicWith :

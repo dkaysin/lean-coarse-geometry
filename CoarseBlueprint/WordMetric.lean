@@ -71,6 +71,5 @@ attribute [blueprint "Group.Generators.wordLength_le_mul_wordLength" (latexEnv :
 attribute [blueprint "Group.Generators.finite_setOf_wordLength_le" (latexEnv := "lemma")
   (title := /-- Finite balls -/)
   (statement := /-- If $\iota$ is finite, then $\{g \mid |g|_P \le n\}$ is finite for every $n$. -/)
-  (proof := /-- It is the image of the finite set of words of length at most $n$. -/)
-  (proofUses := ["Group.Generators.wordLength"])]
+  (proof := /-- It is the image of the finite set of words of length at most $n$. -/)]
   Group.Generators.finite_setOf_wordLength_le
