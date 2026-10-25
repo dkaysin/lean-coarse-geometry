@@ -8,7 +8,7 @@ module
 public import Mathlib.Order.Filter.Lift
 public import Mathlib.Tactic.FunProp
 
-public import Coarse.Data.Rel
+public import Coarse.Basic.Rel
 
 /-!
 # Coarse Spaces

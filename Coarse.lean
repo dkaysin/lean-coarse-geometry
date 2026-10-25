@@ -1,9 +1,9 @@
 module  -- shake: keep-all --deprecated_module: ignore
 
+public import Coarse.Basic.Rel
 public import Coarse.Combinatorics.SimpleGraph.Cayley
 public import Coarse.Combinatorics.SimpleGraph.Paths
 public import Coarse.Data.List.Chain
-public import Coarse.Data.Rel
 public import Coarse.Geometry.Group.CayleySimpleGraph
 public import Coarse.Geometry.Group.DehnFunction
 public import Coarse.Geometry.Group.Hyperbolic
