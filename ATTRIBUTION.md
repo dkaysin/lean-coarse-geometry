@@ -30,3 +30,12 @@ reading it, is not listed.
 - **Changes**: ported from Mathlib `v4.26.0` to the pinned revision and to the module system;
   `SetRel.ball` and its lemmas dropped (now in Mathlib) and `SetRel.mem_comp_comp` renamed
   `SetRel.mem_comp_comp_of_mem` (Mathlib has a different lemma of that name)
+
+### mathlib4 #44853
+
+- **Source**: <https://github.com/leanprover-community/mathlib4/pull/44853>, commit `279e410`
+- **Licence**: Apache 2.0
+- **Original authors**: Hang Lu Su (files), Dmitry Kaysin (PR changes)
+- **Copied**: `Mathlib/GroupTheory/Generators.lean`, `Mathlib/Geometry/Group/WordProd.lean` and
+  `Mathlib/Geometry/Group/WordMetric.lean` as patched by the PR, to the same paths under `Coarse/`
+- **Changes**: imports point to the copies instead of Mathlib
