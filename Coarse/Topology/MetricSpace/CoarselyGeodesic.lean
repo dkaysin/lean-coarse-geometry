@@ -28,6 +28,9 @@ any two points are joined by an `r`-chain, and *`(r, L, C)`-coarsely geodesic* i
 
 ## Main statements
 
+* `SimpleGraph.Walk.dist_le_mul_length`: a map from the vertices of a graph into a pseudometric
+  space that moves adjacent vertices by at most `K` moves the endpoints of a walk by at most `K`
+  times its length.
 * `NormedSpace.isCoarselyGeodesicWith`: a real normed space is `(r, r⁻¹, 1)`-coarsely geodesic for
   every `r > 0`.
 
@@ -45,6 +48,18 @@ coarsely geodesic, coarsely connected, chain, Rips graph, quasi-geodesic, coarse
 @[expose] public section
 
 open scoped NNReal
+
+/-- If `φ` moves adjacent vertices of `G` by at most `K`, then it moves the endpoints of a walk
+by at most `K` times the length of the walk. -/
+theorem SimpleGraph.Walk.dist_le_mul_length {V X : Type*} [PseudoMetricSpace X]
+    {G : SimpleGraph V} {φ : V → X} {K : ℝ} (hφ : ∀ u v, G.Adj u v → Dist.dist (φ u) (φ v) ≤ K)
+    {u v : V} (p : G.Walk u v) : Dist.dist (φ u) (φ v) ≤ K * p.length := by
+  induction p with
+  | nil => simp
+  | cons h p ih =>
+    grw [dist_triangle _ (φ _), hφ _ _ h, ih]
+    rw [length_cons, Nat.cast_succ]
+    linarith
 
 namespace Metric
 
