@@ -79,15 +79,15 @@ theorem isMetricallyProperSMul_of_properlyDiscontinuousSMul {G X : Type*} [SMul 
 /-- Every action of a finite group is metrically proper. -/
 @[to_additive /-- Every additive action of a finite group is metrically proper. -/]
 theorem isMetricallyProperSMul_of_finite {G X : Type*} [Finite G] [SMul G X] [Bornology X] :
-    IsMetricallyProperSMul G X := by
-  sorry
+    IsMetricallyProperSMul G X :=
+  fun _ _ ↦ Set.toFinite _
 
 /-- The restriction of a metrically proper action to a subgroup is metrically proper. -/
 @[to_additive /-- The restriction of a metrically proper additive action to a subgroup is
 metrically proper. -/]
 theorem IsMetricallyProperSMul.subgroup {G X : Type*} [Group G] [MulAction G X] [Bornology X]
-    (h : IsMetricallyProperSMul G X) (H : Subgroup G) : IsMetricallyProperSMul H X := by
-  sorry
+    (h : IsMetricallyProperSMul G X) (H : Subgroup G) : IsMetricallyProperSMul H X :=
+  fun s hs ↦ (h s hs).preimage Subtype.val_injective.injOn
 
 /-- If `G` acts isometrically and coboundedly, then so does every subgroup of finite index. -/
 @[to_additive /-- If `G` acts isometrically and coboundedly by translations, then so does every
@@ -95,4 +95,13 @@ subgroup of finite index. -/]
 theorem IsCoboundedSMul.of_finiteIndex {G X : Type*} [Group G] [PseudoMetricSpace X]
     [MulAction G X] [IsIsometricSMul G X] (h : IsCoboundedSMul G X) (H : Subgroup G)
     [H.FiniteIndex] : IsCoboundedSMul H X := by
-  sorry
+  obtain ⟨s, hs, hcov⟩ := h
+  refine ⟨⋃ q : G ⧸ H, q.out⁻¹ • s, Bornology.isBounded_iUnion.2 fun q ↦ hs.smul _,
+    Set.eq_univ_of_forall fun x ↦ ?_⟩
+  obtain ⟨g, hg⟩ := Set.mem_iUnion.1 (hcov ▸ Set.mem_univ x)
+  obtain ⟨k, hk⟩ := QuotientGroup.mk_out_eq_mul H g⁻¹
+  refine Set.mem_iUnion.2 ⟨k, Set.mem_smul_set.2
+    ⟨(k : G)⁻¹ • x, Set.mem_iUnion.2 ⟨(g⁻¹ : G), ?_⟩, ?_⟩⟩
+  · rw [hk, mul_inv_rev, inv_inv, mul_smul, Set.smul_mem_smul_set_iff]
+    exact hg
+  · simp [Subgroup.smul_def]

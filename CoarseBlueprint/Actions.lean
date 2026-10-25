@@ -35,14 +35,13 @@ attribute [blueprint "isMetricallyProperSMul_of_properlyDiscontinuousSMul" (late
 attribute [blueprint "isMetricallyProperSMul_of_finite" (latexEnv := "lemma")
   (statement := /-- Every action of a finite group is metrically proper, and the restriction of a
     metrically proper action to a subgroup is metrically proper. -/)
-  (proof := /-- Subsets of finite sets are finite. -/)
-  (proofUses := ["IsMetricallyProperSMul"])]
+  (proof := /-- Subsets of finite sets are finite. -/)]
   isMetricallyProperSMul_of_finite IsMetricallyProperSMul.subgroup
 
 attribute [blueprint "IsCoboundedSMul.of_finiteIndex" (latexEnv := "lemma")
   (statement := /-- If $G$ acts isometrically and coboundedly and $H \le G$ has finite index, then
     $H$ acts coboundedly. -/)
-  (proof := /-- If $s$ works for $G$ and $g_1, \dots, g_k$ are coset representatives of $G / H$ (on
-    the appropriate side), then $\bigcup_j g_j s$ is bounded and works for $H$. -/)
-  (proofUses := ["IsCoboundedSMul"])]
+  (proof := /-- If $s$ works for $G$ and $g_1, \dots, g_k$ represent the left cosets $g_j H$,
+    then $\bigcup_j g_j^{-1} s$ is bounded, since the action is isometric, and works for $H$: for
+    $x \in g s$, write $g^{-1} = g_j h$ with $h \in H$; then $h^{-1} x \in g_j^{-1} s$. -/)]
   IsCoboundedSMul.of_finiteIndex
