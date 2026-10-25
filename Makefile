@@ -26,6 +26,7 @@ blueprint: ## Build the tags and extract the blueprint to .lake/build/blueprint
 
 web: blueprint ## Render the blueprint web page to blueprint/web
 	leanblueprint web
+	python3 scripts/blueprint_links.py
 
 pdf: blueprint ## Render the blueprint pdf to blueprint/print/print.pdf
 	leanblueprint pdf
