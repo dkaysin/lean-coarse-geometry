@@ -4,44 +4,12 @@
 Milestone M4. $G$ acts on a space $X$ with a bornology, for instance the bounded sets of a
 pseudometric space; the definitions use only bounded sets (design decision D14).
 
-\begin{definition}[Cobounded action]
-  \label{IsCoboundedSMul}
-  \notready
-  The action is \emph{cobounded} if some bounded set $s \subseteq X$ satisfies
-  $\bigcup_{g \in G} g s = X$.
-\end{definition}
+\inputleannode{IsCoboundedSMul}
 
 \inputleannode{IsMetricallyProperSMul}
 
-\begin{lemma}
-  \label{isMetricallyProperSMul_of_properlyDiscontinuousSMul}
-  \notready
-  \uses{IsMetricallyProperSMul}
-  A properly discontinuous action on a proper metric space is metrically proper.
-\end{lemma}
-\begin{proof}
-  A bounded set lies in a closed ball, which is compact; apply the finiteness in the definition
-  of a properly discontinuous action.
-\end{proof}
+\inputleannode{isMetricallyProperSMul_of_properlyDiscontinuousSMul}
 
-\begin{lemma}
-  \label{isMetricallyProperSMul_of_finite}
-  \notready
-  \uses{IsMetricallyProperSMul}
-  Every action of a finite group is metrically proper, and the restriction of a metrically
-  proper action to a subgroup is metrically proper.
-\end{lemma}
-\begin{proof}
-  Subsets of finite sets are finite.
-\end{proof}
+\inputleannode{isMetricallyProperSMul_of_finite}
 
-\begin{lemma}
-  \label{IsCoboundedSMul.of_finiteIndex}
-  \notready
-  \uses{IsCoboundedSMul}
-  If $G$ acts coboundedly and $H \le G$ has finite index, then $H$ acts coboundedly.
-\end{lemma}
-\begin{proof}
-  If $s$ works for $G$ and $g_1, \dots, g_k$ are coset representatives of $G / H$ (on the
-  appropriate side), then $\bigcup_j g_j s$ is bounded and works for $H$.
-\end{proof}
+\inputleannode{IsCoboundedSMul.of_finiteIndex}

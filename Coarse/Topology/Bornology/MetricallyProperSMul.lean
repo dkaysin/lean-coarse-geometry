@@ -6,26 +6,42 @@ Authors: Dmitry Kaysin
 module
 
 public import Mathlib.Algebra.Group.Pointwise.Set.Scalar
+public import Mathlib.Algebra.Group.Subgroup.Actions
 public import Mathlib.Basic.Finite.Defs
+public import Mathlib.GroupTheory.Index
+public import Mathlib.Topology.Algebra.ConstMulAction
 public import Mathlib.Topology.Bornology.Basic
+public import Mathlib.Topology.MetricSpace.IsometricSMul
+public import Mathlib.Topology.MetricSpace.ProperSpace
 
 /-!
-# Metrically proper actions
+# Metrically proper and cobounded actions
 
 An action of `G` on a space `X` with a bornology is *metrically proper* if every bounded set
-meets only finitely many of its translates. This is the hypothesis on the action in the
-Švarc–Milnor lemma; it is the bornological analogue of `ProperlyDiscontinuousSMul`, with bounded
-sets in place of compact sets.
+meets only finitely many of its translates, and *cobounded* if the translates of some bounded set
+cover `X`. These are the hypotheses on the action in the Švarc–Milnor lemma; metric properness is
+the bornological analogue of `ProperlyDiscontinuousSMul`, with bounded sets in place of compact
+sets.
 
 ## Main definitions
 
 * `IsMetricallyProperSMul G X`: for every bounded `s : Set X`, the set of `g : G` with
   `g • s ∩ s` nonempty is finite.
+* `IsCoboundedSMul G X`: the translates of some bounded set cover `X`.
+
+## Main statements
+
+* `isMetricallyProperSMul_of_properlyDiscontinuousSMul`: a properly discontinuous action on a
+  proper metric space is metrically proper.
+* `isMetricallyProperSMul_of_finite`, `IsMetricallyProperSMul.subgroup`: actions of finite groups,
+  and restrictions of metrically proper actions to subgroups, are metrically proper.
+* `IsCoboundedSMul.of_finiteIndex`: a subgroup of finite index of a group acting isometrically and
+  coboundedly acts coboundedly.
 
 ## Implementation notes
 
-The definition is stated for `[Bornology X]`, since it uses only bounded sets; for a pseudometric
-space this is the bornology of metrically bounded sets.
+The definitions are stated for `[Bornology X]`, since they use only bounded sets; for a
+pseudometric space this is the bornology of metrically bounded sets.
 
 ## Tags
 
@@ -42,3 +58,39 @@ many of its translates: `{g | (g • s ∩ s).Nonempty}` is finite. -/
 `s` meets only finitely many of its translates: `{g | (g +ᵥ s ∩ s).Nonempty}` is finite. -/]
 def IsMetricallyProperSMul (G X : Type*) [SMul G X] [Bornology X] : Prop :=
   ∀ s : Set X, Bornology.IsBounded s → {g : G | (g • s ∩ s).Nonempty}.Finite
+
+/-- An action of `G` on `X` is **cobounded** if the translates of some bounded set cover `X`. -/
+@[to_additive /-- An additive action of `G` on `X` is **cobounded** if the translates of some
+bounded set cover `X`. -/]
+def IsCoboundedSMul (G X : Type*) [SMul G X] [Bornology X] : Prop :=
+  ∃ s : Set X, Bornology.IsBounded s ∧ ⋃ g : G, g • s = Set.univ
+
+/-- A properly discontinuous action on a proper metric space is metrically proper: bounded sets
+have compact closures. -/
+@[to_additive /-- A properly discontinuous additive action on a proper metric space is metrically
+proper. -/]
+theorem isMetricallyProperSMul_of_properlyDiscontinuousSMul {G X : Type*} [SMul G X]
+    [PseudoMetricSpace X] [ProperSpace X] [ProperlyDiscontinuousSMul G X] :
+    IsMetricallyProperSMul G X :=
+  sorry
+
+/-- Every action of a finite group is metrically proper. -/
+@[to_additive /-- Every additive action of a finite group is metrically proper. -/]
+theorem isMetricallyProperSMul_of_finite {G X : Type*} [Finite G] [SMul G X] [Bornology X] :
+    IsMetricallyProperSMul G X :=
+  sorry
+
+/-- The restriction of a metrically proper action to a subgroup is metrically proper. -/
+@[to_additive /-- The restriction of a metrically proper additive action to a subgroup is
+metrically proper. -/]
+theorem IsMetricallyProperSMul.subgroup {G X : Type*} [Group G] [MulAction G X] [Bornology X]
+    (h : IsMetricallyProperSMul G X) (H : Subgroup G) : IsMetricallyProperSMul H X :=
+  sorry
+
+/-- If `G` acts isometrically and coboundedly, then so does every subgroup of finite index. -/
+@[to_additive /-- If `G` acts isometrically and coboundedly by translations, then so does every
+subgroup of finite index. -/]
+theorem IsCoboundedSMul.of_finiteIndex {G X : Type*} [Group G] [PseudoMetricSpace X]
+    [MulAction G X] [IsIsometricSMul G X] (h : IsCoboundedSMul G X) (H : Subgroup G)
+    [H.FiniteIndex] : IsCoboundedSMul H X :=
+  sorry
