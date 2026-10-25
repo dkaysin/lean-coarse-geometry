@@ -2,7 +2,8 @@
 """List the state of every blueprint node and the frontier.
 
 Reads the LaTeX nodes in `blueprint/src/chapters/*.tex` and the nodes LeanArchitect extracted
-from `CoarseBlueprint` into `.lake/build/blueprint` (run `lake build :blueprint` first).
+from `CoarseBlueprint` into `.lake/build/blueprint` by `make blueprint`, and warns if a Lean file
+changed since that extraction.
 
 States: `planned` (LaTeX), `review` (Lean, tagged `notReady := true`: its Lean statement awaits
 the user's review), `stated` (Lean, approved, proof not sorry-free), `proved` (Lean), `mathlib`
@@ -22,6 +23,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 CHAPTERS = ROOT / "blueprint" / "src" / "chapters"
 EXTRACTED = ROOT / ".lake" / "build" / "blueprint" / "module"
+STAMP = ROOT / ".lake" / "build" / "blueprint" / "stamp"
+SOURCES = ["Coarse", "CoarseBlueprint", "Coarse.lean", "CoarseBlueprint.lean", "lakefile.toml",
+           "lake-manifest.json", "lean-toolchain"]
 ENVS = "definition|lemma|theorem|corollary|proposition"
 NODE = re.compile(
     r"\\begin\{(" + ENVS + r")\}(.*?)\\end\{\1\}(\s*\\begin\{proof\}(.*?)\\end\{proof\})?",
@@ -36,6 +40,14 @@ def strip_comments(text):
 def labels_in(command, text):
     return [l.strip() for m in re.finditer(r"\\" + command + r"\{([^}]*)\}", text)
             for l in m.group(1).split(",") if l.strip()]
+
+
+def changed_since_extraction():
+    """The sources modified after the stamp `make blueprint` leaves, relative to the root."""
+    since = STAMP.stat().st_mtime
+    files = [f for s in SOURCES
+             for f in ((ROOT / s).rglob("*.lean") if (ROOT / s).is_dir() else [ROOT / s])]
+    return sorted(str(f.relative_to(ROOT)) for f in files if f.stat().st_mtime > since)
 
 
 def parse(text):
@@ -60,7 +72,14 @@ def main():
         nodes[label] = node
 
     if not EXTRACTED.exists():
-        sys.exit("No extracted blueprint: run `lake build :blueprint` first.")
+        sys.exit("No extracted blueprint: run `make blueprint` first.")
+    if not STAMP.exists():
+        print("Warning: no record of when the blueprint was extracted; "
+              "`make blueprint` refreshes it.\n")
+    elif changed := changed_since_extraction():
+        more = f" and {len(changed) - 3} more" if len(changed) > 3 else ""
+        print(f"Warning: Lean states are from before changes to {', '.join(changed[:3])}{more}; "
+              "`make blueprint` refreshes them.\n")
     for f in sorted(EXTRACTED.glob("**/*.artifacts/*.tex")):
         for label, statement, proof in parse(f.read_text()):
             lean = labels_in("lean", statement)
