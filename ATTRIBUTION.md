@@ -39,3 +39,12 @@ reading it, is not listed.
 - **Copied**: `Mathlib/GroupTheory/Generators.lean`, `Mathlib/Geometry/Group/WordProd.lean` and
   `Mathlib/Geometry/Group/WordMetric.lean` as patched by the PR, to the same paths under `Coarse/`
 - **Changes**: imports point to the copies instead of Mathlib
+
+### mathlib4 #44958
+
+- **Source**: <https://github.com/leanprover-community/mathlib4/pull/44958>, commit `885510a`
+- **Licence**: Apache 2.0
+- **Original authors**: Dmitry Kaysin
+- **Copied**: the code the PR adds to `Mathlib/Combinatorics/SimpleGraph/Cayley.lean`, to
+  `Coarse/Combinatorics/SimpleGraph/Cayley.lean`
+- **Changes**: in a file of its own, with the PR's import changes applied there
