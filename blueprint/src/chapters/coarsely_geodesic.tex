@@ -22,37 +22,6 @@ ready.
 \end{definition}
 
 \begin{lemma}
-  \label{Metric.IsCoarselyGeodesicWith.isCoarselyConnectedWith}
-  \notready
-  \uses{Metric.IsCoarselyGeodesicWith, Metric.IsCoarselyConnectedWith}
-  An $(r, L, C)$-coarsely geodesic space is $r$-coarsely connected.
-\end{lemma}
-\begin{proof}
-  Forget the bound on the number of steps.
-\end{proof}
-
-\begin{lemma}
-  \label{Metric.IsCoarselyGeodesicWith.mono}
-  \notready
-  \uses{Metric.IsCoarselyGeodesicWith}
-  Being $(r, L, C)$-coarsely geodesic is monotone in $r$, $L$ and $C$.
-\end{lemma}
-\begin{proof}
-  The same chains work.
-\end{proof}
-
-\begin{lemma}[Chain principle]
-  \label{Metric.IsCoarselyGeodesicWith.coarseLipschitzWith}
-  \notready
-  \uses{Metric.IsCoarselyGeodesicWith, Metric.CoarseLipschitzWith}
-  Let $X$ be $(r, L, C)$-coarsely geodesic and let $f \colon X \to Y$ satisfy
-  $d(f x, f y) \le A$ whenever $d(x, y) \le r$. Then $f$ is $(A L, A C)$-coarse Lipschitz.
-\end{lemma}
-\begin{proof}
-  Along a chain with $n \le L\,d(x, y) + C$ steps, $d(f x, f y) \le A n$.
-\end{proof}
-
-\begin{lemma}
   \label{NormedSpace.isCoarselyGeodesicWith}
   \notready
   \uses{Metric.IsCoarselyGeodesicWith}
@@ -66,8 +35,7 @@ ready.
 \begin{lemma}
   \label{Group.Generators.isCoarselyGeodesicWith}
   \notready
-  \uses{Metric.IsCoarselyGeodesicWith, Group.Generators.groupNorm,
-    Group.Generators.wordLength_val_le_one}
+  \uses{Metric.IsCoarselyGeodesicWith, Group.Generators.groupNorm}
   A group with the word metric of a generating family is $(1, 1, 0)$-coarsely geodesic.
 \end{lemma}
 \begin{proof}

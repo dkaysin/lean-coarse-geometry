@@ -21,38 +21,11 @@ attribute [blueprint "Group.Generators"
     $\iota \to G$ whose range generates $G$. -/)]
   Group.Generators
 
-attribute [blueprint "Group.Generators.fg" (latexEnv := "lemma")
-  (statement := /-- A group with a finite generating family is finitely generated, and a
-    finitely generated group has a finite generating family. -/)]
-  Group.Generators.fg Group.fg_iff_nonempty_finite_generators
-
 attribute [blueprint "Group.Generators.wordLength"
   (title := /-- Word length -/)
   (statement := /-- The \emph{word length} $|g|_P$ of $g$ is the least length of a word in the
     generators and their inverses whose product is $g$. -/)]
   Group.Generators.wordLength
-
-attribute [blueprint "Group.Generators.wordLength_wordProd_le" (latexEnv := "lemma")
-  (statement := /-- The word length of the product of a word is at most the length of the
-    word. -/)]
-  Group.Generators.wordLength_wordProd_le
-
-attribute [blueprint "Group.Generators.wordLength_le_iff" (latexEnv := "lemma")
-  (statement := /-- $|g|_P \le n$ if and only if $g$ is the product of a word of length at most
-    $n$. -/)]
-  Group.Generators.wordLength_le_iff
-
-attribute [blueprint "Group.Generators.wordLength_eq_zero_iff" (latexEnv := "lemma")
-  (statement := /-- $|g|_P = 0$ if and only if $g = 1$. -/)]
-  Group.Generators.wordLength_eq_zero_iff
-
-attribute [blueprint "Group.Generators.wordLength_inv" (latexEnv := "lemma")
-  (statement := /-- $|g^{-1}|_P = |g|_P$. -/)]
-  Group.Generators.wordLength_inv
-
-attribute [blueprint "Group.Generators.wordLength_mul_le" (latexEnv := "lemma")
-  (statement := /-- $|g h|_P \le |g|_P + |h|_P$. -/)]
-  Group.Generators.wordLength_mul_le
 
 attribute [blueprint "Group.Generators.groupNorm"
   (title := /-- Word metric -/)

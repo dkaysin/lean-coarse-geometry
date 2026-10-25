@@ -46,11 +46,6 @@ attribute [blueprint "PseudoEMetricSpace.toCoarseSpace"
     is bounded on it. -/)]
   PseudoEMetricSpace.toCoarseSpace
 
-attribute [blueprint "isCoarselyProperMap_smul_const" (latexEnv := "lemma")
-  (statement := /-- For a properly discontinuous action on a proper metric space, the orbit map
-    of a point is coarsely proper. -/)]
-  isCoarselyProperMap_smul_const
-
 attribute [blueprint "mulOrbitMetricCoarseEquiv"
   (title := /-- Coarse \v{S}varc--Milnor lemma -/)
   (statement := /-- A group with a proper left-invariant metric, acting isometrically, properly

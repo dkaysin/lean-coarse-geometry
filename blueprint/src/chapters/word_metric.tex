@@ -3,18 +3,14 @@
 
 Milestone M3. $P$ is a generating family $\iota \to G$ of a group $G$, and $|g|_P$ the word
 length of $g$ with respect to $P$. The formalized nodes of this chapter are copies of open
-Mathlib pull requests (see \texttt{ATTRIBUTION.md}).
+Mathlib pull requests (see \texttt{ATTRIBUTION.md}). Their elementary API (subadditivity, inverses,
+word length zero, generators having length at most one) is used in the proofs below without
+being a node.
 
 \section{Generating families and word length}
 
 \inputleannode{Group.Generators}
-\inputleannode{Group.Generators.fg}
 \inputleannode{Group.Generators.wordLength}
-\inputleannode{Group.Generators.wordLength_wordProd_le}
-\inputleannode{Group.Generators.wordLength_le_iff}
-\inputleannode{Group.Generators.wordLength_eq_zero_iff}
-\inputleannode{Group.Generators.wordLength_inv}
-\inputleannode{Group.Generators.wordLength_mul_le}
 \inputleannode{Group.Generators.groupNorm}
 
 \inputleannode{Group.Generators.cayleySimpleGraph}
@@ -22,31 +18,10 @@ Mathlib pull requests (see \texttt{ATTRIBUTION.md}).
 
 \section{Bounds}
 
-\begin{lemma}
-  \label{Group.Generators.wordLength_val_le_one}
-  \notready
-  \uses{Group.Generators.wordLength, Group.Generators.wordLength_wordProd_le}
-  $|P_i|_P \le 1$ and $|P_i^{-1}|_P \le 1$ for every $i$.
-\end{lemma}
-\begin{proof}
-  Both are the product of a word of length one.
-\end{proof}
-
-\begin{lemma}[Product bound]
-  \label{Group.Generators.wordLength_prod_le}
-  \notready
-  \uses{Group.Generators.wordLength_val_le_one, Group.Generators.wordLength_mul_le}
-  If every element of a list $g_1, \dots, g_n$ of elements of $G$ lies in a generating set $S$,
-  then $|g_1 \cdots g_n|_S \le n$.
-\end{lemma}
-\begin{proof}
-  Induction on $n$ with subadditivity of the word length.
-\end{proof}
-
 \begin{lemma}[Lipschitz principle]
   \label{Group.Generators.dist_le_mul_wordLength}
   \notready
-  \uses{Group.Generators.wordLength, Group.Generators.wordLength_le_iff}
+  \uses{Group.Generators.wordLength}
   Let $\varphi \colon G \to X$ satisfy $d(\varphi(g), \varphi(g s)) \le K$ for all $g \in G$ and
   every generator or inverse generator $s$. Then
   $d(\varphi(g), \varphi(h)) \le K\,|g^{-1} h|_P$ for all $g, h$.
@@ -55,20 +30,10 @@ Mathlib pull requests (see \texttt{ATTRIBUTION.md}).
   Write $g^{-1} h$ as a geodesic word and apply the triangle inequality along its prefixes.
 \end{proof}
 
-\begin{lemma}[Uniform discreteness]
-  \label{Group.Generators.one_le_dist}
-  \notready
-  \uses{Group.Generators.groupNorm, Group.Generators.wordLength_eq_zero_iff}
-  For the word metric, $d(g, h) \ge 1$ whenever $g \ne h$.
-\end{lemma}
-\begin{proof}
-  $d(g, h) = |g^{-1} h|_P$ is a natural number, and it is $0$ only if $g = h$.
-\end{proof}
-
 \begin{lemma}[Change of generators, from the proof of L\"oh Prop.~5.2.5]
   \label{Group.Generators.wordLength_le_mul_wordLength}
   \notready
-  \uses{Group.Generators.dist_le_mul_wordLength, Group.Generators.wordLength_inv}
+  \uses{Group.Generators.dist_le_mul_wordLength, Group.Generators.groupNorm}
   Let $P$ be finite and $Q$ another generating family. Then
   $|g|_Q \le M\,|g|_P$ with $M = \max_i |P_i|_Q$.
 \end{lemma}
@@ -82,7 +47,7 @@ Mathlib pull requests (see \texttt{ATTRIBUTION.md}).
 \begin{lemma}[Finite balls]
   \label{Group.Generators.finite_setOf_wordLength_le}
   \notready
-  \uses{Group.Generators.wordLength, Group.Generators.wordLength_le_iff}
+  \uses{Group.Generators.wordLength}
   If $\iota$ is finite, then $\{g \mid |g|_P \le n\}$ is finite for every $n$.
 \end{lemma}
 \begin{proof}

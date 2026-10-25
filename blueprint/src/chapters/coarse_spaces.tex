@@ -10,33 +10,4 @@ or finite generation. Nothing yet connects it to the metric notions above.
 \inputleannode{IsCoarseMap}
 \inputleannode{CoarseEquiv}
 \inputleannode{PseudoEMetricSpace.toCoarseSpace}
-\inputleannode{isCoarselyProperMap_smul_const}
 \inputleannode{mulOrbitMetricCoarseEquiv}
-
-\section*{Candidate bridges}
-
-These have no consumer yet; they become ready when a node uses them.
-
-\begin{lemma}
-  \label{Metric.hasFiniteDist_iff_isCoarselyClose}
-  \notready
-  \uses{Metric.HasFiniteDist, IsCoarselyClose, PseudoEMetricSpace.toCoarseSpace}
-  Two maps into a pseudometric space have finite distance if and only if they are coarsely
-  close for the metric coarse structure.
-\end{lemma}
-\begin{proof}
-  Unfold the controlled sets of the metric coarse structure.
-\end{proof}
-
-\begin{lemma}
-  \label{Metric.IsQuasiIsometry.toCoarseEquiv}
-  \notready
-  \uses{Metric.IsQuasiIsometry, CoarseEquiv, PseudoEMetricSpace.toCoarseSpace,
-    Metric.hasFiniteDist_iff_isCoarselyClose}
-  A quasi-isometry together with a quasi-inverse is a coarse equivalence for the metric coarse
-  structures.
-\end{lemma}
-\begin{proof}
-  Coarse Lipschitz maps are controlled, coarse antilipschitz maps are coarsely proper, and maps
-  at finite distance are coarsely close.
-\end{proof}
