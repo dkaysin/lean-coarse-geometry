@@ -1,3 +1,4 @@
+import CoarseBlueprint.Actions
 import CoarseBlueprint.CoarseSpace
 import CoarseBlueprint.Hyperbolic
 import CoarseBlueprint.QuasiIsometry

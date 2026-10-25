@@ -1,8 +1,8 @@
 \chapter{Hypotheses on the action}
 \label{chap:actions}
 
-Milestone M4. $G$ acts on a pseudometric space $X$. Whether the definitions are stated for a
-bornology instead of a metric is an open decision (design decision D14), so they are not ready.
+Milestone M4. $G$ acts on a space $X$ with a bornology, for instance the bounded sets of a
+pseudometric space; the definitions use only bounded sets (design decision D14).
 
 \begin{definition}[Cobounded action]
   \label{def:cobounded-smul}
@@ -12,13 +12,7 @@ bornology instead of a metric is an open decision (design decision D14), so they
   \plannedlean{IsCoboundedSMul}
 \end{definition}
 
-\begin{definition}[Metrically proper action]
-  \label{def:metrically-proper-smul}
-  \notready
-  The action is \emph{metrically proper} if for every bounded set $B \subseteq X$ the set
-  $\{g \in G \mid g B \cap B \ne \emptyset\}$ is finite.
-  \plannedlean{IsMetricallyProperSMul}
-\end{definition}
+\inputleannode{def:metrically-proper-smul}
 
 \begin{lemma}[Orbit map]
   \label{lem:metrically-proper-iff-tendsto}
