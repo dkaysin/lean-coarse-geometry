@@ -90,21 +90,19 @@ structure IsQuasiIsometricEmbeddingWith (c b : ℝ≥0) (f : α → β) : Prop w
   /-- The lower bound: `dist x y ≤ c * dist (f x) (f y) + c * b`. -/
   coarseAntilipschitzWith : CoarseAntilipschitzWith c (c * b) f
 
--- TODO: remove?
--- variable (c' b' : ℝ≥0) in
--- /-- (c, b)-quasi-isometric embedding is also (c', b')-quasi-isometric embedding
--- for c ≤ c' and b ≤ b'. -/
--- theorem mono (hf : IsQuasiIsometricEmbeddingWith c b f) (hc : c ≤ c') (hb : b ≤ b') :
---     IsQuasiIsometricEmbeddingWith c' b' f := {
---       coarseLipschitzWith := by
---         exact hf.coarseLipschitzWith.mono hc hb
---       coarseAntilipschitzWith := by
---         exact hf.coarseAntilipschitzWith.mono hc (by gcongr)
---     }
+variable (c' b' : ℝ≥0) in
+/-- (c, b)-quasi-isometric embedding is also (c', b')-quasi-isometric embedding
+for c ≤ c' and b ≤ b'. -/
+theorem mono (hf : IsQuasiIsometricEmbeddingWith c b f) (hc : c ≤ c') (hb : b ≤ b') :
+    IsQuasiIsometricEmbeddingWith c' b' f := {
+      coarseLipschitzWith := by
+        exact hf.coarseLipschitzWith.mono hc hb
+      coarseAntilipschitzWith := by
+        exact hf.coarseAntilipschitzWith.mono hc (by gcongr)
+    }
 
 /-- A map `f` between pseudometric spaces is a **quasi-isometric embedding** if it is a
 `(c, b)`-quasi-isometric embedding for some constants `c` and `b`.
-
 [C. Löh, *Geometric Group Theory*][loeh2017], Definition 5.1.6. -/
 def IsQuasiIsometricEmbedding (f : α → β) : Prop :=
   ∃ c b, IsQuasiIsometricEmbeddingWith c b f
@@ -206,8 +204,6 @@ lemma hasFiniteDist_comp_id (hf : IsQuasiIsometricEmbedding f)
   rw [CoarseLipschitzWith] at xxx
   rw [CoarseAntilipschitzWith] at yyy
   sorry
-
-
 
 end IsQuasiIsometricEmbedding
 
