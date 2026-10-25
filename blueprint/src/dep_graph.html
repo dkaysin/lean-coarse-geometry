@@ -67,6 +67,8 @@
   #graph .node.dimmed, #graph .edge.dimmed { opacity: .12; }
   #graph .node.focus > :is(ellipse, polygon) { stroke-width: 5px; }
   div.dep-modal-container { z-index: 20; }
+  /* Let the list of a node's Lean declarations extend past the bottom of the modal. */
+  div.dep-modal-content { overflow: visible; }
 </style>
 </head>
 
