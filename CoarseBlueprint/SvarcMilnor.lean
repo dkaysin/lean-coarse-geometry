@@ -17,12 +17,13 @@ attribute [blueprint "Group.fg_of_isCoboundedSMul"
   (statement := /-- A group acting isometrically, metrically properly and coboundedly on a nonempty
     coarsely connected pseudometric space is finitely generated. -/)
   (proof := /-- Let $X$ be $r$-coarsely connected. \emph{$S$ generates $G$.} Take an $r$-chain $x_0
-    = y_0, \dots, y_n = g x_0$ and pick $h_i$ with $y_i \in h_i s$, with $h_0 = 1$ and $h_n = g$.
-    Then $h_i^{-1} y_{i+1}$ lies in $h_i^{-1} h_{i+1} s \subseteq h_i^{-1} h_{i+1} B$, and within
-    $r$ of $h_i^{-1} y_i \in s$, so also in $B$: hence $h_i^{-1} h_{i+1} \in S$. So $g = \prod_i
-    h_i^{-1} h_{i+1}$ is a product of $n$ elements of $S$. (Choose the $h_i$ with \texttt{choose} on
-    the covering hypothesis, then patch the endpoints; write the telescoping product over
-    \texttt{List.finRange n}.)
+    = y_0, \dots, y_n = g x_0$. If $y_i \in h s$, pick $h'$ with $y_{i+1} \in h' s$; then $h^{-1}
+    y_{i+1}$ lies in $h^{-1} h' s \subseteq h^{-1} h' B$, and within $r$ of $h^{-1} y_i \in s$, so
+    also in $B$: hence $h^{-1} h' \in S$. By induction along the chain, starting from $y_0 \in 1
+    \cdot s$, each $y_i$ lies in $h_i s$ for a product $h_i$ of $i$ elements of $S$. Finally $g x_0 =
+    y_n \in h_n s$ and $x_0 \in s$ give $h_n^{-1} g \in S$, so $g = h_n (h_n^{-1} g)$ is a product
+    of $n + 1$ elements of $S$. (The last factor is needed: if $n = 0$ then $g$ fixes $x_0$ but need
+    not be $1$. In Lean, induct on the walk in the Rips graph.)
 
     \emph{$S$ is finite}, since $B$ is bounded and the action is metrically proper.
 
@@ -43,9 +44,9 @@ attribute [blueprint "Group.Generators.isQuasiIsometry_smul_const"
     generating set. Work first with the word length $|\cdot|_S$.
 
     \emph{Lower bound.} The chain argument above, applied to a chain from $x_0$ to $g^{-1} h x_0$
-    with $n \le L\,d(x_0, g^{-1} h x_0) + C$ steps, writes $g^{-1} h$ as a product of $n$ elements
-    of $S$; each has word length at most $1$, so $|g^{-1} h|_S \le L\,d(g x_0, h x_0) + C$, using
-    $d(g x_0, h x_0) = d(x_0, g^{-1} h x_0)$.
+    with $n \le L\,d(x_0, g^{-1} h x_0) + C$ steps, writes $g^{-1} h$ as a product of $n + 1$
+    elements of $S$; each has word length at most $1$, so
+    $|g^{-1} h|_S \le L\,d(g x_0, h x_0) + C + 1$, using $d(g x_0, h x_0) = d(x_0, g^{-1} h x_0)$.
 
     \emph{Upper bound.} For $t \in S$ pick $b \in B$ with $t b \in B$; as $x_0 \in B$, $d(x_0, t
     x_0) \le d(x_0, t b) + d(t b, t x_0) \le 2 \diam B$. $S$ is closed under inverses, so
