@@ -8,6 +8,7 @@ public import Coarse.Geometry.Group.CayleySimpleGraph
 public import Coarse.Geometry.Group.DehnFunction
 public import Coarse.Geometry.Group.Hyperbolic
 public import Coarse.Geometry.Group.ReducedWord
+public import Coarse.Geometry.Group.SvarcMilnor
 public import Coarse.Geometry.Group.WordMetric
 public import Coarse.Geometry.Group.WordMetricBounds
 public import Coarse.Geometry.Group.WordProd
