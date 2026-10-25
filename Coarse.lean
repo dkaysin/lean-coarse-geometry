@@ -5,6 +5,7 @@ public import Coarse.Combinatorics.SimpleGraph.Paths
 public import Coarse.Data.List.Chain
 public import Coarse.Data.Rel
 public import Coarse.Geometry.Group.CayleySimpleGraph
+public import Coarse.Geometry.Group.DehnFunction
 public import Coarse.Geometry.Group.Hyperbolic
 public import Coarse.Geometry.Group.ReducedWord
 public import Coarse.Geometry.Group.WordMetric

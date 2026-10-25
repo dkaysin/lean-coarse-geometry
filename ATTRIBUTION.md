@@ -88,3 +88,11 @@ reading it, is not listed.
 - **Original authors**: Hang Lu Su, Valerio Proietti
 - **Copied**: the file, to `Coarse/GroupTheory/Presentation.lean`
 - **Changes**: imports the copy of `Generators`, so that it builds alongside the #44853 copies
+
+### mathlib4 #42005
+
+- **Source**: <https://github.com/leanprover-community/mathlib4/pull/42005>, commit `f11990d`
+- **Licence**: Apache 2.0
+- **Original authors**: Hang Lu Su, Justus Springer
+- **Copied**: `Mathlib/Geometry/Group/DehnFunction.lean`, to the same path under `Coarse/`
+- **Changes**: imports the copy of `Presentation` instead of Mathlib's
