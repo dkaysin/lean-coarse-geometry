@@ -29,7 +29,7 @@ attribute [blueprint "Group.fg_of_isCoboundedSMul"
 
     A finite generating set gives a generating family indexed by a finite type, so $G$ is finitely
     generated. -/)
-  (proofUses := ["Metric.IsCoarselyConnectedWith", "IsCoboundedSMul", "IsMetricallyProperSMul",
+  (proofUses := ["Metric.IsCoarselyConnected", "IsCoboundedSMul", "IsMetricallyProperSMul",
     "Group.Generators"])]
   Group.fg_of_isCoboundedSMul
 
@@ -62,7 +62,7 @@ attribute [blueprint "Group.Generators.isQuasiIsometry_smul_const"
     quasi-isometry. For another finite family, compose with the identity of $G$, which is a
     quasi-isometry by Lemma~\ref{Group.Generators.wordLength_le_mul_wordLength}
     (Lemma~\ref{Metric.IsQuasiIsometry.comp}). -/)
-  (proofUses := ["Metric.IsCoarselyGeodesicWith", "IsCoboundedSMul", "IsMetricallyProperSMul",
+  (proofUses := ["Metric.IsCoarselyGeodesic", "IsCoboundedSMul", "IsMetricallyProperSMul",
     "Group.Generators.groupNorm", "Group.Generators.dist_le_mul_wordLength",
     "Group.Generators.wordLength_le_mul_wordLength",
     "Metric.CoarseAntilipschitzWith.isQuasiIsometricEmbedding",

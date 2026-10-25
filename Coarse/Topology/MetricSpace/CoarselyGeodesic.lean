@@ -24,6 +24,7 @@ any two points are joined by an `r`-chain, and *`(r, L, C)`-coarsely geodesic* i
 * `Metric.IsCoarselyConnectedWith X r`: any two points of `X` are joined by an `r`-chain.
 * `Metric.IsCoarselyGeodesicWith X r L C`: any two points `x`, `y` of `X` are joined by an
   `r`-chain with at most `L * dist x y + C` steps.
+* `Metric.IsCoarselyConnected X`, `Metric.IsCoarselyGeodesic X`: the same for some constants.
 
 ## Main statements
 
@@ -64,6 +65,16 @@ joined by a chain with consecutive points at distance at most `r` and with at mo
 `L * dist x y + C` steps. -/
 def IsCoarselyGeodesicWith (X : Type*) [PseudoMetricSpace X] (r L C : ℝ≥0) : Prop :=
   ∀ x y : X, ∃ p : (ripsGraph X r).Walk x y, (p.length : ℝ) ≤ L * dist x y + C
+
+/-- A pseudometric space is **coarsely connected** if it is `r`-coarsely connected for some
+`r`. -/
+def IsCoarselyConnected (X : Type*) [PseudoMetricSpace X] : Prop :=
+  ∃ r, IsCoarselyConnectedWith X r
+
+/-- A pseudometric space is **coarsely geodesic** if it is `(r, L, C)`-coarsely geodesic for some
+constants `r`, `L` and `C`. -/
+def IsCoarselyGeodesic (X : Type*) [PseudoMetricSpace X] : Prop :=
+  ∃ r L C, IsCoarselyGeodesicWith X r L C
 
 end Metric
 

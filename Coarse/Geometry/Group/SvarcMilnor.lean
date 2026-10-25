@@ -27,8 +27,8 @@ every orbit map is a quasi-isometry for the word metric of any finite generating
 
 ## Implementation notes
 
-The space is assumed coarsely connected or coarsely geodesic (`Metric.IsCoarselyConnectedWith`,
-`Metric.IsCoarselyGeodesicWith`) in place of Löh's quasi-geodesic hypothesis. The count of steps
+The space is assumed coarsely connected or coarsely geodesic (`Metric.IsCoarselyConnected`,
+`Metric.IsCoarselyGeodesic`) in place of Löh's quasi-geodesic hypothesis. The count of steps
 cannot be dropped from the quasi-isometry statement: `ℤ` acting by translations on `ℝ` with the
 metric `√|x - y|` satisfies every other hypothesis, and its orbit maps are not quasi-isometries.
 
@@ -48,15 +48,13 @@ sup metric.
 
 @[expose] public section
 
-open scoped NNReal
-
 variable {G X : Type*} [Group G] [PseudoMetricSpace X] [Nonempty X] [MulAction G X]
   [IsIsometricSMul G X]
 
 /-- **Švarc–Milnor lemma**, finite generation: a group acting isometrically, metrically properly
 and coboundedly on a nonempty coarsely connected pseudometric space is finitely generated. -/
-theorem Group.fg_of_isCoboundedSMul {r : ℝ≥0}
-    (hX : Metric.IsCoarselyConnectedWith X r) (hprop : IsMetricallyProperSMul G X)
+theorem Group.fg_of_isCoboundedSMul
+    (hX : Metric.IsCoarselyConnected X) (hprop : IsMetricallyProperSMul G X)
     (hcob : IsCoboundedSMul G X) : Group.FG G :=
   sorry
 
@@ -65,7 +63,7 @@ coboundedly on a nonempty coarsely geodesic pseudometric space is quasi-isometri
 every orbit map `g ↦ g • x₀` is a quasi-isometry for the word metric of any finite generating
 family. -/
 theorem Group.Generators.isQuasiIsometry_smul_const {ι : Type*} [Finite ι] (P : Generators G ι)
-    {r L C : ℝ≥0} (hX : Metric.IsCoarselyGeodesicWith X r L C)
+    (hX : Metric.IsCoarselyGeodesic X)
     (hprop : IsMetricallyProperSMul G X) (hcob : IsCoboundedSMul G X) (x₀ : X) :
     letI := P.normedGroup
     Metric.IsQuasiIsometry fun g : G ↦ g • x₀ :=

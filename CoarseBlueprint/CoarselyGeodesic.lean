@@ -34,6 +34,18 @@ attribute [blueprint "Metric.IsCoarselyGeodesicWith"
     Harpe, Def.~3.B.1 (c), ``large-scale geodesic''). -/)]
   Metric.IsCoarselyGeodesicWith
 
+attribute [blueprint "Metric.IsCoarselyConnected"
+  (title := /-- Coarsely connected space, without constants -/)
+  (statement := /-- $X$ is \emph{coarsely connected} if it is $r$-coarsely connected for some
+    $r$. -/)]
+  Metric.IsCoarselyConnected
+
+attribute [blueprint "Metric.IsCoarselyGeodesic"
+  (title := /-- Coarsely geodesic space, without constants -/)
+  (statement := /-- $X$ is \emph{coarsely geodesic} if it is $(r, L, C)$-coarsely geodesic for some
+    $r, L, C$. -/)]
+  Metric.IsCoarselyGeodesic
+
 attribute [blueprint "NormedSpace.isCoarselyGeodesicWith" (latexEnv := "lemma")
   (statement := /-- A real normed space is $(r, 1/r, 1)$-coarsely geodesic for every $r > 0$. -/)
   (proof := /-- Take the points $x + \frac{k}{n}(y - x)$ for $k = 0, \dots, n$ and $n = \lceil \|y -
