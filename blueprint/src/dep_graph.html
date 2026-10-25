@@ -101,7 +101,7 @@
           aria-label="Find a node">
         <datalist id="nav-nodes"></datalist>
         <button id="nav-clear" title="Clear the highlight (Esc)">Clear</button>
-        <span id="nav-hint" class="hint">Scroll to zoom, drag to pan, click a node.</span>
+        <span id="nav-hint" class="hint">Scroll or pinch to zoom, drag to pan, click a node.</span>
       </div>
     </div>
 <div id="statements">
@@ -207,7 +207,7 @@ function highlight(id) {
 
 function clearHighlight() {
   d3.selectAll('.node, .edge').classed('dimmed', false).classed('focus', false);
-  $('#nav-hint').removeClass('error').text('Scroll to zoom, drag to pan, click a node.');
+  $('#nav-hint').removeClass('error').text('Scroll or pinch to zoom, drag to pan, click a node.');
 }
 
 function zoomBy(factor) {
@@ -245,9 +245,33 @@ function closeStatements() {
   $('.dep-modal-container').hide();
 }
 
+// Trackpad pinch arrives as a wheel event with ctrlKey set (Chrome, Firefox, Edge) or as
+// gesture events (Safari). The bundled d3 5 zoom ignores ctrl+wheel, so the browser would zoom
+// the page; let the graph take both, with the stronger pinch scaling that d3 6 uses.
+function enablePinchZoom() {
+  gv.zoomBehavior()
+    .filter(() => (!d3.event.ctrlKey || d3.event.type === 'wheel') && !d3.event.button)
+    .wheelDelta(() => -d3.event.deltaY
+      * (d3.event.deltaMode === 1 ? 0.05 : d3.event.deltaMode ? 1 : 0.002)
+      * (d3.event.ctrlKey ? 10 : 1));
+  const svg = gv.zoomSelection();
+  let startScale = 1;
+  svg.on('gesturestart.pinch', function () {
+      d3.event.preventDefault();
+      startScale = d3.zoomTransform(this).k;
+    })
+    .on('gesturechange.pinch', function () {
+      d3.event.preventDefault();
+      const p = d3.clientPoint(this, d3.event);
+      svg.call(gv.zoomBehavior().scaleTo, startScale * d3.event.scale, p);
+    })
+    .on('gestureend.pinch', () => d3.event.preventDefault());
+}
+
 function interactive() {
     // The zoom survives a re-render; start each layout from the whole graph.
     if (pendingFit) { pendingFit = false; gv.resetZoom(); }
+    enablePinchZoom();
     readEdges();
     const ids = [];
     d3.selectAll('.node').each(function () { ids.push(nodeTitle(d3.select(this))); });
