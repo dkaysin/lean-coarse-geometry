@@ -48,9 +48,10 @@ attribute [blueprint "Metric.IsCoarselyGeodesic"
 
 attribute [blueprint "NormedSpace.isCoarselyGeodesicWith" (latexEnv := "lemma")
   (statement := /-- A real normed space is $(r, 1/r, 1)$-coarsely geodesic for every $r > 0$. -/)
-  (proof := /-- Take the points $x + \frac{k}{n}(y - x)$ for $k = 0, \dots, n$ and $n = \lceil \|y -
-    x\| / r \rceil$. -/)
-  (proofUses := ["Metric.IsCoarselyGeodesicWith"])]
+  (proof := /-- Take the points $x + \frac{k}{m}(y - x)$ for $k = 0, \dots, m$ and $m = \max(\lceil
+    \|x - y\| / r \rceil, 1)$: consecutive points are at distance $\|x - y\| / m \le r$, and
+    $m \le \|x - y\| / r + 1$. Dropping repeated consecutive points leaves an $r$-chain with at
+    most $m$ steps. -/)]
   NormedSpace.isCoarselyGeodesicWith
 
 attribute [blueprint "Group.Generators.isCoarselyGeodesicWith" (latexEnv := "lemma")

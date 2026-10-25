@@ -70,6 +70,20 @@ def ripsGraph (X : Type*) [PseudoMetricSpace X] (r : ℝ≥0) : SimpleGraph X wh
   symm := ⟨fun _ _ h ↦ ⟨h.1.symm, (dist_comm (α := X) _ _).trans_le h.2⟩⟩
   loopless := ⟨fun _ h ↦ h.1 rfl⟩
 
+/-- A sequence of points in which the first `n` steps have length at most `r` gives an `r`-chain
+from its `0`-th to its `n`-th point with at most `n` steps. -/
+theorem exists_ripsGraph_walk_length_le {X : Type*} [PseudoMetricSpace X] {r : ℝ≥0} (f : ℕ → X)
+    (n : ℕ) (hf : ∀ k < n, dist (f k) (f (k + 1)) ≤ r) :
+    ∃ p : (ripsGraph X r).Walk (f 0) (f n), p.length ≤ n := by
+  induction n with
+  | zero => exact ⟨.nil, le_rfl⟩
+  | succ n ih =>
+    obtain ⟨p, hp⟩ := ih fun k hk ↦ hf k (by omega)
+    by_cases h : f n = f (n + 1)
+    · exact ⟨p.copy rfl h, by simp; omega⟩
+    · have hadj : (ripsGraph X r).Adj (f n) (f (n + 1)) := ⟨h, hf n n.lt_succ_self⟩
+      exact ⟨p.concat hadj, by simp; omega⟩
+
 /-- A pseudometric space is **`r`-coarsely connected** if any two points are joined by a chain
 of points in which consecutive points are at distance at most `r`. -/
 def IsCoarselyConnectedWith (X : Type*) [PseudoMetricSpace X] (r : ℝ≥0) : Prop :=
@@ -95,5 +109,28 @@ end Metric
 
 /-- A real normed space is `(r, r⁻¹, 1)`-coarsely geodesic for every `r > 0`. -/
 theorem NormedSpace.isCoarselyGeodesicWith {E : Type*} [SeminormedAddCommGroup E]
-    [NormedSpace ℝ E] {r : ℝ≥0} (hr : 0 < r) : Metric.IsCoarselyGeodesicWith E r r⁻¹ 1 :=
-  sorry
+    [NormedSpace ℝ E] {r : ℝ≥0} (hr : 0 < r) : Metric.IsCoarselyGeodesicWith E r r⁻¹ 1 := by
+  intro x y
+  -- Cut the segment from `x` to `y` into `m ≥ ‖x - y‖ / r` steps of equal length.
+  set m := max ⌈‖x - y‖ / r⌉₊ 1
+  have hm : (0 : ℝ) < m := Nat.cast_pos.2 (by omega)
+  have hstep (k : ℕ) (_ : k < m) :
+      dist (x + ((k : ℝ) / m) • (y - x)) (x + (((k + 1 : ℕ) : ℝ) / m) • (y - x)) ≤ r := by
+    have hlen : ‖x - y‖ ≤ m * r := by
+      rw [← div_le_iff₀ (by exact_mod_cast hr)]
+      exact (Nat.le_ceil _).trans (by exact_mod_cast le_max_left _ _)
+    rw [dist_add_left, dist_eq_norm, ← sub_smul, norm_smul, Real.norm_eq_abs, norm_sub_rev y x,
+      Nat.cast_succ, ← sub_div, abs_div, abs_of_pos hm, sub_add_cancel_left, abs_neg, abs_one,
+      div_mul_eq_mul_div, one_mul, div_le_iff₀ hm, mul_comm]
+    exact hlen
+  obtain ⟨p, hp⟩ := Metric.exists_ripsGraph_walk_length_le _ m hstep
+  refine ⟨p.copy (by simp) (by simp [hm.ne']), ?_⟩
+  -- The number of steps is `m ≤ ‖x - y‖ / r + 1`.
+  have hm' : (m : ℝ) ≤ ‖x - y‖ / r + 1 := by
+    rcases max_choice ⌈‖x - y‖ / r⌉₊ 1 with h | h <;> rw [show m = _ from h]
+    · exact (Nat.ceil_lt_add_one (by positivity)).le
+    · simp only [Nat.cast_one, le_add_iff_nonneg_left]
+      positivity
+  rw [SimpleGraph.Walk.length_copy, dist_eq_norm, NNReal.coe_one, NNReal.coe_inv,
+    inv_mul_eq_div]
+  exact (Nat.cast_le.2 hp).trans hm'
