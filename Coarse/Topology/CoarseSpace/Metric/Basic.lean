@@ -10,22 +10,22 @@ public import Mathlib.Topology.MetricSpace.Bounded
 public import Coarse.Topology.CoarseSpace.Basic
 
 /-!
-# Metric Coarse Spaces
+# Metric coarse spaces
 
 Every extended pseudo metric space carries a canonical coarse structure in which a relation `s` on
 `α × α` is controlled if and only if the distances of its pairs are uniformly bounded:
 `∃ r : ℝ≥0, ∀ p ∈ s, edist p.1 p.2 ≤ r`.
 
-## Main Results
+## Main statements
 
-* `PseudoEMetricSpace → CoarseSpace`: the canonical coarse structure on a pseudo-extended-metric
+* `PseudoEMetricSpace.toCoarseSpace`: the canonical coarse structure on a pseudo-extended-metric
   space, constructed via `CoarseSpace.ofControlled`.
-* `Metric.isControlled_iff_bounded_edist`: characterisation of controlled sets via `edist`.
-* `Metric.isControlled_iff_bounded_dist`: characterisation of controlled sets via `dist`.
+* `EMetric.isControlled_iff`: characterisation of controlled sets via `edist`.
+* `Metric.isControlled_iff`: characterisation of controlled sets via `dist`.
 * `isCoarselyBounded_iff_isBounded`: coarsely bounded sets coincide with `Bornology.IsBounded`
   sets in a pseudo-metric space.
 
-## Implementation Notes
+## Implementation notes
 
 The instance is built using `CoarseSpace.ofControlled` with the family
 `{ s | ∃ r : ℝ≥0, ∀ p ∈ s, edist p.1 p.2 ≤ r }` rather than going through the filter
@@ -42,10 +42,12 @@ coarse space, metric space, bounded, controlled set, bornology
 
 @[expose] public section
 
-open Set Filter Metric
+open Set Filter Metric CoarseSpace
 open scoped SetRel NNReal ENNReal
 
-instance (α : Type*) [PseudoEMetricSpace α] : CoarseSpace α :=
+/-- The coarse structure of a pseudo-extended-metric space: a relation is controlled if the
+distances of its pairs have a common finite bound. -/
+instance PseudoEMetricSpace.toCoarseSpace (α : Type*) [PseudoEMetricSpace α] : CoarseSpace α :=
   CoarseSpace.ofControlled
     { s | ∃ r : ℝ≥0, ∀ p ∈ s, edist p.1 p.2 ≤ r }
     (fun _ ⟨r, hr⟩ _ hs ↦ ⟨r, fun p hp ↦ hr p <| hs hp⟩)
@@ -57,15 +59,13 @@ instance (α : Type*) [PseudoEMetricSpace α] : CoarseSpace α :=
     (fun _ ⟨r, hr⟩ ↦ ⟨r + r, fun ⟨x, z⟩ ⟨y, hxy, hyz⟩ ↦
       (edist_triangle x y z).trans (add_le_add (hr _ hxy) (hr _ hyz))⟩)
 
-@[simp]
-theorem Metric.isControlled_iff_bounded_edist {α : Type*} [PseudoEMetricSpace α] {s : SetRel α α} :
+theorem EMetric.isControlled_iff {α : Type*} [PseudoEMetricSpace α] {s : SetRel α α} :
     IsControlled s ↔ ∃ r : ℝ≥0, ∀ p ∈ s, edist p.1 p.2 ≤ r :=
   isControlled_ofControlled_iff _
 
-@[simp]
-theorem Metric.isControlled_iff_bounded_dist {α : Type*} [PseudoMetricSpace α] {s : SetRel α α} :
+theorem Metric.isControlled_iff {α : Type*} [PseudoMetricSpace α] {s : SetRel α α} :
     IsControlled s ↔ ∃ r : ℝ, ∀ p ∈ s, dist p.1 p.2 ≤ r :=
-  isControlled_iff_bounded_edist.trans
+  EMetric.isControlled_iff.trans
     ⟨fun ⟨r, hr⟩ ↦ ⟨r, fun p hp ↦
       dist_edist (α := α) .. ▸ ENNReal.toReal_le_coe_of_le_coe <| hr p hp⟩,
      fun ⟨r, hr⟩ ↦ ⟨r.toNNReal, fun p hp ↦
@@ -76,22 +76,22 @@ section PseudoMetricSpace
 variable {α : Type*} [PseudoMetricSpace α]
 
 /-- A coarsely bounded set in a pseudo-metric space is metrically bounded. -/
-theorem IsCoarselyBounded.isBounded {s : Set α} (hs : IsCoarselyBounded s) :
+theorem CoarseSpace.IsCoarselyBounded.isBounded {s : Set α} (hs : IsCoarselyBounded s) :
     Bornology.IsBounded s :=
-    match s.eq_empty_or_nonempty with
-    | .inl h =>  (h ▸ Bornology.isBounded_empty)
-    | .inr ⟨x₀, hx₀⟩ =>
-      let ⟨r, hr⟩ := isControlled_iff_bounded_edist.mp hs
-      have (x : α) (hx : x ∈ s) : x ∈ closedBall x₀ ↑r :=
-        mem_closedBall.mpr <| dist_comm x x₀ ▸ dist_edist x₀ x ▸
-        ENNReal.toReal_le_coe_of_le_coe <| hr ⟨x₀, x⟩ ⟨hx₀, hx⟩
-      (isBounded_iff_subset_closedBall x₀).mpr ⟨r, fun x hx ↦ this x hx⟩
+  match s.eq_empty_or_nonempty with
+  | .inl h => h ▸ Bornology.isBounded_empty
+  | .inr ⟨x₀, hx₀⟩ =>
+    let ⟨r, hr⟩ := EMetric.isControlled_iff.mp hs
+    have (x : α) (hx : x ∈ s) : x ∈ closedBall x₀ ↑r :=
+      mem_closedBall.mpr <| dist_comm x x₀ ▸ dist_edist x₀ x ▸
+      ENNReal.toReal_le_coe_of_le_coe <| hr ⟨x₀, x⟩ ⟨hx₀, hx⟩
+    (isBounded_iff_subset_closedBall x₀).mpr ⟨r, fun x hx ↦ this x hx⟩
 
 /-- A metrically bounded set in a pseudo-metric space is coarsely bounded. -/
 theorem Bornology.IsBounded.isCoarselyBounded {s : Set α} (hs : Bornology.IsBounded s) :
     IsCoarselyBounded s :=
   let ⟨C, hC⟩ := isBounded_iff.mp hs
-  isControlled_iff_bounded_edist.mpr
+  EMetric.isControlled_iff.mpr
     ⟨C.toNNReal, fun _ ⟨hx, hy⟩ ↦ mod_cast (hC hx hy).trans (le_max_left C 0)⟩
 
 @[simp]

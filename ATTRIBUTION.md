@@ -26,10 +26,11 @@ reading it, is not listed.
   LICENSE file)
 - **Original authors**: Saif Ghobash
 - **Copied**: the whole repository's Lean code: `CoarseSpace/` to `Coarse/Topology/CoarseSpace/`,
-  `ForMathlib/` to `Coarse/`
+  `ForMathlib/` to `Coarse/` (with `Data/Rel.lean` at `Basic/Rel.lean`, as in current Mathlib)
 - **Changes**: ported from Mathlib `v4.26.0` to the pinned revision and to the module system;
-  `SetRel.ball` and its lemmas dropped (now in Mathlib) and `SetRel.mem_comp_comp` renamed
-  `SetRel.mem_comp_comp_of_mem` (Mathlib has a different lemma of that name)
+  names moved out of the root namespace (`Coarse` is `IsCoarseMap`, `IsClose` is
+  `IsCoarselyClose`, the set predicates are in `CoarseSpace`), API lemmas renamed or made public,
+  Mathlib style applied
 
 ### mathlib4 #44853
 

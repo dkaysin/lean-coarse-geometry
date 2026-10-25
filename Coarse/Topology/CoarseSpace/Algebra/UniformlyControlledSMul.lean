@@ -20,18 +20,18 @@ This file defines the typeclass `UniformlyControlledSMul Γ α`, which asserts t
 `⋃ γ, (Prod.map (γ • ·) (γ • ·)) ⁻¹' E` is again controlled. Equivalently, the group elements
 act as controlled maps with a uniform witness: a single cocontrolled set works for all `γ` at once.
 
-## Main Results
+## Main statements
 
 * `isControlled_iUnion_preimage_smul`: the union of pullbacks of a controlled set under all
   group translates is controlled.
-* `isControlled_iUnion_preimage_smul_iff:` Alternative characterization of
+* `isControlled_iUnion_preimage_smul_iff`: Alternative characterization of
   `UniformlyControlledSMul`: the action is uniformly controlled if and only
   if the union of pullbacks of any controlled set under all group translates
   is again controlled.
-
 * `isControlled_image_of_inv_mul_mem`: if `(f a)⁻¹ * f b` lies in a bounded set whenever
   `(a, b) ∈ E`, then the image `Prod.map f f '' E` is controlled.
-## Implementation Notes
+
+## Implementation notes
 
 In metric geometry, a group acting by isometries preserves controlled sets uniformly:
 if `dist a b ≤ r`, then `dist (g • a) (g • b) ≤ r` for *all* `g` simultaneously.
@@ -42,11 +42,11 @@ dropping the metric and replacing it with the filter-theoretic condition
 
 In terms of controlled sets, this is equivalently the statement that
 
-  ` (⋃ γ : Γ, (Prod.map (γ • ·) (γ • ·)) ⁻¹' s)`
+  `(⋃ γ : Γ, (Prod.map (γ • ·) (γ • ·)) ⁻¹' s)`
 
 is controlled when `s` is controlled. We work with preimages since it plays nicely with complements,
 but note that in the group case this is harmless since `(Prod.map (γ • ·) (γ • ·)) ⁻¹' s` is
-equivalent to  `(γ⁻¹, γ⁻¹) • s`, and groups are closed under inversion, so obtaining the translates
+equivalent to `(γ⁻¹, γ⁻¹) • s`, and groups are closed under inversion, so obtaining the translates
 `(γ, γ) • s` amounts to simply reindexing.
 
 In any case, the condition says that the union of all translates of `s` by elements of `Γ`
@@ -63,7 +63,7 @@ coarse space, uniformly controlled, isometric action, coarse geometry
 
 @[expose] public section
 
-open Set Function Filter
+open Set Function Filter CoarseSpace
 open scoped SetRel Coarse Pointwise
 
 variable {Γ G α β : Type*}
@@ -71,20 +71,22 @@ variable {Γ G α β : Type*}
 /-! ### Uniformly Controlled Scalar Multiplication -/
 
 /-- An action of `Γ` on a coarse space `α` is *uniformly controlled*
-if the cocontrolled filter is below by its lift along the intersection of all translates:
+if the cocontrolled filter is below its lift along the intersection of all translates:
 
 `𝓒 ≤ 𝓒.lift' (fun s ↦ ⋂ γ, Prod.map (γ • ·) (γ • ·) ⁻¹' s)`. -/
 class UniformlyControlledSMul (Γ : Type*) (α : Type*) [CoarseSpace α] [SMul Γ α] : Prop where
+  /-- The cocontrolled filter is below its lift along the intersection of all translates. -/
   uniformly_controlled_smul :
-  𝓒 ≤ (𝓒 : Filter (α × α)).lift' (fun s ↦ ⋂ γ : Γ, .map (γ • ·) (γ • ·) ⁻¹' s)
+    𝓒 ≤ (𝓒 : Filter (α × α)).lift' (fun s ↦ ⋂ γ : Γ, .map (γ • ·) (γ • ·) ⁻¹' s)
 
 /-- An action of `Γ` on a coarse space `α` is *uniformly controlled* if the cocontrolled filter
-is below by its lift along the intersection of all translates:
+is below its lift along the intersection of all translates:
 
 `𝓒 ≤ 𝓒.lift' (fun s ↦ ⋂ γ, Prod.map (γ +ᵥ ·) (γ +ᵥ ·) ⁻¹' s)`. -/
 class UniformlyControlledVAdd (Γ : Type*) (α : Type*) [CoarseSpace α] [VAdd Γ α] : Prop where
+  /-- The cocontrolled filter is below its lift along the intersection of all translates. -/
   uniformly_controlled_vadd :
-  𝓒 ≤ (𝓒 : Filter (α × α)).lift' (fun s ↦ ⋂ γ : Γ, .map (γ +ᵥ ·) (γ +ᵥ ·) ⁻¹' s)
+    𝓒 ≤ (𝓒 : Filter (α × α)).lift' (fun s ↦ ⋂ γ : Γ, .map (γ +ᵥ ·) (γ +ᵥ ·) ⁻¹' s)
 
 attribute [to_additive] UniformlyControlledSMul
 export UniformlyControlledSMul (uniformly_controlled_smul)
@@ -121,7 +123,7 @@ theorem isControlled_image_of_inv_mul_mem [Group G] [CoarseSpace G] [UniformlyCo
            (smul_eq_mul (α := G) ..) ▸ hdiff hab⟩⟩
 
 @[to_additive]
-instance (G : Type*) (α : Type*) [Group G] [PseudoEMetricSpace α] [SMul G α] [IsIsometricSMul G α] :
+instance (G : Type*) (α : Type*) [PseudoEMetricSpace α] [SMul G α] [IsIsometricSMul G α] :
     UniformlyControlledSMul G α where
   uniformly_controlled_smul := le_lift'.mpr fun _ ⟨r, hr⟩ ↦
     ⟨r, fun p hp ↦
