@@ -18,8 +18,8 @@ families, and the consequences for the word metric up to quasi-isometry.
 
 ## Main statements
 
-* `Group.Generators.lipschitzWith_of_dist_mul_le`: a map out of `G` that moves points by at
-  most `K` under right multiplication by a generator is `K`-Lipschitz for the word metric.
+* `Group.Generators.dist_le_mul_wordLength`: a map out of `G` that moves points by at most `K`
+  under right multiplication by a generator satisfies `dist (φ g) (φ h) ≤ K * |g⁻¹ * h|`.
 * `Group.Generators.wordLength_le_mul_wordLength`: the word length for `Q` is at most `M` times
   the word length for `P` if every generator of `P` has `Q`-length at most `M`.
 * `Group.Generators.finite_setOf_wordLength_le`: balls of the word metric of a finite generating
@@ -33,7 +33,8 @@ families, and the consequences for the word metric up to quasi-isometry.
 
 As in `Coarse.Geometry.Group.WordMetric`, the word metric is installed with
 `letI := P.normedGroup`. Statements with two word metrics on the same group pass the two
-instances explicitly.
+instances explicitly. The bounds are stated with `wordLength`, which puts no metric on the group,
+so that applying them to a second word metric on the same group needs only one instance.
 
 ## References
 
@@ -55,15 +56,14 @@ namespace Group.Generators
 variable {G ι κ : Type*} [Group G] (P : Generators G ι)
 
 /-- If right multiplication by a generator moves the values of `φ : G → X` by at most `K`, then
-`φ` is `K`-Lipschitz for the word metric of `P`: `dist (φ g) (φ h) ≤ K * |g⁻¹ * h|`.
+`dist (φ g) (φ h) ≤ K * |g⁻¹ * h|` for the word length of `P`: `φ` is `K`-Lipschitz for the word
+metric of `P`.
 
 [M. Bridson, A. Haefliger, *Metric Spaces of Non-Positive Curvature*][bridson1999],
 Lemma I.8.18, for orbit maps of isometric actions. -/
-theorem lipschitzWith_of_dist_mul_le {X : Type*} [PseudoMetricSpace X] {φ : G → X} {K : ℝ≥0}
-    (hφ : ∀ g i, dist (φ g) (φ (g * P.val i)) ≤ K) :
-    letI := P.normedGroup
-    LipschitzWith K φ := by
-  let := P.normedGroup
+theorem dist_le_mul_wordLength {X : Type*} [PseudoMetricSpace X] {φ : G → X} {K : ℝ≥0}
+    (hφ : ∀ g i, dist (φ g) (φ (g * P.val i)) ≤ K) (g h : G) :
+    dist (φ g) (φ h) ≤ K * P.wordLength (g⁻¹ * h) := by
   -- Adjacent vertices of the Cayley graph differ by right multiplication by a generator, in one
   -- direction or the other, so `φ` moves them by at most `K`.
   have hadj (g h : G) (hgh : P.cayleySimpleGraph.Adj g h) : dist (φ g) (φ h) ≤ K := by
@@ -71,10 +71,7 @@ theorem lipschitzWith_of_dist_mul_le {X : Type*} [PseudoMetricSpace X] {φ : G �
     · exact hφ g i
     · rw [dist_comm]
       exact hφ h i
-  refine .of_dist_le_mul fun g h ↦ ?_
-  -- The word metric is `dist g h = |g⁻¹ * h|`; walk in the Cayley graph along a geodesic word
-  -- for `g⁻¹ * h`.
-  change dist (φ g) (φ h) ≤ K * P.wordLength (g⁻¹ * h)
+  -- A geodesic word for `g⁻¹ * h` gives a walk in the Cayley graph from `g` to `h`.
   obtain ⟨l, hl, hlg⟩ := P.exists_isGeodesic (g⁻¹ * h)
   obtain ⟨p, hp⟩ := P.exists_walk_of_word g l
   calc dist (φ g) (φ h) = dist (φ g) (φ (g * P.wordProd l)) := by rw [hlg, mul_inv_cancel_left]

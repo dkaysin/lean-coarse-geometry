@@ -50,7 +50,7 @@ attribute [blueprint "Group.Generators.isQuasiIsometry_smul_const"
 
     \emph{Upper bound.} For $t \in S$ pick $b \in B$ with $t b \in B$; as $x_0 \in B$, $d(x_0, t
     x_0) \le d(x_0, t b) + d(t b, t x_0) \le 2 \diam B$. $S$ is closed under inverses, so
-    Lemma~\ref{Group.Generators.lipschitzWith_of_dist_mul_le}, applied to the orbit map, gives
+    Lemma~\ref{Group.Generators.dist_le_mul_wordLength}, applied to the orbit map, gives
     $d(g x_0, h x_0) \le 2 \diam B\,|g^{-1} h|_S$.
 
     \emph{Density.} If $y \in g s$, then $g^{-1} y$ and $x_0$ both lie in $s$, so $d(y, g x_0) \le
@@ -63,7 +63,7 @@ attribute [blueprint "Group.Generators.isQuasiIsometry_smul_const"
     quasi-isometry by Lemma~\ref{Group.Generators.wordLength_le_mul_wordLength}
     (Lemma~\ref{Metric.IsQuasiIsometry.comp}). -/)
   (proofUses := ["Metric.IsCoarselyGeodesic", "IsCoboundedSMul", "IsMetricallyProperSMul",
-    "Group.Generators.groupNorm", "Group.Generators.lipschitzWith_of_dist_mul_le",
+    "Group.Generators.groupNorm", "Group.Generators.dist_le_mul_wordLength",
     "Group.Generators.wordLength_le_mul_wordLength",
     "Metric.CoarseAntilipschitzWith.isQuasiIsometricEmbedding",
     "Metric.QuasiDenseRange", "Metric.isQuasiIsometry_iff_quasiDenseRange",
