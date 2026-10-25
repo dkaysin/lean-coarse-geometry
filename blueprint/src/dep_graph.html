@@ -12,7 +12,7 @@
 {#- Dependency graph page. A copy of plastexdepgraph 0.0.5's default template
     (templates/dep_graph.html), used through `tpl=dep_graph.html` in web.tex, with navigation
     added: zoom and fit buttons, a layout switch, node search, highlighting of a node's
-    dependencies and dependents, and keyboard shortcuts. -#}
+    dependencies and dependents, keyboard shortcuts, and the node's label on its card. -#}
 <!DOCTYPE html>
 <html>
 <head>
@@ -69,6 +69,8 @@
   div.dep-modal-container { z-index: 20; }
   /* Let the list of a node's Lean declarations extend past the bottom of the modal. */
   div.dep-modal-content { overflow: visible; }
+  /* The node's label, selected whole by one click so that it is easy to copy. */
+  code.node-label { float: right; color: #666; font-size: 85%; user-select: all; cursor: text; }
 </style>
 </head>
 
@@ -124,6 +126,7 @@
     </div>
     <div class="thm_thmcontent">{{ thm }}</div>
 
+    <code class="node-label" title="Blueprint label">{{ thm.id }}</code>
     <a class="latex_link" href="{{ thm.url }}">LaTeX</a>
     {% for extra in extra_modal_links %}
     {% include extra %}
