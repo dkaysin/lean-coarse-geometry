@@ -144,6 +144,33 @@ structure IsQuasiIsometry (f : α → β) : Prop where
 def QuasiIsometric (α β : Type*) [PseudoMetricSpace α] [PseudoMetricSpace β] : Prop :=
   ∃ f : α → β, IsQuasiIsometry f
 
+/-- The composition of two quasi-isometries is a quasi-isometry.
+
+[C. Löh, *Geometric Group Theory*][loeh2017], Proposition 5.1.11 (5). -/
+theorem IsQuasiIsometry.comp {γ : Type*} [PseudoMetricSpace γ] {g : β → γ}
+    (hg : IsQuasiIsometry g) (hf : IsQuasiIsometry f) : IsQuasiIsometry (g ∘ f) :=
+  sorry
+
+namespace QuasiIsometric
+
+/-- Every pseudometric space is quasi-isometric to itself. -/
+@[refl]
+theorem refl (α : Type*) [PseudoMetricSpace α] : QuasiIsometric α α :=
+  sorry
+
+/-- Being quasi-isometric is symmetric. -/
+@[symm]
+theorem symm (h : QuasiIsometric α β) : QuasiIsometric β α :=
+  sorry
+
+/-- Being quasi-isometric is transitive. -/
+@[trans]
+theorem trans {γ : Type*} [PseudoMetricSpace γ] (h₁ : QuasiIsometric α β)
+    (h₂ : QuasiIsometric β γ) : QuasiIsometric α γ :=
+  sorry
+
+end QuasiIsometric
+
 /-! ### Quasi-dense range -/
 
 /-- A map `f` into a pseudometric space has **quasi-dense range** if there is a constant `c` such

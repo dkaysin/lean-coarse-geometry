@@ -83,3 +83,34 @@ attribute [blueprint "Metric.isQuasiIsometry_iff_quasiDenseRange"
     gives $d(g f x, x) \le c\,d(f g f x, f x) + c b \le c D + c b$, so $g \circ f$ has finite
     distance from the identity. -/)]
   Metric.isQuasiIsometry_iff_quasiDenseRange
+
+attribute [blueprint "Metric.IsQuasiIsometry.comp" (latexEnv := "lemma")
+  (title := /-- L\"oh, Prop.~5.1.11 (5) -/)
+  (statement := /-- The composition of two quasi-isometries is a quasi-isometry. -/)
+  (proof := /-- Let $f \colon X \to Y$ and $g \colon Y \to Z$ have quasi-inverses $f'$ and $g'$. The
+    composite $g \circ f$ is a quasi-isometric embedding (L\"oh, Prop.~5.1.11 (4)): if $f$ is $(L_1,
+    C_1)$- and $g$ is $(L_2, C_2)$-coarse Lipschitz, then $g \circ f$ is $(L_2 L_1, L_2 C_1 +
+    C_2)$-coarse Lipschitz, the antilipschitz bounds compose in the same way, and
+    Lemma~\ref{Metric.IsQuasiIsometricEmbedding.of_coarseLipschitzWith_of_coarseAntilipschitzWith}
+    merges the constants. The same argument makes $f' \circ g'$ a quasi-isometric embedding, and it
+    is a quasi-inverse of $g \circ f$. Finite distance is preserved by precomposition with any map
+    (with the same constant) and by postcomposition with an $(L, C)$-coarse Lipschitz map (distance
+    $D$ becomes $L D + C$; L\"oh, Prop.~5.1.11 (3)). So $f' g' g f$ is at finite distance from $f'
+    f$, hence, by the triangle inequality, from the identity; and symmetrically for $g f f' g'$. -/)
+  (proofUses := ["Metric.IsQuasiIsometry",
+    "Metric.IsQuasiIsometricEmbedding.of_coarseLipschitzWith_of_coarseAntilipschitzWith"])]
+  Metric.IsQuasiIsometry.comp
+
+attribute [blueprint "Metric.QuasiIsometric.refl"
+  (title := /-- cf.\ L\"oh, Rem.~5.1.12 -/)
+  (statement := /-- Being quasi-isometric is an equivalence relation on pseudometric spaces. -/)
+  (proof := /-- Reflexivity: the identity, and more generally every isometric bijection, is a
+    quasi-isometry (L\"oh, Ex.~5.1.7), since an isometric embedding is a $(1, 0)$-quasi-isometric
+    embedding and the inverse is a quasi-inverse with both composites equal to the identity.
+    Symmetry is immediate from the definition (the quasi-inverse is a quasi-isometry). Transitivity
+    is Lemma~\ref{Metric.IsQuasiIsometry.comp}. L\"oh does not state the theorem; it follows from
+    her Remark 5.1.12, where quasi-isometries are the isomorphisms of the category of metric spaces
+    and quasi-isometric embeddings up to finite distance. -/)
+  (proofUses := ["Metric.QuasiIsometric", "Metric.IsQuasiIsometricEmbeddingWith",
+    "Metric.IsQuasiIsometry.comp"])]
+  Metric.QuasiIsometric.refl Metric.QuasiIsometric.symm Metric.QuasiIsometric.trans
