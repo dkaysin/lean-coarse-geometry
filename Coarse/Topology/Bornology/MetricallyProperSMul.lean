@@ -71,8 +71,10 @@ have compact closures. -/
 proper. -/]
 theorem isMetricallyProperSMul_of_properlyDiscontinuousSMul {G X : Type*} [SMul G X]
     [PseudoMetricSpace X] [ProperSpace X] [ProperlyDiscontinuousSMul G X] :
-    IsMetricallyProperSMul G X :=
-  sorry
+    IsMetricallyProperSMul G X := fun _s hs ↦
+  (ProperlyDiscontinuousSMul.finite_disjoint_inter_image hs.isCompact_closure
+    hs.isCompact_closure).subset fun _g ⟨x, hx, hx'⟩ ↦
+      ⟨x, Set.smul_set_mono subset_closure hx, subset_closure hx'⟩
 
 /-- Every action of a finite group is metrically proper. -/
 @[to_additive /-- Every additive action of a finite group is metrically proper. -/]

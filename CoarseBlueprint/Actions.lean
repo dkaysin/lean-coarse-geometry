@@ -28,9 +28,8 @@ attribute [blueprint "IsCoboundedSMul"
 attribute [blueprint "isMetricallyProperSMul_of_properlyDiscontinuousSMul" (latexEnv := "lemma")
   (statement := /-- A properly discontinuous action on a proper metric space is metrically
     proper. -/)
-  (proof := /-- A bounded set lies in a closed ball, which is compact; apply the finiteness in the
-    definition of a properly discontinuous action. -/)
-  (proofUses := ["IsMetricallyProperSMul"])]
+  (proof := /-- A bounded set lies in its closure, which is compact since the space is proper;
+    apply the finiteness in the definition of a properly discontinuous action. -/)]
   isMetricallyProperSMul_of_properlyDiscontinuousSMul
 
 attribute [blueprint "isMetricallyProperSMul_of_finite" (latexEnv := "lemma")
