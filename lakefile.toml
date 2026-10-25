@@ -9,6 +9,13 @@ autoImplicit = false
 weak.linter.mathlibStandardSet = true
 maxSynthPendingDepth = 3
 
+# Blueprint extraction; used only by the `CoarseBlueprint` library.
+[[require]]
+name = "LeanArchitect"
+git = "https://github.com/hanwenzhu/LeanArchitect.git"
+rev = "v4.36.0-rc1"
+
+# Last, so that Mathlib's versions of shared dependencies (batteries) take precedence.
 [[require]]
 name = "mathlib"
 scope = "leanprover-community"
