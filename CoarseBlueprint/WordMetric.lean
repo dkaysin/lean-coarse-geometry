@@ -5,6 +5,7 @@ Authors: Dmitry Kaysin
 -/
 import Architect
 import Coarse.Geometry.Group.CayleySimpleGraph
+import Coarse.Geometry.Group.WithWordMetric
 import Coarse.Geometry.Group.WordMetric
 import Coarse.Geometry.Group.WordMetricBounds
 
@@ -13,7 +14,8 @@ import Coarse.Geometry.Group.WordMetricBounds
 
 Blueprint nodes for `Coarse/GroupTheory/Generators.lean` and
 `Coarse/Geometry/Group/{WordMetric, CayleySimpleGraph}.lean` (milestone M3; copies of open Mathlib
-pull requests), and for `Coarse/Geometry/Group/WordMetricBounds.lean` (milestone M3).
+pull requests), and for `Coarse/Geometry/Group/{WithWordMetric, WordMetricBounds}.lean`
+(milestone M3).
 -/
 
 attribute [blueprint "Group.Generators"
@@ -33,6 +35,13 @@ attribute [blueprint "Group.Generators.groupNorm"
   (statement := /-- The word length is a group norm; the \emph{word metric} is
     $d_P(g, h) = |g^{-1} h|_P$ (L\"oh, Def.~5.2.3). -/)]
   Group.Generators.groupNorm Group.Generators.normedGroup
+
+attribute [blueprint "Group.Generators.WithWordMetric"
+  (title := /-- Group with a word metric -/)
+  (statement := /-- $(G, d_P)$ is a copy of $G$ carrying the word metric of $P$. The copies for
+    different generating families are different spaces, and the identity of $G$ is the map
+    $\mathrm{congr}_{P,Q} \colon (G, d_P) \to (G, d_Q)$. -/)]
+  Group.Generators.WithWordMetric Group.Generators.WithWordMetric.congr
 
 attribute [blueprint "Group.Generators.cayleySimpleGraph"
   (title := /-- Cayley graph -/)
