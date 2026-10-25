@@ -62,12 +62,12 @@ def HasSlimTrianglesWith (X : Type*) [PseudoMetricSpace X] (δ : ℝ) : Prop :=
 /-- A geodesic space with `δ`-slim triangles satisfies the four-point condition with constant
 `3 * δ`. -/
 theorem HasSlimTrianglesWith.isHyperbolicWith (hX : IsGeodesicSpace X)
-    (h : HasSlimTrianglesWith X δ) : IsHyperbolicWith X (3 * δ) :=
+    (h : HasSlimTrianglesWith X δ) : IsHyperbolicWith X (3 * δ) := by
   sorry
 
 /-- A space satisfying the four-point condition with constant `δ` has `3 * δ`-slim triangles. -/
 theorem IsHyperbolicWith.hasSlimTrianglesWith (h : IsHyperbolicWith X δ) :
-    HasSlimTrianglesWith X (3 * δ) :=
+    HasSlimTrianglesWith X (3 * δ) := by
   sorry
 
 /-- A geodesic space is hyperbolic if and only if it has `δ`-slim triangles for some `δ`.
@@ -76,7 +76,7 @@ theorem IsHyperbolicWith.hasSlimTrianglesWith (h : IsHyperbolicWith X δ) :
 [M. Bridson, A. Haefliger, *Metric Spaces of Non-Positive Curvature*][bridson1999],
 Proposition III.H.1.22. -/
 theorem isHyperbolic_iff_exists_hasSlimTrianglesWith (hX : IsGeodesicSpace X) :
-    IsHyperbolic X ↔ ∃ δ, HasSlimTrianglesWith X δ :=
+    IsHyperbolic X ↔ ∃ δ, HasSlimTrianglesWith X δ := by
   sorry
 
 end Metric

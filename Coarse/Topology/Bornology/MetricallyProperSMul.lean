@@ -79,14 +79,14 @@ theorem isMetricallyProperSMul_of_properlyDiscontinuousSMul {G X : Type*} [SMul 
 /-- Every action of a finite group is metrically proper. -/
 @[to_additive /-- Every additive action of a finite group is metrically proper. -/]
 theorem isMetricallyProperSMul_of_finite {G X : Type*} [Finite G] [SMul G X] [Bornology X] :
-    IsMetricallyProperSMul G X :=
+    IsMetricallyProperSMul G X := by
   sorry
 
 /-- The restriction of a metrically proper action to a subgroup is metrically proper. -/
 @[to_additive /-- The restriction of a metrically proper additive action to a subgroup is
 metrically proper. -/]
 theorem IsMetricallyProperSMul.subgroup {G X : Type*} [Group G] [MulAction G X] [Bornology X]
-    (h : IsMetricallyProperSMul G X) (H : Subgroup G) : IsMetricallyProperSMul H X :=
+    (h : IsMetricallyProperSMul G X) (H : Subgroup G) : IsMetricallyProperSMul H X := by
   sorry
 
 /-- If `G` acts isometrically and coboundedly, then so does every subgroup of finite index. -/
@@ -94,5 +94,5 @@ theorem IsMetricallyProperSMul.subgroup {G X : Type*} [Group G] [MulAction G X] 
 subgroup of finite index. -/]
 theorem IsCoboundedSMul.of_finiteIndex {G X : Type*} [Group G] [PseudoMetricSpace X]
     [MulAction G X] [IsIsometricSMul G X] (h : IsCoboundedSMul G X) (H : Subgroup G)
-    [H.FiniteIndex] : IsCoboundedSMul H X :=
+    [H.FiniteIndex] : IsCoboundedSMul H X := by
   sorry

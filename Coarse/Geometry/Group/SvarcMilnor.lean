@@ -54,7 +54,7 @@ variable {G X : Type*} [Group G] [PseudoMetricSpace X] [Nonempty X] [MulAction G
 and coboundedly on a nonempty coarsely connected pseudometric space is finitely generated. -/
 theorem Group.fg_of_isCoboundedSMul
     (hX : Metric.IsCoarselyConnected X) (hprop : IsMetricallyProperSMul G X)
-    (hcob : IsCoboundedSMul G X) : Group.FG G :=
+    (hcob : IsCoboundedSMul G X) : Group.FG G := by
   sorry
 
 /-- **Švarc–Milnor lemma**, quasi-isometry: a group acting isometrically, metrically properly and
@@ -64,7 +64,7 @@ family. -/
 theorem Group.Generators.isQuasiIsometry_smul_const {ι : Type*} [Finite ι] (P : Generators G ι)
     (hX : Metric.IsCoarselyGeodesic X)
     (hprop : IsMetricallyProperSMul G X) (hcob : IsCoboundedSMul G X) (x₀ : X) :
-    Metric.IsQuasiIsometry fun g : P.WithWordMetric ↦ g.ofWordMetric • x₀ :=
+    Metric.IsQuasiIsometry fun g : P.WithWordMetric ↦ g.ofWordMetric • x₀ := by
   sorry
 
 /-- A subgroup of finite index of a group with a finite generating family is quasi-isometric to
@@ -73,7 +73,7 @@ families. -/
 theorem Subgroup.isQuasiIsometry_subtype (H : Subgroup G) [H.FiniteIndex] {ι κ : Type*}
     [Finite ι] [Finite κ] (P : Group.Generators G ι) (Q : Group.Generators H κ) :
     Metric.IsQuasiIsometry fun h : Q.WithWordMetric ↦
-      Group.Generators.WithWordMetric.toWordMetric P (h.ofWordMetric : G) :=
+      Group.Generators.WithWordMetric.toWordMetric P (h.ofWordMetric : G) := by
   sorry
 
 /-- `ℤⁿ` with the word metric of a finite generating family is quasi-isometric to `ℝⁿ`.
@@ -81,5 +81,5 @@ theorem Subgroup.isQuasiIsometry_subtype (H : Subgroup G) [H.FiniteIndex] {ι κ
 [C. Löh, *Geometric Group Theory*][loeh2017], Example 5.2.8. -/
 theorem Int.quasiIsometric_pi_euclideanSpace {n : ℕ} {ι : Type*} [Finite ι]
     (P : AddGroup.Generators (Fin n → ℤ) ι) :
-    Metric.QuasiIsometric P.WithWordMetric (EuclideanSpace ℝ (Fin n)) :=
+    Metric.QuasiIsometric P.WithWordMetric (EuclideanSpace ℝ (Fin n)) := by
   sorry

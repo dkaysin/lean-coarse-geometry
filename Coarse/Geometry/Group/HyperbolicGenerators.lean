@@ -33,7 +33,7 @@ variable {G ι : Type*} [Group G]
 /-- A group is hyperbolic if and only if its word metric for a given finite generating family
 `P` is `δ`-hyperbolic for some `δ`. -/
 theorem isHyperbolic_iff [Finite ι] (P : Generators G ι) :
-    Group.IsHyperbolic G ↔ ∃ δ, P.IsHyperbolicWith δ :=
+    Group.IsHyperbolic G ↔ ∃ δ, P.IsHyperbolicWith δ := by
   sorry
 
 end Group.Generators
