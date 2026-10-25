@@ -39,6 +39,7 @@ with quasi-dense range.
 
 ## Main statements
 
+* `Metric.IsQuasiIsometry.comp`: the composition of two quasi-isometries is a quasi-isometry.
 * `Metric.isQuasiIsometry_iff_quasiDenseRange`: a map is a quasi-isometry if and only if it is a
   quasi-isometric embedding with quasi-dense range.
 
@@ -117,6 +118,27 @@ theorem CoarseAntilipschitzWith.isQuasiIsometricEmbedding
   · exact hf'.mono (by simp) (by simp)
   · exact hf.mono (by simp) (hC₂)
 
+/-- The composition of two quasi-isometric embeddings is a quasi-isometric embedding.
+
+[C. Löh, *Geometric Group Theory*][loeh2017], Proposition 5.1.11 (4). -/
+theorem IsQuasiIsometricEmbedding.comp {γ : Type*} [PseudoMetricSpace γ] {g : β → γ}
+    (hg : IsQuasiIsometricEmbedding g) (hf : IsQuasiIsometricEmbedding f) :
+    IsQuasiIsometricEmbedding (g ∘ f) :=
+  let ⟨_, _, hg⟩ := hg
+  let ⟨_, _, hf⟩ := hf
+  (hg.coarseAntilipschitzWith.comp hf.coarseAntilipschitzWith).isQuasiIsometricEmbedding
+    (hg.coarseLipschitzWith.comp hf.coarseLipschitzWith)
+
+/-- Postcomposition with an `(L, C)`-coarse Lipschitz map preserves finite distance: distance `D`
+becomes `L * D + C`.
+
+[C. Löh, *Geometric Group Theory*][loeh2017], Proposition 5.1.11 (3). -/
+theorem HasFiniteDist.comp_left {ι γ : Type*} [PseudoMetricSpace γ] {g : β → γ} {k k' : ι → β}
+    (h : HasFiniteDist k k') (hg : CoarseLipschitzWith L₁ C₁ g) :
+    HasFiniteDist (g ∘ k) (g ∘ k') :=
+  let ⟨D, hD⟩ := h
+  ⟨L₁ * D + C₁, fun x ↦ by grw [Function.comp_apply, Function.comp_apply, hg (k x), hD]; simp⟩
+
 /-! ### Quasi-isometries -/
 
 /-- A map `f` between pseudometric spaces is a **quasi-isometry** if it is a quasi-isometric
@@ -139,8 +161,16 @@ def QuasiIsometric (α β : Type*) [PseudoMetricSpace α] [PseudoMetricSpace β]
 
 [C. Löh, *Geometric Group Theory*][loeh2017], Proposition 5.1.11 (5). -/
 theorem IsQuasiIsometry.comp {γ : Type*} [PseudoMetricSpace γ] {g : β → γ}
-    (hg : IsQuasiIsometry g) (hf : IsQuasiIsometry f) : IsQuasiIsometry (g ∘ f) :=
-  sorry
+    (hg : IsQuasiIsometry g) (hf : IsQuasiIsometry f) : IsQuasiIsometry (g ∘ f) := by
+  obtain ⟨hg, g', hg', hgg, hgg'⟩ := hg
+  obtain ⟨hf, f', hf', hff, hff'⟩ := hf
+  refine ⟨hg.comp hf, f' ∘ g', hf'.comp hg', ?_, ?_⟩
+  · -- `f' ∘ g' ∘ g ∘ f` is near `f' ∘ f`, which is near the identity.
+    obtain ⟨_, _, hf'⟩ := hf'
+    exact ((hgg.comp_right f).comp_left hf'.coarseLipschitzWith).trans hff
+  · -- `g ∘ f ∘ f' ∘ g'` is near `g ∘ g'`, which is near the identity.
+    obtain ⟨_, _, hg⟩ := hg
+    exact ((hff'.comp_right g').comp_left hg.coarseLipschitzWith).trans hgg'
 
 namespace QuasiIsometric
 

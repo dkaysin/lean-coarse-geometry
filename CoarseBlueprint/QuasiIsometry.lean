@@ -95,9 +95,8 @@ attribute [blueprint "Metric.IsQuasiIsometry.comp" (latexEnv := "lemma")
     is a quasi-inverse of $g \circ f$. Finite distance is preserved by precomposition with any map
     (with the same constant) and by postcomposition with an $(L, C)$-coarse Lipschitz map (distance
     $D$ becomes $L D + C$; L\"oh, Prop.~5.1.11 (3)). So $f' g' g f$ is at finite distance from $f'
-    f$, hence, by the triangle inequality, from the identity; and symmetrically for $g f f' g'$. -/)
-  (proofUses := ["Metric.IsQuasiIsometry",
-    "Metric.CoarseAntilipschitzWith.isQuasiIsometricEmbedding"])]
+    f$, hence, by the triangle inequality, from the identity; and symmetrically for $g f f' g'$.
+    -/)]
   Metric.IsQuasiIsometry.comp
 
 attribute [blueprint "Metric.QuasiIsometric.refl"

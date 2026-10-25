@@ -73,6 +73,12 @@ protected theorem trans (hfg : HasFiniteDist f g) (hgk : HasFiniteDist g k) :
   let ⟨C₂, h₂⟩ := hgk
   ⟨C₁ + C₂, fun x ↦ (dist_triangle (f x) (g x) (k x)).trans (add_le_add (h₁ x) (h₂ x))⟩
 
+/-- Precomposition with any map preserves finite distance, with the same constant. -/
+theorem comp_right {γ : Type*} (h : HasFiniteDist f g) (k : γ → α) :
+    HasFiniteDist (f ∘ k) (g ∘ k) :=
+  let ⟨C, hC⟩ := h
+  ⟨C, fun x ↦ hC (k x)⟩
+
 end HasFiniteDist
 
 end Metric
