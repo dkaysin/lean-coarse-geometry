@@ -34,7 +34,7 @@ variable [CompactSpace (orbitRel.Quotient G X)]
 `orbitRel.Quotient G X` is compact, then the distance from a point to
 `orbit G x₀` is bounded above, where `x₀` is a given basepoint. -/
 @[to_additive]
-theorem bddAbove_range_infDist_mulAction_orbit (x₀ : X) :
+private theorem bddAbove_range_infDist_mulAction_orbit (x₀ : X) :
     BddAbove <| range <| fun x ↦ infDist x (orbit G x₀) :=
   -- infDist to the orbit is constant on orbits, so descends to quotient
   have orbit_eq : ∀ a b : X, orbitRel G X a b →
@@ -66,7 +66,7 @@ the supremum of distances to the orbit. -/
 /-- For any point `x` in a pseudo metric space with a cocompact additive group action, there
 exists a group element `g` such that the distance from `x` to `g +ᵥ x₀` is strictly less than
 one plus the supremum of distances to the orbit. -/]
-lemma dist_smul_lt_one_add_sSup_range_infDist_orbit (x x₀ : X) :
+private lemma dist_smul_lt_one_add_sSup_range_infDist_orbit (x x₀ : X) :
     ∃ g : G, dist x (g • x₀) <
       1 + sSup (range fun x ↦ infDist x (orbit G x₀)) :=
   let R := sSup (range fun x ↦ infDist x (orbit G x₀))
