@@ -104,11 +104,15 @@ $3\delta$ in both directions.
 \begin{proof}
   Not planned yet (design decision D18). Corollary~\ref{cor:change-of-generators} alone does not
   suffice: the four-point condition is not a quasi-isometry invariant of coarsely geodesic spaces
-  (the graph of $|x|$ in $\R^2$ is bilipschitz to $\R$ and not hyperbolic). Route of L\"oh
-  (Cor.~7.2.13) and Bridson--Haefliger: pass from the word metric to the geometric realisation
-  of the Cayley graph, a geodesic space in which it is $\frac12$-dense, with a larger constant;
-  switch to slim triangles by Theorem~\ref{thm:hyperbolic-iff-slim}; and carry them along the
-  quasi-isometry of Corollary~\ref{cor:change-of-generators} by Bridson--Haefliger
-  Thm.~III.H.1.9, which rests on the stability of quasi-geodesics (Thm.~III.H.1.7; L\"oh
-  Thm.~7.2.11).
+  (the graph of $|x|$ in $\R^2$ is bilipschitz to $\R$ and not hyperbolic). L\"oh defines
+  hyperbolic groups by quasi-hyperbolicity of the Cayley graph (slim quasi-geodesic triangles,
+  Definition 7.3.1), which is a quasi-isometry invariant directly: quasi-geodesic triangles
+  can be pushed forward and pulled back along quasi-isometric embeddings (Proposition 7.2.9).
+  For the four-point condition: pass from the word metric to the geometric realisation of the
+  Cayley graph, a geodesic space in which it is $\frac12$-dense, with a larger constant; switch
+  to slim triangles by Theorem~\ref{thm:hyperbolic-iff-slim}; and carry them along the
+  quasi-isometry of Corollary~\ref{cor:change-of-generators}. That last step is L\"oh's
+  Corollary 7.2.13 (from Proposition 7.2.9 and Theorem 7.2.10, whose proof uses the stability of
+  quasi-geodesics, Theorem 7.2.11), or Bridson--Haefliger Thm.~III.H.1.9 (from
+  Thm.~III.H.1.7).
 \end{proof}

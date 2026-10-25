@@ -79,8 +79,9 @@ attribute [blueprint "lem:finite-dist-trans" (latexEnv := "lemma")
 attribute [blueprint "def:qie-with"
   (title := /-- Quasi-isometric embedding with constants -/)
   (statement := /-- A map $f$ is a \emph{$(c, b)$-quasi-isometric embedding} if it is
-    $(c, b)$-coarse Lipschitz and $(c, c b)$-coarse antilipschitz, i.e.
-    $c^{-1} d(x, y) - b \le d(f x, f y) \le c\,d(x, y) + b$ (L\"oh, Def.~5.1.6). -/)]
+    $(c, b)$-coarse Lipschitz and $(c, c b)$-coarse antilipschitz; for $c > 0$ this says
+    $c^{-1} d(x, y) - b \le d(f x, f y) \le c\,d(x, y) + b$, as in L\"oh, Def.~5.1.6, where
+    $c, b > 0$. -/)]
   Metric.IsQuasiIsometricEmbeddingWith
 
 attribute [blueprint "def:qie"
