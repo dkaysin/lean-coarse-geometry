@@ -94,19 +94,20 @@ attribute [blueprint "Group.Generators.isHyperbolic_iff"
     is $\delta$-hyperbolic for the word metric of $P$ for some $\delta$: whether $G$ is hyperbolic
     does not depend on the family. -/)
   (proof := /-- Not planned yet (design decision D18).
-    Corollary~\ref{Group.Generators.isQuasiIsometry_id} alone does not suffice: the four-point
-    condition is not a quasi-isometry invariant of coarsely geodesic spaces (the graph of $|x|$ in
-    $\R^2$ is bilipschitz to $\R$ and not hyperbolic). L\"oh defines hyperbolic groups by
-    quasi-hyperbolicity of the Cayley graph (slim quasi-geodesic triangles, Definition 7.3.1), which
-    is a quasi-isometry invariant directly: quasi-geodesic triangles can be pushed forward and
-    pulled back along quasi-isometric embeddings (Proposition 7.2.9). For the four-point condition:
-    pass from the word metric to the geometric realisation of the Cayley graph, a geodesic space in
-    which it is $\frac12$-dense, with a larger constant; switch to slim triangles by
-    Theorem~\ref{Metric.isHyperbolic_iff_exists_hasSlimTrianglesWith}; and carry them along the
-    quasi-isometry of Corollary~\ref{Group.Generators.isQuasiIsometry_id}. That last step is L\"oh's
-    Corollary 7.2.13 (from Proposition 7.2.9 and Theorem 7.2.10, whose proof uses the stability of
-    quasi-geodesics, Theorem 7.2.11), or Bridson--Haefliger Thm.~III.H.1.9 (from
-    Thm.~III.H.1.7). -/)
-  (proofUses := ["Group.Generators.IsHyperbolicWith", "Group.Generators.isQuasiIsometry_id",
+    Corollary~\ref{Group.Generators.WithWordMetric.isQuasiIsometry_congr} alone does not suffice:
+    the four-point condition is not a quasi-isometry invariant of coarsely geodesic spaces (the
+    graph of $|x|$ in $\R^2$ is bilipschitz to $\R$ and not hyperbolic). L\"oh defines hyperbolic
+    groups by quasi-hyperbolicity of the Cayley graph (slim quasi-geodesic triangles, Definition
+    7.3.1), which is a quasi-isometry invariant directly: quasi-geodesic triangles can be pushed
+    forward and pulled back along quasi-isometric embeddings (Proposition 7.2.9). For the four-point
+    condition: pass from the word metric to the geometric realisation of the Cayley graph, a
+    geodesic space in which it is $\frac12$-dense, with a larger constant; switch to slim triangles
+    by Theorem~\ref{Metric.isHyperbolic_iff_exists_hasSlimTrianglesWith}; and carry them along the
+    quasi-isometry of Corollary~\ref{Group.Generators.WithWordMetric.isQuasiIsometry_congr}. That
+    last step is L\"oh's Corollary 7.2.13 (from Proposition 7.2.9 and Theorem 7.2.10, whose proof
+    uses the stability of quasi-geodesics, Theorem 7.2.11), or Bridson--Haefliger Thm.~III.H.1.9
+    (from Thm.~III.H.1.7). -/)
+  (proofUses := ["Group.Generators.IsHyperbolicWith",
+    "Group.Generators.WithWordMetric.isQuasiIsometry_congr",
     "Metric.isHyperbolic_iff_exists_hasSlimTrianglesWith"])]
   Group.Generators.isHyperbolic_iff

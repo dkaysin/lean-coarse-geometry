@@ -6,7 +6,7 @@ Authors: Dmitry Kaysin
 module
 
 public import Coarse.Geometry.Group.CayleySimpleGraph
-public import Coarse.Geometry.Group.WordMetric
+public import Coarse.Geometry.Group.WithWordMetric
 public import Coarse.Topology.MetricSpace.CoarselyGeodesic
 public import Coarse.Topology.MetricSpace.QuasiIsometry
 
@@ -28,15 +28,13 @@ families, and the consequences for the word metric up to quasi-isometry.
   family are finite.
 * `Group.Generators.isCoarselyGeodesicWith`: a group with the word metric is
   `(1, 1, 0)`-coarsely geodesic.
-* `Group.Generators.isQuasiIsometry_id`: for two finite generating families, the identity is a
-  quasi-isometry between the two word metrics.
+* `Group.Generators.WithWordMetric.isQuasiIsometry_congr`: for two finite generating families,
+  the identity of the group is a quasi-isometry between the two word metrics.
 
 ## Implementation notes
 
-As in `Coarse.Geometry.Group.WordMetric`, the word metric is installed with
-`letI := P.normedGroup`. Statements with two word metrics on the same group pass the two
-instances explicitly. The bounds are stated with `wordLength`, which puts no metric on the group,
-so that applying them to a second word metric on the same group needs only one instance.
+The word metric of `P` is the metric of `P.WithWordMetric`. The bounds are stated with
+`wordLength`, for maps out of `G`.
 
 ## References
 
@@ -88,14 +86,11 @@ at most `K` times the word length for `P`.
 theorem wordLength_le_mul_wordLength (Q : Generators G κ) {K : ℕ}
     (hK : ∀ i, Q.wordLength (P.val i) ≤ K) (g : G) :
     Q.wordLength g ≤ K * P.wordLength g := by
-  -- Apply `dist_le_mul_wordLength` to the identity into the word metric of `Q`, in which
-  -- `dist g (g * P.val i) = |P.val i|_Q`.
-  let := Q.normedGroup
-  have hg := P.dist_le_mul_wordLength (φ := id) (K := K) (fun g i ↦ by
-    change (Q.wordLength (g⁻¹ * (g * P.val i)) : ℝ) ≤ ((K : ℝ≥0) : ℝ)
-    simpa using hK i) 1 g
-  change (Q.wordLength (1⁻¹ * g) : ℝ) ≤ ((K : ℝ≥0) : ℝ) * P.wordLength (1⁻¹ * g) at hg
-  simp only [inv_one, one_mul, NNReal.coe_natCast] at hg
+  -- Apply `dist_le_mul_wordLength` to `G → Q.WithWordMetric`, which moves `g` and `g * P.val i`
+  -- apart by `|P.val i|_Q`.
+  have hg := P.dist_le_mul_wordLength (φ := WithWordMetric.toWordMetric Q) (K := K)
+    (fun g i ↦ by simpa [WithWordMetric.dist_eq] using hK i) 1 g
+  simp only [WithWordMetric.dist_eq, inv_one, one_mul, NNReal.coe_natCast] at hg
   exact_mod_cast hg
 
 /-- For a finite generating family, there are finitely many elements of word length at most
@@ -106,18 +101,20 @@ theorem finite_setOf_wordLength_le [Finite ι] (n : ℕ) : {g | P.wordLength g �
     exact ⟨l, hl, rfl⟩
 
 /-- A group with the word metric of a generating family is `(1, 1, 0)`-coarsely geodesic. -/
-theorem isCoarselyGeodesicWith :
-    letI := P.normedGroup
-    Metric.IsCoarselyGeodesicWith G 1 1 0 :=
+theorem isCoarselyGeodesicWith : Metric.IsCoarselyGeodesicWith P.WithWordMetric 1 1 0 :=
   sorry
 
-/-- For finite generating families `P` and `Q` of `G`, the identity of
-`G` is a quasi-isometry from the word metric of `P` to the word metric of `Q`.
+namespace WithWordMetric
+
+variable (Q : Generators G κ)
+
+/-- For finite generating families `P` and `Q` of `G`, the identity of `G` is a quasi-isometry
+from the word metric of `P` to the word metric of `Q`.
 
 [C. Löh, *Geometric Group Theory*][loeh2017], Proposition 5.2.5. -/
-theorem isQuasiIsometry_id [Finite ι] [Finite κ] (Q : Generators G κ) :
-    @Metric.IsQuasiIsometry G G P.normedGroup.toPseudoMetricSpace
-      Q.normedGroup.toPseudoMetricSpace id :=
+theorem isQuasiIsometry_congr [Finite ι] [Finite κ] : Metric.IsQuasiIsometry (congr P Q) :=
   sorry
+
+end WithWordMetric
 
 end Group.Generators

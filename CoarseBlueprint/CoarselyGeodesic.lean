@@ -55,10 +55,10 @@ attribute [blueprint "NormedSpace.isCoarselyGeodesicWith" (latexEnv := "lemma")
   NormedSpace.isCoarselyGeodesicWith
 
 attribute [blueprint "Group.Generators.isCoarselyGeodesicWith" (latexEnv := "lemma")
-  (statement := /-- A group with the word metric of a generating family is $(1, 1, 0)$-coarsely
-    geodesic. -/)
+  (statement := /-- A group with the word metric of a generating family, $(G, d_P)$, is
+    $(1, 1, 0)$-coarsely geodesic. -/)
   (proof := /-- The prefixes of a geodesic word for $g^{-1} h$, multiplied on the left by $g$, form
     a $1$-chain from $g$ to $h$ with $|g^{-1} h|$ steps. Equivalently, the Rips graph at scale $1$
     is the Cayley graph, whose distance is the word metric. -/)
-  (proofUses := ["Metric.IsCoarselyGeodesicWith", "Group.Generators.groupNorm"])]
+  (proofUses := ["Metric.IsCoarselyGeodesicWith", "Group.Generators.WithWordMetric"])]
   Group.Generators.isCoarselyGeodesicWith

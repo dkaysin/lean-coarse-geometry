@@ -32,9 +32,8 @@ The space is assumed coarsely connected or coarsely geodesic (`Metric.IsCoarsely
 cannot be dropped from the quasi-isometry statement: `ℤ` acting by translations on `ℝ` with the
 metric `√|x - y|` satisfies every other hypothesis, and its orbit maps are not quasi-isometries.
 
-`ℤⁿ` is `Fin n → ℤ` with the word metric of an additive generating family
-(`AddGroup.Generators.normedAddGroup`), passed explicitly because `Fin n → ℤ` already carries the
-sup metric.
+The word metric of `P` is the metric of `P.WithWordMetric`; `ℤⁿ` is the `WithWordMetric` of an
+additive generating family of `Fin n → ℤ`, whose own metric is the sup metric.
 
 ## References
 
@@ -65,8 +64,7 @@ family. -/
 theorem Group.Generators.isQuasiIsometry_smul_const {ι : Type*} [Finite ι] (P : Generators G ι)
     (hX : Metric.IsCoarselyGeodesic X)
     (hprop : IsMetricallyProperSMul G X) (hcob : IsCoboundedSMul G X) (x₀ : X) :
-    letI := P.normedGroup
-    Metric.IsQuasiIsometry fun g : G ↦ g • x₀ :=
+    Metric.IsQuasiIsometry fun g : P.WithWordMetric ↦ g.ofWordMetric • x₀ :=
   sorry
 
 /-- A subgroup of finite index of a group with a finite generating family is quasi-isometric to
@@ -74,8 +72,8 @@ the group: the inclusion is a quasi-isometry for the word metrics of any finite 
 families. -/
 theorem Subgroup.isQuasiIsometry_subtype (H : Subgroup G) [H.FiniteIndex] {ι κ : Type*}
     [Finite ι] [Finite κ] (P : Group.Generators G ι) (Q : Group.Generators H κ) :
-    @Metric.IsQuasiIsometry H G Q.normedGroup.toPseudoMetricSpace
-      P.normedGroup.toPseudoMetricSpace ((↑) : H → G) :=
+    Metric.IsQuasiIsometry fun h : Q.WithWordMetric ↦
+      Group.Generators.WithWordMetric.toWordMetric P (h.ofWordMetric : G) :=
   sorry
 
 /-- `ℤⁿ` with the word metric of a finite generating family is quasi-isometric to `ℝⁿ`.
@@ -83,6 +81,5 @@ theorem Subgroup.isQuasiIsometry_subtype (H : Subgroup G) [H.FiniteIndex] {ι κ
 [C. Löh, *Geometric Group Theory*][loeh2017], Example 5.2.8. -/
 theorem Int.quasiIsometric_pi_euclideanSpace {n : ℕ} {ι : Type*} [Finite ι]
     (P : AddGroup.Generators (Fin n → ℤ) ι) :
-    @Metric.QuasiIsometric (Fin n → ℤ) (EuclideanSpace ℝ (Fin n))
-      P.normedAddGroup.toPseudoMetricSpace _ :=
+    Metric.QuasiIsometric P.WithWordMetric (EuclideanSpace ℝ (Fin n)) :=
   sorry

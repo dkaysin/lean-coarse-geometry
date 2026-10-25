@@ -63,7 +63,7 @@ attribute [blueprint "Group.Generators.isQuasiIsometry_smul_const"
     quasi-isometry by Lemma~\ref{Group.Generators.wordLength_le_mul_wordLength}
     (Lemma~\ref{Metric.IsQuasiIsometry.comp}). -/)
   (proofUses := ["Metric.IsCoarselyGeodesic", "IsCoboundedSMul", "IsMetricallyProperSMul",
-    "Group.Generators.groupNorm", "Group.Generators.dist_le_mul_wordLength",
+    "Group.Generators.WithWordMetric", "Group.Generators.dist_le_mul_wordLength",
     "Group.Generators.wordLength_le_mul_wordLength",
     "Metric.CoarseAntilipschitzWith.isQuasiIsometricEmbedding",
     "Metric.QuasiDenseRange", "Metric.isQuasiIsometry_iff_quasiDenseRange",

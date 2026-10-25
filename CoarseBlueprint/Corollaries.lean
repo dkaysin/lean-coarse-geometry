@@ -13,16 +13,18 @@ Blueprint nodes for the corollaries in `Coarse/Geometry/Group/{WordMetricBounds,
 SvarcMilnor}.lean` (milestone M6).
 -/
 
-attribute [blueprint "Group.Generators.isQuasiIsometry_id" (latexEnv := "corollary")
+attribute [blueprint "Group.Generators.WithWordMetric.isQuasiIsometry_congr"
+  (latexEnv := "corollary")
   (title := /-- Change of generators, L\"oh Prop.~5.2.5 -/)
-  (statement := /-- For finite generating families $P$ and $Q$ of $G$, the identity $(G, d_P) \to
-    (G, d_Q)$ is a quasi-isometry (it is even bilipschitz). -/)
+  (statement := /-- For finite generating families $P$ and $Q$ of $G$, the identity
+    $\mathrm{congr}_{P,Q} \colon (G, d_P) \to (G, d_Q)$ is a quasi-isometry (it is even
+    bilipschitz). -/)
   (proof := /-- Lemma~\ref{Group.Generators.wordLength_le_mul_wordLength} in both directions, as in
     L\"oh. -/)
-  (proofUses := ["Group.Generators.wordLength_le_mul_wordLength", "Group.Generators.groupNorm",
+  (proofUses := ["Group.Generators.wordLength_le_mul_wordLength", "Group.Generators.WithWordMetric",
     "Metric.IsQuasiIsometry",
     "Metric.CoarseAntilipschitzWith.isQuasiIsometricEmbedding"])]
-  Group.Generators.isQuasiIsometry_id
+  Group.Generators.WithWordMetric.isQuasiIsometry_congr
 
 attribute [blueprint "Subgroup.isQuasiIsometry_subtype" (latexEnv := "corollary")
   (title := /-- Finite-index subgroups -/)
