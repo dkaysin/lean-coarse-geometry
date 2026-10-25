@@ -70,3 +70,12 @@ reading it, is not listed.
 - **Copied**: `Mathlib/Topology/MetricSpace/Hyperbolic.lean`, to the same path under `Coarse/`
 - **Changes**: a local `attribute [grind =] Bornology.isBounded_univ` replaces the PR's edit to
   `Mathlib/Topology/Bornology/Basic.lean`
+
+### mathlib4 #44339
+
+- **Source**: <https://github.com/leanprover-community/mathlib4/pull/44339>, commit `1ef250d`
+  (stacked on #43723)
+- **Licence**: Apache 2.0
+- **Original authors**: Hang Lu Su, Katerina Hristova
+- **Copied**: `Mathlib/Geometry/Group/Hyperbolic.lean`, to the same path under `Coarse/`
+- **Changes**: imports point to the copies; the PR's other edits to Mathlib files are not copied
