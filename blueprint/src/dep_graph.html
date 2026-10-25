@@ -1,0 +1,328 @@
+{% macro icon(icon, id='', class='') %}
+<svg  {% if id %}id="{{id}}" {% endif %}class="icon icon-{{ icon }} {{ class }}"><use xlink:href="symbol-defs.svg#icon-{{ icon }}"></use></svg>
+{% endmacro %}
+{% macro modal(id) %}
+    <div class="dep-modal-container" id="{{ id }}">
+      <div class="dep-modal-content">
+          <button class="dep-closebtn">{{ icon('cross') }}</button>
+        {{ caller() }}
+      </div>
+    </div>
+{% endmacro %}
+{#- Dependency graph page. A copy of plastexdepgraph 0.0.5's default template
+    (templates/dep_graph.html), used through `tpl=dep_graph.html` in web.tex, with navigation
+    added: zoom and fit buttons, a layout switch, node search, highlighting of a node's
+    dependencies and dependents, and keyboard shortcuts. -#}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{{ context.terms.get('Dependency graph', 'Dependency graph') }}</title>
+  <meta name="generator" content="plasTeX" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="styles/theme-{{ config['html5']['theme-css'] }}.css" />
+  <link rel="stylesheet" href="styles/dep_graph.css" />
+  {% if config.html5['use-mathjax'] %}
+  <script type="text/x-mathjax-config">
+  {% if config.html5['mathjax-dollars'] %}
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+  {% else %}
+    MathJax.Hub.Config({tex2jax: {inlineMath: [ ['\\(','\\)']]}});
+  {% endif %}
+  </script>
+{% if config['mathjax-macros']['macros'] %}
+<script>
+  MathJax = { 
+    tex: {
+      macros: { {% for key, val in config['mathjax-macros']['macros'].items() %}
+        {{ key }}: {{ val }},
+        {% endfor %}
+      } } }
+  </script>
+{% endif %}
+  <script type="text/javascript" src="{{ config.html5['mathjax-url'] }}">  </script>
+{% endif %}
+{% for css in config.html5.get('extra-css', []) %}
+<link rel="stylesheet" href="styles/{{ css }}" />
+{% endfor %}
+<style>
+  div#graph { position: relative; height: calc(100vh - 4rem); resize: none; }
+  #graph-nav {
+    position: absolute; top: .5rem; right: .5rem; z-index: 10;
+    display: flex; flex-wrap: wrap; gap: .3rem; align-items: center;
+    background: rgba(255, 255, 255, .92); border: 1px solid #ccc; border-radius: 6px;
+    padding: .3rem .4rem; font-size: 90%;
+  }
+  #graph-nav button {
+    min-width: 2rem; height: 1.8rem; padding: 0 .5rem; cursor: pointer;
+    border: 1px solid #aaa; border-radius: 4px; background: white;
+  }
+  #graph-nav button:hover { background: #eef; }
+  #graph-nav button[aria-pressed="true"] { background: #dde; }
+  #graph-nav input { height: 1.6rem; width: 14rem; padding: 0 .4rem; }
+  #graph-nav .hint { color: #666; font-size: 85%; margin-left: .3rem; }
+  #graph-nav .hint.error { color: #c33; }
+  #graph svg { cursor: grab; }
+  #graph svg:active { cursor: grabbing; }
+  #graph .node.dimmed, #graph .edge.dimmed { opacity: .12; }
+  #graph .node.focus > :is(ellipse, polygon) { stroke-width: 5px; }
+  div.dep-modal-container { z-index: 20; }
+</style>
+</head>
+
+<body>
+<header>
+  <a class="toc" href="index.html">Home</a>
+  <h1 id="doc_title">{{ title }}</h1>
+</header>
+<div class="wrapper">
+<div class="content">
+  <div id="Legend">
+    <span id="legend_title" class="title">Legend
+    <div class="btn">
+       <div class="bar"></div>
+       <div class="bar"></div>
+       <div class="bar"></div>
+    </div></span> 
+    <dl class="legend">
+      {% for k, v in legend %}
+      <dt>{{ k }}</dt><dd>{{ v }}</dd>
+      {% endfor %}
+    </dl>
+  </div>
+    <div id="graph">
+      <div id="graph-nav" role="toolbar" aria-label="Graph navigation">
+        <button id="nav-zoom-in" title="Zoom in (+)">+</button>
+        <button id="nav-zoom-out" title="Zoom out (-)">&minus;</button>
+        <button id="nav-fit" title="Fit the whole graph (0)">Fit</button>
+        <button id="nav-layout" title="Switch between top-down and left-to-right layout (L)"
+          aria-pressed="false">Left to right</button>
+        <input id="nav-search" list="nav-nodes" placeholder="Find a node (/)" autocomplete="off"
+          aria-label="Find a node">
+        <datalist id="nav-nodes"></datalist>
+        <button id="nav-clear" title="Clear the highlight (Esc)">Clear</button>
+        <span id="nav-hint" class="hint">Scroll to zoom, drag to pan, click a node.</span>
+      </div>
+    </div>
+<div id="statements">
+{%- for thm in graph.nodes | sort(attribute='id') %}
+
+    {% call modal(thm.id + "_modal") %}
+  <div class="thm" id="{{ thm.id }}" style="display: none">
+    <div class="thm_thmheading">
+      <span class="{{ thm.thmName }}_thmcaption">
+      {{ thm.caption }}
+      </span>
+      {% if thm.ref -%}
+      <span class="{{thm.thmName}}_thmlabel">{{thm.ref}}</span>
+      {%- endif -%}
+      {% if thm.title -%}
+      <span class="{{thm.thmName}}_thmtitle">{{ thm.title }}</span>
+      {%- endif -%}
+    </div>
+    <div class="thm_thmcontent">{{ thm }}</div>
+
+    <a class="latex_link" href="{{ thm.url }}">LaTeX</a>
+    {% for extra in extra_modal_links %}
+    {% include extra %}
+    {% endfor %}
+  </div>
+    {% endcall %}
+{%- endfor -%}
+</div>
+</div> <!-- content -->
+</div> <!-- wrapper -->
+<script src="js/jquery.min.js" type="text/javascript"></script>
+
+<script src="js/d3.min.js"></script>
+<script src="js/hpcc.min.js"></script>
+<script src="js/d3-graphviz.js"></script>
+
+<script type="text/javascript">
+const graphContainer = d3.select("#graph");
+const dotSource = `{{ dot.replace('\n','') }}`;
+const gv = graphContainer.graphviz({useWorker: true}).fit(true);
+let layoutLR = true, pendingFit = false;
+try { layoutLR = localStorage.getItem("depgraph-layout") !== "TB"; } catch (e) {}
+
+function graphSize() {
+  const node = graphContainer.node();
+  return [node.clientWidth || window.innerWidth, node.clientHeight || window.innerHeight * 0.85];
+}
+
+function render() {
+  const [width, height] = graphSize();
+  const dot = layoutLR ? dotSource.replace("{", "{ rankdir=LR;") : dotSource;
+  $("#nav-layout").attr("aria-pressed", layoutLR)
+    .text(layoutLR ? "Top down" : "Left to right");
+  pendingFit = true;
+  gv.width(width).height(height).renderDot(dot);
+}
+
+gv.on("end", interactive);
+render();
+
+latexLabelEscaper = function(label) {
+  return label.replace(/\./g, '\\.').replace(/:/g, '\\:')
+}
+
+// Edges of the rendered graph, read from the SVG titles ("a->b").
+let parents = new Map(), children = new Map();
+function readEdges() {
+  parents = new Map(); children = new Map();
+  d3.selectAll('.edge').each(function () {
+    const [a, b] = d3.select(this).select('title').text().trim().split('->');
+    if (!children.has(a)) children.set(a, []);
+    if (!parents.has(b)) parents.set(b, []);
+    children.get(a).push(b);
+    parents.get(b).push(a);
+  });
+}
+
+function closure(start, next) {
+  const seen = new Set([start]), todo = [start];
+  while (todo.length) {
+    for (const m of next.get(todo.pop()) || []) {
+      if (!seen.has(m)) { seen.add(m); todo.push(m); }
+    }
+  }
+  return seen;
+}
+
+function nodeTitle(sel) { return sel.select('title').text().trim(); }
+
+// Dim everything except `id`, what it depends on and what depends on it.
+function highlight(id) {
+  const keep = new Set([...closure(id, parents), ...closure(id, children)]);
+  d3.selectAll('.node').classed('dimmed', function () {
+    return !keep.has(nodeTitle(d3.select(this)));
+  }).classed('focus', function () { return nodeTitle(d3.select(this)) === id; });
+  d3.selectAll('.edge').classed('dimmed', function () {
+    const [a, b] = d3.select(this).select('title').text().trim().split('->');
+    return !(keep.has(a) && keep.has(b));
+  });
+  const deps = keep.size - 1;
+  $('#nav-hint').removeClass('error').text(id + ': ' + deps + ' related nodes highlighted.');
+}
+
+function clearHighlight() {
+  d3.selectAll('.node, .edge').classed('dimmed', false).classed('focus', false);
+  $('#nav-hint').removeClass('error').text('Scroll to zoom, drag to pan, click a node.');
+}
+
+function zoomBy(factor) {
+  gv.zoomSelection().transition().duration(250).call(gv.zoomBehavior().scaleBy, factor);
+}
+
+function fit() { gv.resetZoom(d3.transition().duration(300)); }
+
+// Centre the view on a node and zoom in so that it is readable.
+function focusNode(id) {
+  const node = d3.selectAll('.node').filter(function () { return nodeTitle(d3.select(this)) === id; });
+  if (node.empty()) {
+    $('#nav-hint').addClass('error').text('No node ' + id + '.');
+    return;
+  }
+  const box = node.node().getBBox();
+  const vb = gv.zoomSelection().node().viewBox.baseVal;
+  const scale = Math.max(1, Math.min(20, (vb.width / 6) / box.width));
+  const t = d3.zoomIdentity
+    .translate(vb.x + vb.width / 2, vb.y + vb.height / 2)
+    .scale(scale)
+    .translate(-(box.x + box.width / 2), -(box.y + box.height / 2));
+  gv.zoomSelection().transition().duration(500).call(gv.zoomBehavior().transform, t);
+  highlight(id);
+}
+
+function showStatement(id) {
+  $('#statements > div').hide()
+  $('.thm').hide();
+  $('#'+latexLabelEscaper(id)+'_modal').show().children().show().children().show();
+  $('#statements').show()
+}
+
+function closeStatements() {
+  $('.dep-modal-container').hide();
+}
+
+function interactive() {
+    // The zoom survives a re-render; start each layout from the whole graph.
+    if (pendingFit) { pendingFit = false; gv.resetZoom(); }
+    readEdges();
+    const ids = [];
+    d3.selectAll('.node').each(function () { ids.push(nodeTitle(d3.select(this))); });
+    $('#nav-nodes').html(ids.sort().map(id => '<option value="' + id + '">').join(''));
+
+    d3.selectAll('.node')
+        .attr('pointer-events', 'fill')
+        .on('click', function () {
+           const title = nodeTitle(d3.select(this));
+           highlight(title);
+           showStatement(title);
+           if (d3.event) d3.event.stopPropagation();
+        });
+
+    // A click on the background (not the end of a drag) clears the highlight.
+    // The bundled d3 passes events through `d3.event`.
+    gv.zoomSelection().on('click.clear', function () {
+        const event = d3.event;
+        if (!event || event.defaultPrevented) return;
+        if (event.target.closest && event.target.closest('.node')) return;
+        clearHighlight();
+    });
+
+    d3.selectAll('.dep-closebtn').on('click', function() {
+        var modal =
+            d3.select(this).node().parentNode.parentNode.parentNode ;
+        d3.select(modal).style('display', 'none');
+    });
+}
+
+$("span#legend_title").on("click", function () {
+       $(this).siblings('dl').toggle();
+    })
+$('#nav-zoom-in').on('click', () => zoomBy(1.5));
+$('#nav-zoom-out').on('click', () => zoomBy(1 / 1.5));
+$('#nav-fit').on('click', fit);
+$('#nav-clear').on('click', () => { clearHighlight(); closeStatements(); });
+$('#nav-layout').on('click', function () {
+  layoutLR = !layoutLR;
+  try { localStorage.setItem("depgraph-layout", layoutLR ? "LR" : "TB"); } catch (e) {}
+  clearHighlight();
+  render();
+});
+$('#nav-search').on('change', function () {
+  const q = this.value.trim();
+  if (!q) return;
+  const ids = $('#nav-nodes option').map(function () { return this.value; }).get();
+  const match = ids.find(id => id === q) || ids.find(id => id.includes(q));
+  if (match) { this.value = match; focusNode(match); }
+  else $('#nav-hint').addClass('error').text('No node matches "' + q + '".');
+});
+$(document).on('keydown', function (e) {
+  if (e.target.tagName === 'INPUT') {
+    if (e.key === 'Escape') e.target.blur();
+    return;
+  }
+  if (e.key === '+' || e.key === '=') zoomBy(1.5);
+  else if (e.key === '-') zoomBy(1 / 1.5);
+  else if (e.key === '0') fit();
+  else if (e.key === 'l' || e.key === 'L') $('#nav-layout').click();
+  else if (e.key === '/') { e.preventDefault(); $('#nav-search').focus().select(); }
+  else if (e.key === 'Escape') { clearHighlight(); closeStatements(); }
+});
+let resizeTimer;
+$(window).on('resize', function () {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(function () {
+    const [width, height] = graphSize();
+    gv.zoomSelection().attr('width', width).attr('height', height);
+  }, 150);
+});
+</script>
+{% for js in config.html5.get('extra-js', []) %}
+<script type="text/javascript" src="js/{{ js }}"></script>
+{% endfor %}
+</body>
+</html>
+
