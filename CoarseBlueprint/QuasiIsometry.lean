@@ -121,16 +121,27 @@ attribute [blueprint "lem:quasi-dense-range-iff-cover" (latexEnv := "lemma")
 
 attribute [blueprint "lem:qie-quasi-inverse" (latexEnv := "lemma")
   (statement := /-- If $f$ is a quasi-isometric embedding and $f \circ g$ has finite distance
-    from the identity, then $g$ is a quasi-isometric embedding. -/)]
+    from the identity, then $g$ is a quasi-isometric embedding. -/)
+  (proof := /-- As in the proof of L\"oh, Prop.~5.1.10: if $f \circ g$ has distance $D$ from the
+    identity, then $d(f g y, f g y')$ and $d(y, y')$ differ by at most $2D$; apply the two bounds
+    of $f$ to $g y$ and $g y'$. -/)]
   Metric.IsQuasiIsometricEmbedding.of_hasFiniteDist_comp_id
 
 attribute [blueprint "lem:qie-quasi-inverse-comp" (latexEnv := "lemma")
   (statement := /-- If $f$ is a quasi-isometric embedding and $f \circ g$ has finite distance
-    from the identity, then so does $g \circ f$. -/)]
+    from the identity, then so does $g \circ f$. -/)
+  (proof := /-- As in the proof of L\"oh, Prop.~5.1.10: if $f$ is a $(c, b)$-quasi-isometric
+    embedding and $f \circ g$ has distance $D$ from the identity, the lower bound of $f$ gives
+    $d(g f x, x) \le c\,d(f g f x, f x) + c b \le c D + c b$. -/)]
   Metric.IsQuasiIsometricEmbedding.hasFiniteDist_comp_id
 
 attribute [blueprint "thm:qi-iff-qie-quasi-dense"
   (title := /-- L\"oh, Prop.~5.1.10 -/)
   (statement := /-- A map is a quasi-isometry if and only if it is a quasi-isometric embedding
-    with quasi-dense range. -/)]
+    with quasi-dense range. -/)
+  (proof := /-- As in L\"oh. If $g$ is a quasi-inverse, $f \circ g$ has finite distance from the
+    identity, so $f$ has quasi-dense range. Conversely, choose $g(y)$ with $d(f g y, y) \le c$.
+    Then $f \circ g$ has finite distance from the identity, so $g$ is a quasi-isometric embedding
+    (Lemma~\ref{lem:qie-quasi-inverse}) and $g \circ f$ has finite distance from the identity
+    (Lemma~\ref{lem:qie-quasi-inverse-comp}). -/)]
   Metric.isQuasiIsometry_iff_quasiDenseRange

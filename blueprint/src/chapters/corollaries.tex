@@ -3,7 +3,7 @@
 
 Milestone M6. Each corollary is a separate pull request and a test of the API.
 
-\begin{corollary}[Change of generators]
+\begin{corollary}[Change of generators, L\"oh Prop.~5.2.5]
   \label{cor:change-of-generators}
   \notready
   \uses{lem:change-of-generators-bound, def:word-metric, def:qi, lem:qie-of-bounds}
@@ -11,7 +11,7 @@ Milestone M6. Each corollary is a separate pull request and a test of the API.
   bilipschitz, hence a quasi-isometry.
 \end{corollary}
 \begin{proof}
-  Lemma~\ref{lem:change-of-generators-bound} in both directions.
+  Lemma~\ref{lem:change-of-generators-bound} in both directions, as in L\"oh.
 \end{proof}
 
 \begin{corollary}[Finite-index subgroups]
@@ -37,5 +37,8 @@ Milestone M6. Each corollary is a separate pull request and a test of the API.
 \end{corollary}
 \begin{proof}
   $\Z^n$ acts on $\R^n$ (sup norm) by translations, properly discontinuously and with the unit
-  cube as a bounded fundamental set.
+  cube as a bounded fundamental set. L\"oh argues directly instead: the inclusion
+  $\Z^n \to \R^n$ is a quasi-isometric embedding with quasi-dense image, hence a
+  quasi-isometry (Theorem~\ref{thm:qi-iff-qie-quasi-dense}). Going through
+  Theorem~\ref{thm:svarc-milnor-qi} tests the main theorem.
 \end{proof}

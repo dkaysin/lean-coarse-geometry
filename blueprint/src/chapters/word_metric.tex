@@ -69,7 +69,7 @@ Mathlib pull requests (see \texttt{ATTRIBUTION.md}).
   $d(g, h) = |g^{-1} h|_P$ is a natural number, and it is $0$ only if $g = h$.
 \end{proof}
 
-\begin{lemma}[Change of generators]
+\begin{lemma}[Change of generators, from the proof of L\"oh Prop.~5.2.5]
   \label{lem:change-of-generators-bound}
   \notready
   \uses{lem:lipschitz-principle, lem:word-length-inv}
@@ -78,7 +78,9 @@ Mathlib pull requests (see \texttt{ATTRIBUTION.md}).
   \plannedlean{Group.Generators.wordLength_le_mul_wordLength}
 \end{lemma}
 \begin{proof}
-  Lemma~\ref{lem:lipschitz-principle} for the identity map $(G, d_P) \to (G, d_Q)$.
+  Lemma~\ref{lem:lipschitz-principle} for the identity map $(G, d_P) \to (G, d_Q)$. This is
+  L\"oh's argument: write $g$ as a product of $|g|_P$ generators and inverses, and bound each
+  factor's $Q$-length by $M$.
 \end{proof}
 
 \begin{lemma}[Finite balls]
