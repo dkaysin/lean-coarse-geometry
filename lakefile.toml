@@ -1,0 +1,18 @@
+name = "coarse"
+version = "0.1.0"
+keywords = ["math"]
+defaultTargets = ["Coarse"]
+
+[leanOptions]
+pp.unicode.fun = true # pretty-prints `fun a ↦ b`
+autoImplicit = false
+weak.linter.mathlibStandardSet = true
+maxSynthPendingDepth = 3
+
+[[require]]
+name = "mathlib"
+scope = "leanprover-community"
+rev = "10dc7882b0311638b63e9aad5506f2cfcf4e61b8"
+
+[[lean_lib]]
+name = "Coarse"
