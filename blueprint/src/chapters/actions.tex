@@ -5,19 +5,18 @@ Milestone M4. $G$ acts on a space $X$ with a bornology, for instance the bounded
 pseudometric space; the definitions use only bounded sets (design decision D14).
 
 \begin{definition}[Cobounded action]
-  \label{def:cobounded-smul}
+  \label{IsCoboundedSMul}
   \notready
   The action is \emph{cobounded} if some bounded set $s \subseteq X$ satisfies
   $\bigcup_{g \in G} g s = X$.
-  \plannedlean{IsCoboundedSMul}
 \end{definition}
 
-\inputleannode{def:metrically-proper-smul}
+\inputleannode{IsMetricallyProperSMul}
 
 \begin{lemma}[Orbit map]
-  \label{lem:metrically-proper-iff-tendsto}
+  \label{isMetricallyProperSMul_iff_tendsto}
   \notready
-  \uses{def:metrically-proper-smul}
+  \uses{IsMetricallyProperSMul}
   For an isometric action and any $x_0 \in X$, the action is metrically proper if and only if
   the orbit map $g \mapsto g x_0$ sends the cofinite filter to the cobounded filter.
 \end{lemma}
@@ -28,9 +27,9 @@ pseudometric space; the definitions use only bounded sets (design decision D14).
 \end{proof}
 
 \begin{lemma}
-  \label{lem:properly-discontinuous-metrically-proper}
+  \label{isMetricallyProperSMul_of_properlyDiscontinuousSMul}
   \notready
-  \uses{def:metrically-proper-smul}
+  \uses{IsMetricallyProperSMul}
   A properly discontinuous action on a proper metric space is metrically proper.
 \end{lemma}
 \begin{proof}
@@ -39,9 +38,9 @@ pseudometric space; the definitions use only bounded sets (design decision D14).
 \end{proof}
 
 \begin{lemma}
-  \label{lem:finite-group-metrically-proper}
+  \label{isMetricallyProperSMul_of_finite}
   \notready
-  \uses{def:metrically-proper-smul}
+  \uses{IsMetricallyProperSMul}
   Every action of a finite group is metrically proper, and the restriction of a metrically
   proper action to a subgroup is metrically proper.
 \end{lemma}
@@ -50,9 +49,9 @@ pseudometric space; the definitions use only bounded sets (design decision D14).
 \end{proof}
 
 \begin{lemma}
-  \label{lem:finite-index-cobounded}
+  \label{IsCoboundedSMul.of_finiteIndex}
   \notready
-  \uses{def:cobounded-smul}
+  \uses{IsCoboundedSMul}
   If $G$ acts coboundedly and $H \le G$ has finite index, then $H$ acts coboundedly.
 \end{lemma}
 \begin{proof}

@@ -5,37 +5,36 @@ The project contains a copy of S.~Ghobash's coarse-space library (see \texttt{AT
 It proves a \v{S}varc--Milnor statement as a coarse equivalence, without constants, word metric
 or finite generation. Nothing yet connects it to the metric notions above.
 
-\inputleannode{def:coarse-space}
-\inputleannode{def:coarsely-close}
-\inputleannode{def:coarse-map}
-\inputleannode{def:coarse-equiv}
-\inputleannode{def:metric-coarse-space}
-\inputleannode{lem:coarsely-proper-smul}
-\inputleannode{thm:coarse-svarc-milnor}
+\inputleannode{CoarseSpace}
+\inputleannode{IsCoarselyClose}
+\inputleannode{IsCoarseMap}
+\inputleannode{CoarseEquiv}
+\inputleannode{PseudoEMetricSpace.toCoarseSpace}
+\inputleannode{isCoarselyProperMap_smul_const}
+\inputleannode{mulOrbitMetricCoarseEquiv}
 
 \section*{Candidate bridges}
 
 These have no consumer yet; they become ready when a node uses them.
 
 \begin{lemma}
-  \label{lem:finite-dist-iff-coarsely-close}
+  \label{Metric.hasFiniteDist_iff_isCoarselyClose}
   \notready
-  \uses{def:finite-dist, def:coarsely-close, def:metric-coarse-space}
+  \uses{Metric.HasFiniteDist, IsCoarselyClose, PseudoEMetricSpace.toCoarseSpace}
   Two maps into a pseudometric space have finite distance if and only if they are coarsely
   close for the metric coarse structure.
-  \plannedlean{Metric.hasFiniteDist_iff_isCoarselyClose}
 \end{lemma}
 \begin{proof}
   Unfold the controlled sets of the metric coarse structure.
 \end{proof}
 
 \begin{lemma}
-  \label{lem:qi-coarse-equiv}
+  \label{Metric.IsQuasiIsometry.toCoarseEquiv}
   \notready
-  \uses{def:qi, def:coarse-equiv, def:metric-coarse-space, lem:finite-dist-iff-coarsely-close}
+  \uses{Metric.IsQuasiIsometry, CoarseEquiv, PseudoEMetricSpace.toCoarseSpace,
+    Metric.hasFiniteDist_iff_isCoarselyClose}
   A quasi-isometry together with a quasi-inverse is a coarse equivalence for the metric coarse
   structures.
-  \plannedlean{Metric.IsQuasiIsometry.toCoarseEquiv}
 \end{lemma}
 \begin{proof}
   Coarse Lipschitz maps are controlled, coarse antilipschitz maps are coarsely proper, and maps

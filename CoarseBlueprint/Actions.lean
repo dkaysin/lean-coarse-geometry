@@ -12,7 +12,7 @@ import Coarse.Topology.Bornology.MetricallyProperSMul
 Blueprint nodes for `Coarse/Topology/Bornology/MetricallyProperSMul.lean` (milestone M4).
 -/
 
-attribute [blueprint "def:metrically-proper-smul"
+attribute [blueprint "IsMetricallyProperSMul"
   (title := /-- Metrically proper action -/)
   (statement := /-- An action of $G$ on a space $X$ with a bornology is \emph{metrically proper}
     if for every bounded set $B \subseteq X$ the set $\{g \in G \mid g B \cap B \ne \emptyset\}$

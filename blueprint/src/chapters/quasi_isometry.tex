@@ -5,23 +5,23 @@ Milestone M1. All spaces are pseudometric spaces and all constants are in $\Rnn$
 
 \section{Coarse Lipschitz and coarse antilipschitz maps}
 
-\inputleannode{def:coarse-lipschitz}
-\inputleannode{lem:lipschitz-coarse-lipschitz}
-\inputleannode{lem:coarse-lipschitz-mono}
-\inputleannode{lem:coarse-lipschitz-comp}
+\inputleannode{Metric.CoarseLipschitzWith}
+\inputleannode{LipschitzWith.coarseLipschitzWith}
+\inputleannode{Metric.CoarseLipschitzWith.mono}
+\inputleannode{Metric.CoarseLipschitzWith.comp}
 
-\inputleannode{def:coarse-antilipschitz}
-\inputleannode{lem:antilipschitz-coarse-antilipschitz}
-\inputleannode{lem:coarse-antilipschitz-iff}
-\inputleannode{lem:coarse-antilipschitz-mono}
-\inputleannode{lem:coarse-antilipschitz-comp}
+\inputleannode{Metric.CoarseAntilipschitzWith}
+\inputleannode{AntilipschitzWith.coarseAntilipschitzWith}
+\inputleannode{Metric.coarseAntilipschitzWith_iff_inv_mul_sub_le}
+\inputleannode{Metric.CoarseAntilipschitzWith.mono}
+\inputleannode{Metric.CoarseAntilipschitzWith.comp}
 
 \section{Maps at finite distance}
 
-\inputleannode{def:finite-dist}
-\inputleannode{lem:finite-dist-refl}
-\inputleannode{lem:finite-dist-symm}
-\inputleannode{lem:finite-dist-trans}
+\inputleannode{Metric.HasFiniteDist}
+\inputleannode{Metric.HasFiniteDist.refl}
+\inputleannode{Metric.HasFiniteDist.symm}
+\inputleannode{Metric.HasFiniteDist.trans}
 
 L\"oh gives no written proof of Proposition 5.1.11: its items follow by direct calculation from
 the definitions (Exercises 5.E.3 and 5.E.4), and the sketches below are these calculations.
@@ -29,34 +29,31 @@ Items (1) and (3b) are stated here in a more general form: for the two bounds se
 for a coarse Lipschitz $h$ instead of a quasi-isometric embedding.
 
 \begin{lemma}[L\"oh, Prop.~5.1.11 (3a)]
-  \label{lem:finite-dist-comp-right}
-  \uses{def:finite-dist}
+  \label{Metric.HasFiniteDist.comp_right}
+  \uses{Metric.HasFiniteDist}
   If $f$ and $g \colon X \to Y$ have finite distance, then so do $f \circ k$ and $g \circ k$ for
   every map $k \colon W \to X$.
-  \plannedlean{Metric.HasFiniteDist.comp_right}
 \end{lemma}
 \begin{proof}
   The same constant works.
 \end{proof}
 
 \begin{lemma}[L\"oh, Prop.~5.1.11 (3b)]
-  \label{lem:finite-dist-comp-left}
-  \uses{def:finite-dist, def:coarse-lipschitz}
+  \label{Metric.HasFiniteDist.comp_left}
+  \uses{Metric.HasFiniteDist, Metric.CoarseLipschitzWith}
   If $f$ and $g \colon X \to Y$ have finite distance $D$ and $h \colon Y \to Z$ is $(L, C)$-coarse
   Lipschitz, then $h \circ f$ and $h \circ g$ have finite distance $L D + C$.
-  \plannedlean{Metric.HasFiniteDist.comp_left}
 \end{lemma}
 \begin{proof}
   $d(h f x, h g x) \le L\,d(f x, g x) + C$.
 \end{proof}
 
 \begin{lemma}[L\"oh, Prop.~5.1.11 (1)]
-  \label{lem:coarse-lipschitz-of-finite-dist}
-  \uses{def:finite-dist, def:coarse-lipschitz, def:coarse-antilipschitz}
+  \label{Metric.CoarseLipschitzWith.of_hasFiniteDist}
+  \uses{Metric.HasFiniteDist, Metric.CoarseLipschitzWith, Metric.CoarseAntilipschitzWith}
   If $f$ is $(L, C)$-coarse Lipschitz and $g$ has finite distance $D$ from $f$, then $g$ is
   $(L, C + 2D)$-coarse Lipschitz. If $f$ is $(L, C)$-coarse antilipschitz, then $g$ is
   $(L, C + 2LD)$-coarse antilipschitz.
-  \plannedlean{Metric.CoarseLipschitzWith.of_hasFiniteDist}
   \plannedlean{Metric.CoarseAntilipschitzWith.of_hasFiniteDist}
 \end{lemma}
 \begin{proof}
@@ -65,52 +62,51 @@ for a coarse Lipschitz $h$ instead of a quasi-isometric embedding.
 
 \section{Quasi-isometric embeddings}
 
-\inputleannode{def:qie-with}
-\inputleannode{def:qie}
-\inputleannode{lem:qie-of-bounds}
+\inputleannode{Metric.IsQuasiIsometricEmbeddingWith}
+\inputleannode{Metric.IsQuasiIsometricEmbedding}
+\inputleannode{Metric.IsQuasiIsometricEmbedding.of_coarseLipschitzWith_of_coarseAntilipschitzWith}
 
 \begin{lemma}
-  \label{lem:isometry-qie}
-  \uses{def:qie-with}
+  \label{Isometry.isQuasiIsometricEmbeddingWith}
+  \uses{Metric.IsQuasiIsometricEmbeddingWith}
   An isometric embedding is a $(1, 0)$-quasi-isometric embedding.
-  \plannedlean{Isometry.isQuasiIsometricEmbeddingWith}
 \end{lemma}
 \begin{proof}
   Both bounds hold with equality.
 \end{proof}
 
 \begin{lemma}[L\"oh, Prop.~5.1.11 (4)]
-  \label{lem:qie-comp}
-  \uses{def:qie, lem:qie-of-bounds, lem:coarse-lipschitz-comp, lem:coarse-antilipschitz-comp}
+  \label{Metric.IsQuasiIsometricEmbedding.comp}
+  \uses{Metric.IsQuasiIsometricEmbedding,
+    Metric.IsQuasiIsometricEmbedding.of_coarseLipschitzWith_of_coarseAntilipschitzWith,
+    Metric.CoarseLipschitzWith.comp, Metric.CoarseAntilipschitzWith.comp}
   The composition of two quasi-isometric embeddings is a quasi-isometric embedding.
-  \plannedlean{Metric.IsQuasiIsometricEmbedding.comp}
 \end{lemma}
 \begin{proof}
   Compose the two bounds separately and merge the constants with
-  Lemma~\ref{lem:qie-of-bounds}.
+  Lemma~\ref{Metric.IsQuasiIsometricEmbedding.of_coarseLipschitzWith_of_coarseAntilipschitzWith}.
 \end{proof}
 
 \section{Quasi-isometries}
 
-\inputleannode{def:qi}
-\inputleannode{def:quasi-isometric}
+\inputleannode{Metric.IsQuasiIsometry}
+\inputleannode{Metric.QuasiIsometric}
 
 \begin{lemma}[L\"oh, Ex.~5.1.7]
-  \label{lem:qi-id}
-  \uses{def:qi, lem:isometry-qie, lem:finite-dist-refl}
+  \label{IsometryEquiv.isQuasiIsometry}
+  \uses{Metric.IsQuasiIsometry, Isometry.isQuasiIsometricEmbeddingWith, Metric.HasFiniteDist.refl}
   The identity map, and more generally every isometric bijection, is a quasi-isometry.
-  \plannedlean{IsometryEquiv.isQuasiIsometry}
 \end{lemma}
 \begin{proof}
   The inverse is a quasi-inverse, with both composites equal to the identity.
 \end{proof}
 
 \begin{lemma}[L\"oh, Prop.~5.1.11 (5)]
-  \label{lem:qi-comp}
-  \uses{def:qi, lem:qie-comp, lem:finite-dist-comp-right, lem:finite-dist-comp-left,
-    lem:finite-dist-trans}
+  \label{Metric.IsQuasiIsometry.comp}
+  \uses{Metric.IsQuasiIsometry, Metric.IsQuasiIsometricEmbedding.comp,
+    Metric.HasFiniteDist.comp_right, Metric.HasFiniteDist.comp_left,
+    Metric.HasFiniteDist.trans}
   The composition of two quasi-isometries is a quasi-isometry.
-  \plannedlean{Metric.IsQuasiIsometry.comp}
 \end{lemma}
 \begin{proof}
   If $g'$ and $f'$ are quasi-inverses of $g$ and $f$, then $f' \circ g'$ is a quasi-inverse of
@@ -119,25 +115,28 @@ for a coarse Lipschitz $h$ instead of a quasi-isometric embedding.
 \end{proof}
 
 \begin{lemma}[L\"oh, Prop.~5.1.11 (2)]
-  \label{lem:qi-of-finite-dist}
-  \uses{def:qi, lem:coarse-lipschitz-of-finite-dist, lem:qie-of-bounds, lem:finite-dist-trans,
-    lem:finite-dist-comp-left}
+  \label{Metric.IsQuasiIsometry.of_hasFiniteDist}
+  \uses{Metric.IsQuasiIsometry, Metric.CoarseLipschitzWith.of_hasFiniteDist,
+    Metric.IsQuasiIsometricEmbedding.of_coarseLipschitzWith_of_coarseAntilipschitzWith,
+    Metric.HasFiniteDist.trans,
+    Metric.HasFiniteDist.comp_left}
   A map at finite distance from a quasi-isometry is a quasi-isometry.
-  \plannedlean{Metric.IsQuasiIsometry.of_hasFiniteDist}
 \end{lemma}
 \begin{proof}
   The quasi-inverse of the given quasi-isometry also works for the new map.
 \end{proof}
 
 \begin{theorem}[cf.\ L\"oh, Rem.~5.1.12]
-  \label{thm:quasi-isometric-equivalence}
-  \uses{def:quasi-isometric, lem:qi-id, lem:qi-comp}
+  \label{Metric.QuasiIsometric.refl}
+  \uses{Metric.QuasiIsometric, IsometryEquiv.isQuasiIsometry, Metric.IsQuasiIsometry.comp}
   Being quasi-isometric is an equivalence relation on pseudometric spaces.
   \plannedlean{Metric.QuasiIsometric.refl, .symm, .trans}
 \end{theorem}
 \begin{proof}
-  Reflexivity is Lemma~\ref{lem:qi-id}, symmetry is immediate from the definition (the
-  quasi-inverse is a quasi-isometry), transitivity is Lemma~\ref{lem:qi-comp}. L\"oh does not
+  Reflexivity is Lemma~\ref{IsometryEquiv.isQuasiIsometry}, symmetry is immediate from the
+  definition (the
+  quasi-inverse is a quasi-isometry), transitivity is Lemma~\ref{Metric.IsQuasiIsometry.comp}. L\"oh
+  does not
   state the theorem; it follows from her Remark 5.1.12, where quasi-isometries are the
   isomorphisms of the category of metric spaces and quasi-isometric embeddings up to finite
   distance.
@@ -145,8 +144,8 @@ for a coarse Lipschitz $h$ instead of a quasi-isometric embedding.
 
 \section{Quasi-dense range}
 
-\inputleannode{def:quasi-dense-range}
-\inputleannode{lem:quasi-dense-range-iff-cover}
-\inputleannode{lem:qie-quasi-inverse}
-\inputleannode{lem:qie-quasi-inverse-comp}
-\inputleannode{thm:qi-iff-qie-quasi-dense}
+\inputleannode{Metric.QuasiDenseRange}
+\inputleannode{Metric.quasiDenseRange_iff_exists_isCover}
+\inputleannode{Metric.IsQuasiIsometricEmbedding.of_hasFiniteDist_comp_id}
+\inputleannode{Metric.IsQuasiIsometricEmbedding.hasFiniteDist_comp_id}
+\inputleannode{Metric.isQuasiIsometry_iff_quasiDenseRange}

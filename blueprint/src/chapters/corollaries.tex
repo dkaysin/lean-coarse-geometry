@@ -4,41 +4,45 @@
 Milestone M6. Each corollary is a separate pull request and a test of the API.
 
 \begin{corollary}[Change of generators, L\"oh Prop.~5.2.5]
-  \label{cor:change-of-generators}
+  \label{Group.Generators.isQuasiIsometry_id}
   \notready
-  \uses{lem:change-of-generators-bound, def:word-metric, def:qi, lem:qie-of-bounds}
+  \uses{Group.Generators.wordLength_le_mul_wordLength, Group.Generators.groupNorm,
+    Metric.IsQuasiIsometry,
+    Metric.IsQuasiIsometricEmbedding.of_coarseLipschitzWith_of_coarseAntilipschitzWith}
   For finite generating families $P$ and $Q$ of $G$, the identity $(G, d_P) \to (G, d_Q)$ is
   bilipschitz, hence a quasi-isometry.
 \end{corollary}
 \begin{proof}
-  Lemma~\ref{lem:change-of-generators-bound} in both directions, as in L\"oh.
+  Lemma~\ref{Group.Generators.wordLength_le_mul_wordLength} in both directions, as in L\"oh.
 \end{proof}
 
 \begin{corollary}[Finite-index subgroups]
-  \label{cor:finite-index-qi}
+  \label{Subgroup.isQuasiIsometry_subtype}
   \notready
-  \uses{thm:svarc-milnor-qi, lem:word-metric-coarsely-geodesic, lem:word-metric-finite-balls,
-    lem:finite-group-metrically-proper, lem:finite-index-cobounded}
+  \uses{Group.Generators.isQuasiIsometry_smul_left, Group.Generators.isCoarselyGeodesicWith,
+    Group.Generators.finite_setOf_wordLength_le,
+    isMetricallyProperSMul_of_finite, IsCoboundedSMul.of_finiteIndex}
   If $G$ is finitely generated and $H \le G$ has finite index, then the inclusion $H \to G$ is a
   quasi-isometry for any finite generating families of $H$ and $G$.
 \end{corollary}
 \begin{proof}
   $H$ acts on $(G, d_P)$ by left multiplication; the action is metrically proper by finiteness
-  of balls and cobounded by finite index. Apply Theorem~\ref{thm:svarc-milnor-qi} with
+  of balls and cobounded by finite index. Apply
+  Theorem~\ref{Group.Generators.isQuasiIsometry_smul_left} with
   $x_0 = 1$.
 \end{proof}
 
 \begin{corollary}[$\Z^n$ and $\R^n$, L\"oh Ex.~5.2.8]
-  \label{cor:zn-qi-rn}
+  \label{Int.quasiIsometric_pi_euclideanSpace}
   \notready
-  \uses{thm:svarc-milnor-qi, lem:normed-space-coarsely-geodesic,
-    lem:properly-discontinuous-metrically-proper}
+  \uses{Group.Generators.isQuasiIsometry_smul_left, NormedSpace.isCoarselyGeodesicWith,
+    isMetricallyProperSMul_of_properlyDiscontinuousSMul}
   $\Z^n$ with the word metric of the standard basis is quasi-isometric to $\R^n$.
 \end{corollary}
 \begin{proof}
   $\Z^n$ acts on $\R^n$ (sup norm) by translations, properly discontinuously and with the unit
   cube as a bounded fundamental set. L\"oh argues directly instead: the inclusion
   $\Z^n \to \R^n$ is a quasi-isometric embedding with quasi-dense image, hence a
-  quasi-isometry (Theorem~\ref{thm:qi-iff-qie-quasi-dense}). Going through
-  Theorem~\ref{thm:svarc-milnor-qi} tests the main theorem.
+  quasi-isometry (Theorem~\ref{Metric.isQuasiIsometry_iff_quasiDenseRange}). Going through
+  Theorem~\ref{Group.Generators.isQuasiIsometry_smul_left} tests the main theorem.
 \end{proof}

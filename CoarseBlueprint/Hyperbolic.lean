@@ -13,7 +13,7 @@ Blueprint nodes for `Coarse/Topology/MetricSpace/Hyperbolic.lean` and
 `Coarse/Geometry/Group/Hyperbolic.lean` (copies of open Mathlib pull requests).
 -/
 
-attribute [blueprint "def:hyperbolic-space"
+attribute [blueprint "Metric.IsHyperbolicWith"
   (title := /-- Hyperbolic space -/)
   (statement := /-- A pseudometric space is \emph{$\delta$-hyperbolic} if it satisfies Gromov's
     four-point condition with constant $\delta$, and \emph{hyperbolic} if it is
@@ -21,7 +21,7 @@ attribute [blueprint "def:hyperbolic-space"
     Bridson--Haefliger, Definition III.H.1.20. -/)]
   Metric.IsHyperbolicWith Metric.IsHyperbolic
 
-attribute [blueprint "def:hyperbolic-group"
+attribute [blueprint "Group.Generators.IsHyperbolicWith"
   (title := /-- Hyperbolic group -/)
   (statement := /-- A group is \emph{hyperbolic} if it is hyperbolic for the word metric of some
     finite generating family. -/)]

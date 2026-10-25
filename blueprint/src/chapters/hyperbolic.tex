@@ -16,13 +16,13 @@ $(\delta)$-hyperbolicity in the sense of Bridson--Haefliger, Definition III.H.1.
 
 Mathlib has no geodesics. How to encode them (a map on an interval or its image, as in the
 Isabelle library on Gromov hyperbolicity) is an open decision (design decision D17), and so is
-the route to Theorem~\ref{thm:hyperbolic-independent} (D18), so the new nodes are not ready.
+the route to Theorem~\ref{Group.Generators.isHyperbolic_iff} (D18), so the new nodes are not ready.
 
-\inputleannode{def:hyperbolic-space}
-\inputleannode{def:hyperbolic-group}
+\inputleannode{Metric.IsHyperbolicWith}
+\inputleannode{Group.Generators.IsHyperbolicWith}
 
 \begin{definition}[Geodesic space, L\"oh Def.~5.3.1, Bridson--Haefliger Def.~I.1.3]
-  \label{def:geodesic}
+  \label{Metric.IsGeodesic}
   \notready
   Let $X$ be a pseudometric space. A \emph{geodesic} from $x$ to $y$ is a map
   $\gamma \colon [0, \ell] \to X$ with $\gamma(0) = x$, $\gamma(\ell) = y$ and
@@ -31,9 +31,9 @@ the route to Theorem~\ref{thm:hyperbolic-independent} (D18), so the new nodes ar
 \end{definition}
 
 \begin{definition}[Slim triangles, L\"oh Def.~7.2.1, Bridson--Haefliger Def.~III.H.1.1]
-  \label{def:slim-triangles}
+  \label{Metric.HasSlimTrianglesWith}
   \notready
-  \uses{def:geodesic}
+  \uses{Metric.IsGeodesic}
   A \emph{geodesic triangle} with vertices $x, y, z$ in a pseudometric space $X$ consists of
   geodesics from $x$ to $y$, from $y$ to $z$ and from $z$ to $x$, its sides. It is
   \emph{$\delta$-slim} if every point of each side is within distance $\delta$ of a point of one
@@ -45,16 +45,18 @@ L\"oh and Bridson--Haefliger call a geodesic space with $\delta$-slim triangles
 $\delta$-hyperbolic. Here that name belongs to the four-point condition, and the constants of
 the two notions differ.
 
-Bridson--Haefliger prove Theorem~\ref{thm:hyperbolic-iff-slim} through thin triangles and the
+Bridson--Haefliger prove Theorem~\ref{Metric.isHyperbolic_iff_exists_hasSlimTrianglesWith} through
+thin triangles and the
 insize of a triangle (Definition III.H.1.16, Propositions III.H.1.17 and III.H.1.22). The two
 lemmas below go directly between slim triangles and the four-point condition instead
 (design decision D19), so neither thin triangles nor insize is needed, and the constant is
 $3\delta$ in both directions.
 
-\begin{lemma}[Slim triangles give the four-point condition, cf.\ Bridson--Haefliger Prop.~III.H.1.22]
-  \label{lem:slim-four-point}
+\begin{lemma}[Slim triangles give the four-point condition, cf.\ Bridson--Haefliger
+Prop.~III.H.1.22]
+  \label{Metric.HasSlimTrianglesWith.isHyperbolicWith}
   \notready
-  \uses{def:slim-triangles, def:hyperbolic-space}
+  \uses{Metric.HasSlimTrianglesWith, Metric.IsHyperbolicWith}
   If $X$ has $\delta$-slim triangles and is geodesic, then $X$ satisfies the four-point
   condition with constant $3\delta$.
 \end{lemma}
@@ -62,16 +64,18 @@ $3\delta$ in both directions.
   For a geodesic $\sigma$ from $x$ to $y$: (a) $(x \cdot y)_w \le d(w, p)$ for every $p$ on
   $\sigma$, by the triangle inequality; (b) some $p$ on $\sigma$ has
   $d(w, p) \le (x \cdot y)_w + 2\delta$, because by slimness of a triangle $w, x, y$ with side
-  $\sigma$ (Definition~\ref{def:slim-triangles}) and connectedness of $\sigma$ some $p$ is within
+  $\sigma$ (Definition~\ref{Metric.HasSlimTrianglesWith}) and connectedness of $\sigma$ some $p$ is
+  within
   $\delta$ of both other sides. Given $w, x, y, z$, take $p$ as in (b) on a side of a triangle
   $x, y, z$. It is within $\delta$ of a point $q$ on another side, say from $x$ to $z$, and (a)
   gives $(x \cdot z)_w \le d(w, q) \le (x \cdot y)_w + 3\delta$.
 \end{proof}
 
-\begin{lemma}[The four-point condition gives slim triangles, cf.\ Bridson--Haefliger Prop.~III.H.1.22]
-  \label{lem:four-point-slim}
+\begin{lemma}[The four-point condition gives slim triangles, cf.\ Bridson--Haefliger
+Prop.~III.H.1.22]
+  \label{Metric.IsHyperbolicWith.hasSlimTrianglesWith}
   \notready
-  \uses{def:slim-triangles, def:hyperbolic-space}
+  \uses{Metric.HasSlimTrianglesWith, Metric.IsHyperbolicWith}
   If $X$ satisfies the four-point condition with constant $\delta$, then it has
   $3\delta$-slim triangles.
 \end{lemma}
@@ -84,27 +88,30 @@ $3\delta$ in both directions.
 \end{proof}
 
 \begin{theorem}[L\"oh Ex.~7.E.10, Bridson--Haefliger Prop.~III.H.1.22]
-  \label{thm:hyperbolic-iff-slim}
+  \label{Metric.isHyperbolic_iff_exists_hasSlimTrianglesWith}
   \notready
-  \uses{lem:slim-four-point, lem:four-point-slim}
+  \uses{Metric.HasSlimTrianglesWith.isHyperbolicWith, Metric.IsHyperbolicWith.hasSlimTrianglesWith}
   A geodesic pseudometric space is hyperbolic if and only if it has $\delta$-slim triangles for
   some $\delta$.
 \end{theorem}
 \begin{proof}
-  ``If'' is Lemma~\ref{lem:slim-four-point}, ``only if'' is Lemma~\ref{lem:four-point-slim}.
+  ``If'' is Lemma~\ref{Metric.HasSlimTrianglesWith.isHyperbolicWith}, ``only if'' is
+  Lemma~\ref{Metric.IsHyperbolicWith.hasSlimTrianglesWith}.
   L\"oh leaves the theorem as an exercise and suggests going through thin triangles
   (Exercise 7.E.9); Bridson--Haefliger go through the insize.
 \end{proof}
 
 \begin{theorem}[Independence of the generating family]
-  \label{thm:hyperbolic-independent}
+  \label{Group.Generators.isHyperbolic_iff}
   \notready
-  \uses{def:hyperbolic-group, cor:change-of-generators, thm:hyperbolic-iff-slim}
+  \uses{Group.Generators.IsHyperbolicWith, Group.Generators.isQuasiIsometry_id,
+    Metric.isHyperbolic_iff_exists_hasSlimTrianglesWith}
   Whether $G$ with the word metric of a finite generating family is hyperbolic does not depend
   on the family.
 \end{theorem}
 \begin{proof}
-  Not planned yet (design decision D18). Corollary~\ref{cor:change-of-generators} alone does not
+  Not planned yet (design decision D18). Corollary~\ref{Group.Generators.isQuasiIsometry_id} alone
+  does not
   suffice: the four-point condition is not a quasi-isometry invariant of coarsely geodesic spaces
   (the graph of $|x|$ in $\R^2$ is bilipschitz to $\R$ and not hyperbolic). L\"oh defines
   hyperbolic groups by quasi-hyperbolicity of the Cayley graph (slim quasi-geodesic triangles,
@@ -112,8 +119,9 @@ $3\delta$ in both directions.
   can be pushed forward and pulled back along quasi-isometric embeddings (Proposition 7.2.9).
   For the four-point condition: pass from the word metric to the geometric realisation of the
   Cayley graph, a geodesic space in which it is $\frac12$-dense, with a larger constant; switch
-  to slim triangles by Theorem~\ref{thm:hyperbolic-iff-slim}; and carry them along the
-  quasi-isometry of Corollary~\ref{cor:change-of-generators}. That last step is L\"oh's
+  to slim triangles by Theorem~\ref{Metric.isHyperbolic_iff_exists_hasSlimTrianglesWith}; and carry
+  them along the
+  quasi-isometry of Corollary~\ref{Group.Generators.isQuasiIsometry_id}. That last step is L\"oh's
   Corollary 7.2.13 (from Proposition 7.2.9 and Theorem 7.2.10, whose proof uses the stability of
   quasi-geodesics, Theorem 7.2.11), or Bridson--Haefliger Thm.~III.H.1.9 (from
   Thm.~III.H.1.7).

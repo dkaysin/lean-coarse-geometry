@@ -6,16 +6,15 @@ bounded with $\bigcup_g g s = X$, $x_0 \in s$ and $r \ge 0$. The core lemmas are
 word length and no metric on $G$ (design decision D8).
 
 \begin{definition}
-  \label{def:svarc-milnor-gen-set}
+  \label{svarcMilnorGenSet}
   \notready
   $S(s, r) = \{g \in G \mid \exists a, b \in s,\ d(a, g b) \le r\}$.
-  \plannedlean{svarcMilnorGenSet}
 \end{definition}
 
 \begin{lemma}[Generation]
-  \label{lem:svarc-milnor-closure}
+  \label{svarcMilnorGenSet.closure_eq_top}
   \notready
-  \uses{def:svarc-milnor-gen-set, def:coarsely-connected, def:cobounded-smul}
+  \uses{svarcMilnorGenSet, Metric.IsCoarselyConnectedWith, IsCoboundedSMul}
   If $X$ is $r$-coarsely connected, then $S(s, r)$ generates $G$.
 \end{lemma}
 \begin{proof}
@@ -28,36 +27,38 @@ word length and no metric on $G$ (design decision D8).
 \end{proof}
 
 \begin{lemma}[Lower bound]
-  \label{lem:svarc-milnor-lower-bound}
+  \label{svarcMilnorGenSet.wordLength_le}
   \notready
-  \uses{lem:svarc-milnor-closure, def:coarsely-geodesic, lem:word-length-prod-le}
+  \uses{svarcMilnorGenSet.closure_eq_top, Metric.IsCoarselyGeodesicWith,
+    Group.Generators.wordLength_prod_le}
   If $X$ is $(r, L, C)$-coarsely geodesic, then
   $|g^{-1} h|_S \le L\,d(g x_0, h x_0) + C$ for all $g, h \in G$.
 \end{lemma}
 \begin{proof}
-  The proof of Lemma~\ref{lem:svarc-milnor-closure}, applied to a chain with
+  The proof of Lemma~\ref{svarcMilnorGenSet.closure_eq_top}, applied to a chain with
   $n \le L\,d(x_0, g^{-1} h x_0) + C$ steps, writes $g^{-1} h$ as a product of $n$ elements of
-  $S$; then Lemma~\ref{lem:word-length-prod-le}, and
+  $S$; then Lemma~\ref{Group.Generators.wordLength_prod_le}, and
   $d(g x_0, h x_0) = d(x_0, g^{-1} h x_0)$.
 \end{proof}
 
 \begin{lemma}[Upper bound]
-  \label{lem:svarc-milnor-upper-bound}
+  \label{svarcMilnorGenSet.dist_le}
   \notready
-  \uses{def:svarc-milnor-gen-set, lem:lipschitz-principle}
+  \uses{svarcMilnorGenSet, Group.Generators.dist_le_mul_wordLength}
   $d(g x_0, h x_0) \le (r + 2 \diam s)\,|g^{-1} h|_S$ for all $g, h \in G$.
 \end{lemma}
 \begin{proof}
   For $t \in S$ with witnesses $a, b$,
   $d(x_0, t x_0) \le d(x_0, a) + d(a, t b) + d(t b, t x_0) \le r + 2 \diam s$, and the same for
-  $t^{-1}$ since the action is isometric. Apply Lemma~\ref{lem:lipschitz-principle} to the orbit
+  $t^{-1}$ since the action is isometric. Apply Lemma~\ref{Group.Generators.dist_le_mul_wordLength}
+  to the orbit
   map.
 \end{proof}
 
 \begin{lemma}[Density]
-  \label{lem:svarc-milnor-density}
+  \label{IsCoboundedSMul.quasiDenseRange_smul}
   \notready
-  \uses{def:cobounded-smul, def:quasi-dense-range}
+  \uses{IsCoboundedSMul, Metric.QuasiDenseRange}
   Every $y \in X$ satisfies $d(y, g x_0) \le \diam s$ for some $g$; in particular the orbit map
   has quasi-dense range.
 \end{lemma}
@@ -66,9 +67,9 @@ word length and no metric on $G$ (design decision D8).
 \end{proof}
 
 \begin{lemma}[Finiteness]
-  \label{lem:svarc-milnor-finite}
+  \label{svarcMilnorGenSet.finite}
   \notready
-  \uses{def:svarc-milnor-gen-set, def:metrically-proper-smul}
+  \uses{svarcMilnorGenSet, IsMetricallyProperSMul}
   If the action is metrically proper, then $S(s, r)$ is finite.
 \end{lemma}
 \begin{proof}
@@ -77,33 +78,37 @@ word length and no metric on $G$ (design decision D8).
 \end{proof}
 
 \begin{theorem}[\v{S}varc--Milnor lemma, finite generation]
-  \label{thm:svarc-milnor-fg}
+  \label{Group.fg_of_isMetricallyProperSMul_of_isCoboundedSMul}
   \notready
-  \uses{lem:svarc-milnor-closure, lem:svarc-milnor-finite, lem:fg-of-finite-generators}
+  \uses{svarcMilnorGenSet.closure_eq_top, svarcMilnorGenSet.finite, Group.Generators.fg}
   A group acting isometrically, metrically properly and coboundedly on a nonempty coarsely
   connected pseudometric space is finitely generated.
-  \plannedlean{Group.fg_of_isMetricallyProperSMul_of_isCoboundedSMul}
 \end{theorem}
 \begin{proof}
   $S(s, r)$ is a finite generating set.
 \end{proof}
 
 \begin{theorem}[\v{S}varc--Milnor lemma, quasi-isometry]
-  \label{thm:svarc-milnor-qi}
+  \label{Group.Generators.isQuasiIsometry_smul_left}
   \notready
-  \uses{lem:svarc-milnor-lower-bound, lem:svarc-milnor-upper-bound, lem:svarc-milnor-density,
-    lem:svarc-milnor-finite, lem:qie-of-bounds, thm:qi-iff-qie-quasi-dense,
-    lem:change-of-generators-bound, lem:qi-comp}
+  \uses{svarcMilnorGenSet.wordLength_le, svarcMilnorGenSet.dist_le,
+    IsCoboundedSMul.quasiDenseRange_smul,
+    svarcMilnorGenSet.finite,
+    Metric.IsQuasiIsometricEmbedding.of_coarseLipschitzWith_of_coarseAntilipschitzWith,
+    Metric.isQuasiIsometry_iff_quasiDenseRange,
+    Group.Generators.wordLength_le_mul_wordLength, Metric.IsQuasiIsometry.comp}
   Under the same hypotheses, with $X$ coarsely geodesic, every orbit map $g \mapsto g x_0$ is a
   quasi-isometry from $G$ with the word metric of any finite generating family. The bound on
   the number of steps cannot be dropped: $\Z$ acting by translations on $(\R, \sqrt{d})$
   satisfies every other hypothesis.
-  \plannedlean{Group.Generators.isQuasiIsometry_smul_left}
 \end{theorem}
 \begin{proof}
   For the generating set $S(s, r)$: the lower and upper bounds make the orbit map a
-  quasi-isometric embedding (Lemma~\ref{lem:qie-of-bounds}), and with the density lemma
-  Theorem~\ref{thm:qi-iff-qie-quasi-dense} makes it a quasi-isometry. For another finite
+  quasi-isometric embedding
+  (Lemma~\ref{Metric.IsQuasiIsometricEmbedding.of_coarseLipschitzWith_of_coarseAntilipschitzWith}),
+  and with the density lemma
+  Theorem~\ref{Metric.isQuasiIsometry_iff_quasiDenseRange} makes it a quasi-isometry. For another
+  finite
   family, compose with the identity of $G$, which is a quasi-isometry by
-  Lemma~\ref{lem:change-of-generators-bound}.
+  Lemma~\ref{Group.Generators.wordLength_le_mul_wordLength}.
 \end{proof}
