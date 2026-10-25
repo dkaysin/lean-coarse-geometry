@@ -177,18 +177,24 @@ namespace QuasiIsometric
 /-- Every pseudometric space is quasi-isometric to itself. -/
 @[refl]
 theorem refl (α : Type*) [PseudoMetricSpace α] : QuasiIsometric α α :=
-  sorry
+  have h : IsQuasiIsometricEmbedding (id : α → α) :=
+    ⟨1, 0, LipschitzWith.id.coarseLipschitzWith, by
+      simpa using AntilipschitzWith.id.coarseAntilipschitzWith⟩
+  ⟨id, h, id, h, .rfl, .rfl⟩
 
 /-- Being quasi-isometric is symmetric. -/
 @[symm]
 theorem symm (h : QuasiIsometric α β) : QuasiIsometric β α :=
-  sorry
+  let ⟨f, hf, g, hg, hgf, hfg⟩ := h
+  ⟨g, hg, f, hf, hfg, hgf⟩
 
 /-- Being quasi-isometric is transitive. -/
 @[trans]
 theorem trans {γ : Type*} [PseudoMetricSpace γ] (h₁ : QuasiIsometric α β)
     (h₂ : QuasiIsometric β γ) : QuasiIsometric α γ :=
-  sorry
+  let ⟨_, hf⟩ := h₁
+  let ⟨_, hg⟩ := h₂
+  ⟨_, hg.comp hf⟩
 
 end QuasiIsometric
 

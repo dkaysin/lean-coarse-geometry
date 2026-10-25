@@ -102,13 +102,11 @@ attribute [blueprint "Metric.IsQuasiIsometry.comp" (latexEnv := "lemma")
 attribute [blueprint "Metric.QuasiIsometric.refl"
   (title := /-- cf.\ L\"oh, Rem.~5.1.12 -/)
   (statement := /-- Being quasi-isometric is an equivalence relation on pseudometric spaces. -/)
-  (proof := /-- Reflexivity: the identity, and more generally every isometric bijection, is a
-    quasi-isometry (L\"oh, Ex.~5.1.7), since an isometric embedding is a $(1, 0)$-quasi-isometric
-    embedding and the inverse is a quasi-inverse with both composites equal to the identity.
-    Symmetry is immediate from the definition (the quasi-inverse is a quasi-isometry). Transitivity
-    is Lemma~\ref{Metric.IsQuasiIsometry.comp}. L\"oh does not state the theorem; it follows from
+  (proof := /-- Reflexivity: the identity is $1$-Lipschitz and $1$-antilipschitz, hence a
+    $(1, 0)$-quasi-isometric embedding, and it is its own quasi-inverse, with both composites
+    equal to the identity (a special case of L\"oh, Ex.~5.1.7). Symmetry is immediate from the
+    definition (the quasi-inverse is a quasi-isometry). Transitivity is
+    Lemma~\ref{Metric.IsQuasiIsometry.comp}. L\"oh does not state the theorem; it follows from
     her Remark 5.1.12, where quasi-isometries are the isomorphisms of the category of metric spaces
-    and quasi-isometric embeddings up to finite distance. -/)
-  (proofUses := ["Metric.QuasiIsometric", "Metric.IsQuasiIsometricEmbeddingWith",
-    "Metric.IsQuasiIsometry.comp"])]
+    and quasi-isometric embeddings up to finite distance. -/)]
   Metric.QuasiIsometric.refl Metric.QuasiIsometric.symm Metric.QuasiIsometric.trans
