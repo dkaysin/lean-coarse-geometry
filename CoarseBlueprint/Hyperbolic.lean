@@ -17,7 +17,8 @@ attribute [blueprint "def:hyperbolic-space"
   (title := /-- Hyperbolic space -/)
   (statement := /-- A pseudometric space is \emph{$\delta$-hyperbolic} if it satisfies Gromov's
     four-point condition with constant $\delta$, and \emph{hyperbolic} if it is
-    $\delta$-hyperbolic for some $\delta$. -/)]
+    $\delta$-hyperbolic for some $\delta$. This is $(\delta)$-hyperbolicity in the sense of
+    Bridson--Haefliger, Definition III.H.1.20. -/)]
   Metric.IsHyperbolicWith Metric.IsHyperbolic
 
 attribute [blueprint "def:hyperbolic-group"
