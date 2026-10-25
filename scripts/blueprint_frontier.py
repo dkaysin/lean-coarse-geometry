@@ -6,7 +6,8 @@ from `CoarseBlueprint` into `.lake/build/blueprint` (run `lake build :blueprint`
 
 States: `proposed` (LaTeX, `\\notready`), `agreed` (LaTeX), `stated` (Lean, proof not
 sorry-free), `proved` (Lean), `mathlib` (`\\mathlibok`). The frontier is the set of agreed
-nodes all of whose `\\uses` are Lean nodes.
+nodes all of whose statement `\\uses` are Lean nodes: statements are formalized before proofs,
+so the `\\uses` of a node's proof do not hold it back.
 
 Exits with status 1 if a label is used or input but defined nowhere, or defined twice.
 """
@@ -84,7 +85,8 @@ def main():
             planned = re.search(r"\\plannedlean\{([^}]*)\}", statement)
             add(label, {"state": "proposed" if "\\notready" in statement else "agreed",
                         "where": f"{chapter}.tex" + (f" ({planned.group(1)})" if planned else ""),
-                        "uses": labels_in("uses", statement) + labels_in("uses", proof or "")})
+                        "uses": labels_in("uses", statement) + labels_in("uses", proof or ""),
+                        "statement_uses": labels_in("uses", statement)})
             order.append((chapter, label))
 
     for label, chapter in inputs:
@@ -98,7 +100,8 @@ def main():
     formal = {"stated", "proved", "mathlib"}
 
     def missing(label):
-        return [u for u in nodes[label]["uses"] if nodes.get(u, {}).get("state") not in formal]
+        return [u for u in nodes[label]["statement_uses"]
+                if nodes.get(u, {}).get("state") not in formal]
 
     seen, frontier, blocked, sorried = set(), [], [], []
     for chapter, label in order:
@@ -115,7 +118,7 @@ def main():
 
     if args.all:
         print()
-    print("Frontier (agreed, every \\uses formalized):")
+    print("Frontier (agreed, every statement \\uses formalized):")
     for chapter, label in frontier:
         print(f"  {chapter:18} {label:45} {nodes[label]['where']}")
     print("Stated, proof not sorry-free:")
