@@ -1,0 +1,93 @@
+\chapter{Word metrics}
+\label{chap:word-metric}
+
+Milestone M3. $P$ is a generating family $\iota \to G$ of a group $G$, and $|g|_P$ the word
+length of $g$ with respect to $P$. The formalized nodes of this chapter are copies of open
+Mathlib pull requests (see \texttt{ATTRIBUTION.md}).
+
+\section{Generating families and word length}
+
+\inputleannode{def:generators}
+\inputleannode{lem:fg-of-finite-generators}
+\inputleannode{def:word-length}
+\inputleannode{lem:word-length-wordprod-le}
+\inputleannode{lem:word-length-le-iff}
+\inputleannode{lem:word-length-eq-zero-iff}
+\inputleannode{lem:word-length-inv}
+\inputleannode{lem:word-length-mul-le}
+\inputleannode{def:word-metric}
+
+\inputleannode{def:cayley-graph}
+\inputleannode{thm:dist-cayley-graph}
+
+\section{Bounds}
+
+\begin{lemma}
+  \label{lem:word-length-generator-le-one}
+  \notready
+  \uses{def:word-length, lem:word-length-wordprod-le}
+  $|P_i|_P \le 1$ and $|P_i^{-1}|_P \le 1$ for every $i$.
+  \plannedlean{Group.Generators.wordLength_val_le_one}
+\end{lemma}
+\begin{proof}
+  Both are the product of a word of length one.
+\end{proof}
+
+\begin{lemma}[Product bound]
+  \label{lem:word-length-prod-le}
+  \notready
+  \uses{lem:word-length-generator-le-one, lem:word-length-mul-le}
+  If every element of a list $g_1, \dots, g_n$ of elements of $G$ lies in a generating set $S$,
+  then $|g_1 \cdots g_n|_S \le n$.
+  \plannedlean{Group.Generators.wordLength_prod_le}
+\end{lemma}
+\begin{proof}
+  Induction on $n$ with subadditivity of the word length.
+\end{proof}
+
+\begin{lemma}[Lipschitz principle]
+  \label{lem:lipschitz-principle}
+  \notready
+  \uses{def:word-length, lem:word-length-le-iff}
+  Let $\varphi \colon G \to X$ satisfy $d(\varphi(g), \varphi(g s)) \le K$ for all $g \in G$ and
+  every generator or inverse generator $s$. Then
+  $d(\varphi(g), \varphi(h)) \le K\,|g^{-1} h|_P$ for all $g, h$.
+  \plannedlean{Group.Generators.dist_le_mul_wordLength}
+\end{lemma}
+\begin{proof}
+  Write $g^{-1} h$ as a geodesic word and apply the triangle inequality along its prefixes.
+\end{proof}
+
+\begin{lemma}[Uniform discreteness]
+  \label{lem:word-metric-uniformly-discrete}
+  \notready
+  \uses{def:word-metric, lem:word-length-eq-zero-iff}
+  For the word metric, $d(g, h) \ge 1$ whenever $g \ne h$.
+  \plannedlean{Group.Generators.one_le_dist}
+\end{lemma}
+\begin{proof}
+  $d(g, h) = |g^{-1} h|_P$ is a natural number, and it is $0$ only if $g = h$.
+\end{proof}
+
+\begin{lemma}[Change of generators]
+  \label{lem:change-of-generators-bound}
+  \notready
+  \uses{lem:lipschitz-principle, lem:word-length-inv}
+  Let $P$ be finite and $Q$ another generating family. Then
+  $|g|_Q \le M\,|g|_P$ with $M = \max_i |P_i|_Q$.
+  \plannedlean{Group.Generators.wordLength_le_mul_wordLength}
+\end{lemma}
+\begin{proof}
+  Lemma~\ref{lem:lipschitz-principle} for the identity map $(G, d_P) \to (G, d_Q)$.
+\end{proof}
+
+\begin{lemma}[Finite balls]
+  \label{lem:word-metric-finite-balls}
+  \notready
+  \uses{def:word-length, lem:word-length-le-iff}
+  If $\iota$ is finite, then $\{g \mid |g|_P \le n\}$ is finite for every $n$.
+  \plannedlean{Group.Generators.finite_setOf_wordLength_le}
+\end{lemma}
+\begin{proof}
+  It is the image of the finite set of words of length at most $n$.
+\end{proof}

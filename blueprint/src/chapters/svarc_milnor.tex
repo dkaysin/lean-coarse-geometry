@@ -1,0 +1,109 @@
+\chapter{The \v{S}varc--Milnor lemma}
+\label{chap:svarc-milnor}
+
+Milestone M5. $G$ acts isometrically on a nonempty pseudometric space $X$, $s \subseteq X$ is
+bounded with $\bigcup_g g s = X$, $x_0 \in s$ and $r \ge 0$. The core lemmas are stated with the
+word length and no metric on $G$ (design decision D8).
+
+\begin{definition}
+  \label{def:svarc-milnor-gen-set}
+  \notready
+  $S(s, r) = \{g \in G \mid \exists a, b \in s,\ d(a, g b) \le r\}$.
+  \plannedlean{svarcMilnorGenSet}
+\end{definition}
+
+\begin{lemma}[Generation]
+  \label{lem:svarc-milnor-closure}
+  \notready
+  \uses{def:svarc-milnor-gen-set, def:coarsely-connected, def:cobounded-smul}
+  If $X$ is $r$-coarsely connected, then $S(s, r)$ generates $G$.
+\end{lemma}
+\begin{proof}
+  Take an $r$-chain $x_0 = y_0, \dots, y_n = g x_0$ and pick $h_i$ with $y_i \in h_i s$, with
+  $h_0 = 1$ and $h_n = g$. Then $h_i^{-1} h_{i+1} \in S$, witnessed by $h_i^{-1} y_i \in s$ and
+  $h_i^{-1} y_{i+1} \in h_i^{-1} h_{i+1} s$, at distance at most $r$. So
+  $g = \prod_i h_i^{-1} h_{i+1}$ is a product of elements of $S$. (Choose the $h_i$ with
+  \texttt{choose} on the covering hypothesis, then patch the endpoints; write the telescoping
+  product over \texttt{List.finRange n}.)
+\end{proof}
+
+\begin{lemma}[Lower bound]
+  \label{lem:svarc-milnor-lower-bound}
+  \notready
+  \uses{lem:svarc-milnor-closure, def:coarsely-geodesic, lem:word-length-prod-le}
+  If $X$ is $(r, L, C)$-coarsely geodesic, then
+  $|g^{-1} h|_S \le L\,d(g x_0, h x_0) + C$ for all $g, h \in G$.
+\end{lemma}
+\begin{proof}
+  The proof of Lemma~\ref{lem:svarc-milnor-closure}, applied to a chain with
+  $n \le L\,d(x_0, g^{-1} h x_0) + C$ steps, writes $g^{-1} h$ as a product of $n$ elements of
+  $S$; then Lemma~\ref{lem:word-length-prod-le}, and
+  $d(g x_0, h x_0) = d(x_0, g^{-1} h x_0)$.
+\end{proof}
+
+\begin{lemma}[Upper bound]
+  \label{lem:svarc-milnor-upper-bound}
+  \notready
+  \uses{def:svarc-milnor-gen-set, lem:lipschitz-principle}
+  $d(g x_0, h x_0) \le (r + 2 \diam s)\,|g^{-1} h|_S$ for all $g, h \in G$.
+\end{lemma}
+\begin{proof}
+  For $t \in S$ with witnesses $a, b$,
+  $d(x_0, t x_0) \le d(x_0, a) + d(a, t b) + d(t b, t x_0) \le r + 2 \diam s$, and the same for
+  $t^{-1}$ since the action is isometric. Apply Lemma~\ref{lem:lipschitz-principle} to the orbit
+  map.
+\end{proof}
+
+\begin{lemma}[Density]
+  \label{lem:svarc-milnor-density}
+  \notready
+  \uses{def:cobounded-smul, def:quasi-dense-range}
+  Every $y \in X$ satisfies $d(y, g x_0) \le \diam s$ for some $g$; in particular the orbit map
+  has quasi-dense range.
+\end{lemma}
+\begin{proof}
+  If $y \in g s$, then $g^{-1} y$ and $x_0$ both lie in $s$.
+\end{proof}
+
+\begin{lemma}[Finiteness]
+  \label{lem:svarc-milnor-finite}
+  \notready
+  \uses{def:svarc-milnor-gen-set, def:metrically-proper-smul}
+  If the action is metrically proper, then $S(s, r)$ is finite.
+\end{lemma}
+\begin{proof}
+  $S(s, r) \subseteq \{g \mid g B \cap B \ne \emptyset\}$ for $B$ the closed $r$-thickening of
+  $s$, which is bounded.
+\end{proof}
+
+\begin{theorem}[\v{S}varc--Milnor lemma, finite generation]
+  \label{thm:svarc-milnor-fg}
+  \notready
+  \uses{lem:svarc-milnor-closure, lem:svarc-milnor-finite, lem:fg-of-finite-generators}
+  A group acting isometrically, metrically properly and coboundedly on a nonempty coarsely
+  connected pseudometric space is finitely generated.
+  \plannedlean{Group.fg_of_isMetricallyProperSMul_of_isCoboundedSMul}
+\end{theorem}
+\begin{proof}
+  $S(s, r)$ is a finite generating set.
+\end{proof}
+
+\begin{theorem}[\v{S}varc--Milnor lemma, quasi-isometry]
+  \label{thm:svarc-milnor-qi}
+  \notready
+  \uses{lem:svarc-milnor-lower-bound, lem:svarc-milnor-upper-bound, lem:svarc-milnor-density,
+    lem:svarc-milnor-finite, lem:qie-of-bounds, thm:qi-iff-qie-quasi-dense,
+    lem:change-of-generators-bound, lem:qi-comp}
+  Under the same hypotheses, with $X$ coarsely geodesic, every orbit map $g \mapsto g x_0$ is a
+  quasi-isometry from $G$ with the word metric of any finite generating family. The bound on
+  the number of steps cannot be dropped: $\Z$ acting by translations on $(\R, \sqrt{d})$
+  satisfies every other hypothesis.
+  \plannedlean{Group.Generators.isQuasiIsometry_smul_left}
+\end{theorem}
+\begin{proof}
+  For the generating set $S(s, r)$: the lower and upper bounds make the orbit map a
+  quasi-isometric embedding (Lemma~\ref{lem:qie-of-bounds}), and with the density lemma
+  Theorem~\ref{thm:qi-iff-qie-quasi-dense} makes it a quasi-isometry. For another finite
+  family, compose with the identity of $G$, which is a quasi-isometry by
+  Lemma~\ref{lem:change-of-generators-bound}.
+\end{proof}

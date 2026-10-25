@@ -1,0 +1,18 @@
+% Macros and settings shared by the pdf and the web version.
+
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+
+% \plannedlean{Lean.Name}, the Lean name a node not formalized yet is planned to have, is
+% defined in macros/print.tex and macros/web.tex. Write the name unescaped (`a_b`, not `a\_b`).
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Rnn}{\mathbb{R}_{\ge 0}}
+\DeclareMathOperator{\diam}{diam}

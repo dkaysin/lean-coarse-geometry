@@ -23,3 +23,6 @@ rev = "10dc7882b0311638b63e9aad5506f2cfcf4e61b8"
 
 [[lean_lib]]
 name = "Coarse"
+
+[[lean_lib]]
+name = "CoarseBlueprint"

@@ -1,0 +1,76 @@
+\chapter{Coarsely geodesic spaces}
+\label{chap:coarsely-geodesic}
+
+Milestone M2. An \emph{$r$-chain} from $x$ to $y$ is a sequence $x = x_0, \dots, x_n = y$ with
+$d(x_i, x_{i+1}) \le r$; $n$ is its number of steps. The encoding of chains (a map
+$\mathrm{Fin}(n + 1) \to X$ or the reflexive--transitive closure of a relation) and the split
+into two definitions are open decisions (design decisions D5, D6, D13), so the definitions are not ready.
+
+\begin{definition}[Coarsely connected space]
+  \label{def:coarsely-connected}
+  \notready
+  A pseudometric space $X$ is \emph{$r$-coarsely connected} if any two points are joined by an
+  $r$-chain.
+  \plannedlean{Metric.IsCoarselyConnectedWith}
+\end{definition}
+
+\begin{definition}[Coarsely geodesic space]
+  \label{def:coarsely-geodesic}
+  \notready
+  A pseudometric space $X$ is \emph{$(r, L, C)$-coarsely geodesic} if any two points $x, y$ are
+  joined by an $r$-chain with at most $L\,d(x, y) + C$ steps.
+  \plannedlean{Metric.IsCoarselyGeodesicWith}
+\end{definition}
+
+\begin{lemma}
+  \label{lem:coarsely-geodesic-coarsely-connected}
+  \notready
+  \uses{def:coarsely-geodesic, def:coarsely-connected}
+  An $(r, L, C)$-coarsely geodesic space is $r$-coarsely connected.
+\end{lemma}
+\begin{proof}
+  Forget the bound on the number of steps.
+\end{proof}
+
+\begin{lemma}
+  \label{lem:coarsely-geodesic-mono}
+  \notready
+  \uses{def:coarsely-geodesic}
+  Being $(r, L, C)$-coarsely geodesic is monotone in $r$, $L$ and $C$.
+\end{lemma}
+\begin{proof}
+  The same chains work.
+\end{proof}
+
+\begin{lemma}[Chain principle]
+  \label{lem:chain-principle}
+  \notready
+  \uses{def:coarsely-geodesic, def:coarse-lipschitz}
+  Let $X$ be $(r, L, C)$-coarsely geodesic and let $f \colon X \to Y$ satisfy
+  $d(f x, f y) \le A$ whenever $d(x, y) \le r$. Then $f$ is $(A L, A C)$-coarse Lipschitz.
+\end{lemma}
+\begin{proof}
+  Along a chain with $n \le L\,d(x, y) + C$ steps, $d(f x, f y) \le A n$.
+\end{proof}
+
+\begin{lemma}
+  \label{lem:normed-space-coarsely-geodesic}
+  \notready
+  \uses{def:coarsely-geodesic}
+  A real normed space is $(r, 1/r, 1)$-coarsely geodesic for every $r > 0$.
+\end{lemma}
+\begin{proof}
+  Take the points $x + \frac{k}{n}(y - x)$ for $k = 0, \dots, n$ and
+  $n = \lceil \|y - x\| / r \rceil$.
+\end{proof}
+
+\begin{lemma}
+  \label{lem:word-metric-coarsely-geodesic}
+  \notready
+  \uses{def:coarsely-geodesic, def:word-metric, lem:word-length-generator-le-one}
+  A group with the word metric of a generating family is $(1, 1, 0)$-coarsely geodesic.
+\end{lemma}
+\begin{proof}
+  The prefixes of a geodesic word for $g^{-1} h$, multiplied on the left by $g$, form a
+  $1$-chain from $g$ to $h$ with $|g^{-1} h|$ steps.
+\end{proof}

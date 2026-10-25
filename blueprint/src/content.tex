@@ -1,0 +1,17 @@
+% Blueprint content, shared by the web and the pdf version.
+%
+% Formalized nodes are written in Lean, in the `CoarseBlueprint` library, and inserted here with
+% \inputleannode{label}; `lake build :blueprint` must run first. Nodes not formalized yet are
+% written in LaTeX in the chapter files, with \notready until their statement is agreed.
+
+% Makes \inputleannode and \inputleanmodule available.
+\input{../../.lake/build/blueprint/library/CoarseBlueprint}
+
+\input{chapters/overview}
+\input{chapters/quasi_isometry}
+\input{chapters/word_metric}
+\input{chapters/coarsely_geodesic}
+\input{chapters/actions}
+\input{chapters/svarc_milnor}
+\input{chapters/corollaries}
+\input{chapters/coarse_spaces}
