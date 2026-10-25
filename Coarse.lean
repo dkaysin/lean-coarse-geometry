@@ -10,6 +10,7 @@ public import Coarse.Geometry.Group.ReducedWord
 public import Coarse.Geometry.Group.WordMetric
 public import Coarse.Geometry.Group.WordProd
 public import Coarse.GroupTheory.Generators
+public import Coarse.GroupTheory.Presentation
 public import Coarse.Topology.CoarseSpace.Algebra.UniformlyControlledSMul
 public import Coarse.Topology.CoarseSpace.Basic
 public import Coarse.Topology.CoarseSpace.CoarseEquiv.Defs

@@ -79,3 +79,12 @@ reading it, is not listed.
 - **Original authors**: Hang Lu Su, Katerina Hristova
 - **Copied**: `Mathlib/Geometry/Group/Hyperbolic.lean`, to the same path under `Coarse/`
 - **Changes**: imports point to the copies; the PR's other edits to Mathlib files are not copied
+
+### Mathlib `Presentation`
+
+- **Source**: <https://github.com/leanprover-community/mathlib4>,
+  `Mathlib/GroupTheory/Presentation.lean`, commit `10dc788`
+- **Licence**: Apache 2.0
+- **Original authors**: Hang Lu Su, Valerio Proietti
+- **Copied**: the file, to `Coarse/GroupTheory/Presentation.lean`
+- **Changes**: imports the copy of `Generators`, so that it builds alongside the #44853 copies
