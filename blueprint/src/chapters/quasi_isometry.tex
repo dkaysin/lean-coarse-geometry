@@ -16,30 +16,6 @@ Milestone M1. All spaces are pseudometric spaces and all constants are in $\Rnn$
 \inputleannode{lem:coarse-antilipschitz-mono}
 \inputleannode{lem:coarse-antilipschitz-comp}
 
-\begin{lemma}[Uniformly discrete domain]
-  \label{lem:coarse-lipschitz-uniformly-discrete}
-  \notready
-  \uses{def:coarse-lipschitz}
-  If $d(x, y) \ge 1$ for all $x \ne y$ in $X$ and $f \colon X \to Y$ is $(L, C)$-coarse
-  Lipschitz, then $f$ is $(L + C)$-Lipschitz.
-  \plannedlean{Metric.CoarseLipschitzWith.lipschitzWith}
-\end{lemma}
-\begin{proof}
-  For $x \ne y$, $L\,d(x, y) + C \le (L + C)\,d(x, y)$.
-\end{proof}
-
-\begin{lemma}[Uniformly discrete codomain]
-  \label{lem:coarse-antilipschitz-uniformly-discrete}
-  \notready
-  \uses{def:coarse-antilipschitz}
-  If $d(y, y') \ge 1$ for all $y \ne y'$ in $Y$ and $f \colon X \to Y$ is injective and
-  $(L, C)$-coarse antilipschitz, then $f$ is $(L + C)$-antilipschitz.
-  \plannedlean{Metric.CoarseAntilipschitzWith.antilipschitzWith}
-\end{lemma}
-\begin{proof}
-  For $x \ne y$, $f x \ne f y$, so $L\,d(f x, f y) + C \le (L + C)\,d(f x, f y)$.
-\end{proof}
-
 \section{Maps at finite distance}
 
 \inputleannode{def:finite-dist}
