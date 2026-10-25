@@ -25,7 +25,6 @@ Milestone M1. All spaces are pseudometric spaces and all constants are in $\Rnn$
 
 \begin{lemma}[L\"oh, Prop.~5.1.11 (3a)]
   \label{lem:finite-dist-comp-right}
-  \notready
   \uses{def:finite-dist}
   If $f$ and $g \colon X \to Y$ have finite distance, then so do $f \circ k$ and $g \circ k$ for
   every map $k \colon W \to X$.
@@ -37,7 +36,6 @@ Milestone M1. All spaces are pseudometric spaces and all constants are in $\Rnn$
 
 \begin{lemma}[L\"oh, Prop.~5.1.11 (3b)]
   \label{lem:finite-dist-comp-left}
-  \notready
   \uses{def:finite-dist, def:coarse-lipschitz}
   If $f$ and $g \colon X \to Y$ have finite distance $D$ and $h \colon Y \to Z$ is $(L, C)$-coarse
   Lipschitz, then $h \circ f$ and $h \circ g$ have finite distance $L D + C$.
@@ -49,7 +47,6 @@ Milestone M1. All spaces are pseudometric spaces and all constants are in $\Rnn$
 
 \begin{lemma}[L\"oh, Prop.~5.1.11 (1)]
   \label{lem:coarse-lipschitz-of-finite-dist}
-  \notready
   \uses{def:finite-dist, def:coarse-lipschitz, def:coarse-antilipschitz}
   If $f$ is $(L, C)$-coarse Lipschitz and $g$ has finite distance $D$ from $f$, then $g$ is
   $(L, C + 2D)$-coarse Lipschitz. If $f$ is $(L, C)$-coarse antilipschitz, then $g$ is
@@ -69,7 +66,6 @@ Milestone M1. All spaces are pseudometric spaces and all constants are in $\Rnn$
 
 \begin{lemma}
   \label{lem:isometry-qie}
-  \notready
   \uses{def:qie-with}
   An isometric embedding is a $(1, 0)$-quasi-isometric embedding.
   \plannedlean{Isometry.isQuasiIsometricEmbeddingWith}
@@ -80,7 +76,6 @@ Milestone M1. All spaces are pseudometric spaces and all constants are in $\Rnn$
 
 \begin{lemma}[L\"oh, Prop.~5.1.11 (4)]
   \label{lem:qie-comp}
-  \notready
   \uses{def:qie, lem:qie-of-bounds, lem:coarse-lipschitz-comp, lem:coarse-antilipschitz-comp}
   The composition of two quasi-isometric embeddings is a quasi-isometric embedding.
   \plannedlean{Metric.IsQuasiIsometricEmbedding.comp}
@@ -97,7 +92,6 @@ Milestone M1. All spaces are pseudometric spaces and all constants are in $\Rnn$
 
 \begin{lemma}[L\"oh, Prop.~5.1.11 (5)]
   \label{lem:qi-id}
-  \notready
   \uses{def:qi, lem:isometry-qie, lem:finite-dist-refl}
   The identity map, and more generally every isometric bijection, is a quasi-isometry.
   \plannedlean{IsometryEquiv.isQuasiIsometry}
@@ -108,7 +102,6 @@ Milestone M1. All spaces are pseudometric spaces and all constants are in $\Rnn$
 
 \begin{lemma}[L\"oh, Prop.~5.1.11 (5)]
   \label{lem:qi-comp}
-  \notready
   \uses{def:qi, lem:qie-comp, lem:finite-dist-comp-right, lem:finite-dist-comp-left,
     lem:finite-dist-trans}
   The composition of two quasi-isometries is a quasi-isometry.
@@ -122,7 +115,6 @@ Milestone M1. All spaces are pseudometric spaces and all constants are in $\Rnn$
 
 \begin{lemma}[L\"oh, Prop.~5.1.11 (2)]
   \label{lem:qi-of-finite-dist}
-  \notready
   \uses{def:qi, lem:coarse-lipschitz-of-finite-dist, lem:qie-of-bounds, lem:finite-dist-trans,
     lem:finite-dist-comp-left}
   A map at finite distance from a quasi-isometry is a quasi-isometry.
@@ -134,7 +126,6 @@ Milestone M1. All spaces are pseudometric spaces and all constants are in $\Rnn$
 
 \begin{theorem}
   \label{thm:quasi-isometric-equivalence}
-  \notready
   \uses{def:quasi-isometric, lem:qi-id, lem:qi-comp}
   Being quasi-isometric is an equivalence relation on pseudometric spaces.
   \plannedlean{Metric.QuasiIsometric.refl, .symm, .trans}
