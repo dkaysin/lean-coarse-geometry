@@ -75,7 +75,7 @@ open scoped NNReal
 namespace Metric
 
 variable {α β : Type*} [PseudoMetricSpace α] [PseudoMetricSpace β]
-  {c b L₁ C₁ L₂ C₂ : ℝ≥0} {f : α → β}
+  {c b c' b' L₁ C₁ L₂ C₂ : ℝ≥0} {f : α → β}
 
 /-! ### Quasi-isometric embeddings -/
 
@@ -90,16 +90,11 @@ structure IsQuasiIsometricEmbeddingWith (c b : ℝ≥0) (f : α → β) : Prop w
   /-- The lower bound: `dist x y ≤ c * dist (f x) (f y) + c * b`. -/
   coarseAntilipschitzWith : CoarseAntilipschitzWith c (c * b) f
 
-variable (c' b' : ℝ≥0) in
-/-- (c, b)-quasi-isometric embedding is also (c', b')-quasi-isometric embedding
-for c ≤ c' and b ≤ b'. -/
-theorem mono (hf : IsQuasiIsometricEmbeddingWith c b f) (hc : c ≤ c') (hb : b ≤ b') :
-    IsQuasiIsometricEmbeddingWith c' b' f := {
-      coarseLipschitzWith := by
-        exact hf.coarseLipschitzWith.mono hc hb
-      coarseAntilipschitzWith := by
-        exact hf.coarseAntilipschitzWith.mono hc (by gcongr)
-    }
+/-- A `(c, b)`-quasi-isometric embedding is a `(c', b')`-quasi-isometric embedding for `c ≤ c'`
+and `b ≤ b'`. -/
+theorem IsQuasiIsometricEmbeddingWith.mono (hf : IsQuasiIsometricEmbeddingWith c b f)
+    (hc : c ≤ c') (hb : b ≤ b') : IsQuasiIsometricEmbeddingWith c' b' f :=
+  ⟨hf.coarseLipschitzWith.mono hc hb, hf.coarseAntilipschitzWith.mono hc (by gcongr)⟩
 
 /-- A map `f` between pseudometric spaces is a **quasi-isometric embedding** if it is a
 `(c, b)`-quasi-isometric embedding for some constants `c` and `b`.
@@ -107,24 +102,20 @@ theorem mono (hf : IsQuasiIsometricEmbeddingWith c b f) (hc : c ≤ c') (hb : b 
 def IsQuasiIsometricEmbedding (f : α → β) : Prop :=
   ∃ c b, IsQuasiIsometricEmbeddingWith c b f
 
-namespace IsQuasiIsometricEmbedding
-
-/-- A map that is coarse Lipschitz and coarse antilipschitz, for possibly different constants,
+/-- A coarse antilipschitz map that is also coarse Lipschitz, for possibly different constants,
 is a quasi-isometric embedding. -/
-lemma of_coarseLipschitzWith_of_coarseAntilipschitzWith
-    (h₁ : CoarseLipschitzWith L₁ C₁ f) (h₂ : CoarseAntilipschitzWith L₂ C₂ f)
-    : ∃ L C: ℝ≥0, IsQuasiIsometricEmbeddingWith L C f := by
-  use max (max L₁ L₂) 1, max C₁ C₂
+theorem CoarseAntilipschitzWith.isQuasiIsometricEmbedding
+    (hf : CoarseAntilipschitzWith L₂ C₂ f) (hf' : CoarseLipschitzWith L₁ C₁ f) :
+    IsQuasiIsometricEmbedding f := by
+  refine ⟨max (max L₁ L₂) 1, max C₁ C₂, ?_⟩
   have hC₂ : C₂ ≤ max (max L₁ L₂) 1 * max C₁ C₂ := by
     have hM : (1 : ℝ≥0) ≤ max (max L₁ L₂) 1 := by simp
     calc C₂ ≤ max C₁ C₂ := by simp
       _ = 1 * max C₁ C₂ := by simp
       _ ≤ max (max L₁ L₂) 1 * max C₁ C₂ := by gcongr
   constructor
-  · exact h₁.mono (by simp) (by simp)
-  · exact h₂.mono (by simp) (hC₂)
-
-end IsQuasiIsometricEmbedding
+  · exact hf'.mono (by simp) (by simp)
+  · exact hf.mono (by simp) (hC₂)
 
 /-! ### Quasi-isometries -/
 
@@ -214,7 +205,7 @@ lemma of_hasFiniteDist_comp_id (hf : IsQuasiIsometricEmbedding f)
     grw [h, dist_comm y, hD y, hD y', hf.coarseLipschitzWith (g y) (g y')]
     push_cast
     exact le_of_eq (by ring)
-  exact of_coarseLipschitzWith_of_coarseAntilipschitzWith h₁ h₂
+  exact h₂.isQuasiIsometricEmbedding h₁
 
 /-- If `f` is a quasi-isometric embedding and `f ∘ g` has finite distance from the identity, then
 so does `g ∘ f`.

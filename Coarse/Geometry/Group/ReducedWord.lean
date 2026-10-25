@@ -58,7 +58,7 @@ lemma isReduced_walkWord_of_isNonBacktracking {u v : G} (p : P.cayleySimpleGraph
     (hnb : p.IsNonBacktracking) : FreeGroup.IsReduced (P.walkWord p) := by
   rw [Walk.isNonBacktracking_def] at hnb
   rw [FreeGroup.IsReduced, walkWord, List.isChain_map]
-  refine p.isChain_dartAdj_darts.imp_of_isChain ?_ hnb
+  refine p.isChain_dartAdj_darts.imp₂ ?_ hnb
   intro d d' h hne h1
   -- if the letters of `d` and `d'` cancel, then `d` is the reverse of `d'`
   by_contra h2
@@ -77,7 +77,7 @@ lemma isNonBacktracking_of_isReduced_walkWord {u v : G} (p : P.cayleySimpleGraph
     (hred : FreeGroup.IsReduced (P.walkWord p)) : p.IsNonBacktracking := by
   rw [FreeGroup.IsReduced, walkWord, List.isChain_map] at hred
   rw [Walk.isNonBacktracking_def]
-  refine p.isChain_dartAdj_darts.imp_of_isChain ?_ hred
+  refine p.isChain_dartAdj_darts.imp₂ ?_ hred
   intro d d' h hcancel heq
   -- if `d` is the reverse of `d'`, then their letters cancel
   rw [P.eq_symm_iff_wordProd_dartLetter_eq_inv h, ← P.wordProd_invRev] at heq

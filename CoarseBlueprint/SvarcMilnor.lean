@@ -12,7 +12,7 @@ import Coarse.Geometry.Group.SvarcMilnor
 Blueprint nodes for `Coarse/Geometry/Group/SvarcMilnor.lean` (milestone M5).
 -/
 
-attribute [blueprint "Group.fg_of_isMetricallyProperSMul_of_isCoboundedSMul"
+attribute [blueprint "Group.fg_of_isCoboundedSMul"
   (title := /-- \v{S}varc--Milnor lemma, finite generation -/)
   (statement := /-- A group acting isometrically, metrically properly and coboundedly on a nonempty
     coarsely connected pseudometric space is finitely generated. -/)
@@ -30,18 +30,17 @@ attribute [blueprint "Group.fg_of_isMetricallyProperSMul_of_isCoboundedSMul"
     generated. -/)
   (proofUses := ["Metric.IsCoarselyConnectedWith", "IsCoboundedSMul", "IsMetricallyProperSMul",
     "Group.Generators"])]
-  Group.fg_of_isMetricallyProperSMul_of_isCoboundedSMul
+  Group.fg_of_isCoboundedSMul
 
-attribute [blueprint "Group.Generators.isQuasiIsometry_smul_left"
+attribute [blueprint "Group.Generators.isQuasiIsometry_smul_const"
   (title := /-- \v{S}varc--Milnor lemma, quasi-isometry -/)
   (statement := /-- Under the same hypotheses, with $X$ coarsely geodesic, every orbit map $g
     \mapsto g x_0$ is a quasi-isometry from $G$ with the word metric of any finite generating
     family. The bound on the number of steps cannot be dropped: $\Z$ acting by translations on $(\R,
     \sqrt{d})$ satisfies every other hypothesis. -/)
   (proof := /-- Let $X$ be $(r, L, C)$-coarsely geodesic; it is in particular $r$-coarsely
-    connected, so by the proof of
-    Theorem~\ref{Group.fg_of_isMetricallyProperSMul_of_isCoboundedSMul} $S$ is a finite generating
-    set. Work first with the word length $|\cdot|_S$.
+    connected, so by the proof of Theorem~\ref{Group.fg_of_isCoboundedSMul} $S$ is a finite
+    generating set. Work first with the word length $|\cdot|_S$.
 
     \emph{Lower bound.} The chain argument above, applied to a chain from $x_0$ to $g^{-1} h x_0$
     with $n \le L\,d(x_0, g^{-1} h x_0) + C$ steps, writes $g^{-1} h$ as a product of $n$ elements
@@ -57,7 +56,7 @@ attribute [blueprint "Group.Generators.isQuasiIsometry_smul_left"
     \diam s$: the orbit map has quasi-dense range.
 
     The two bounds make the orbit map a quasi-isometric embedding by
-    Lemma~\ref{Metric.IsQuasiIsometricEmbedding.of_coarseLipschitzWith_of_coarseAntilipschitzWith}
+    Lemma~\ref{Metric.CoarseAntilipschitzWith.isQuasiIsometricEmbedding}
     and with the density Theorem~\ref{Metric.isQuasiIsometry_iff_quasiDenseRange} makes it a
     quasi-isometry. For another finite family, compose with the identity of $G$, which is a
     quasi-isometry by Lemma~\ref{Group.Generators.wordLength_le_mul_wordLength}
@@ -65,7 +64,7 @@ attribute [blueprint "Group.Generators.isQuasiIsometry_smul_left"
   (proofUses := ["Metric.IsCoarselyGeodesicWith", "IsCoboundedSMul", "IsMetricallyProperSMul",
     "Group.Generators.groupNorm", "Group.Generators.dist_le_mul_wordLength",
     "Group.Generators.wordLength_le_mul_wordLength",
-    "Metric.IsQuasiIsometricEmbedding.of_coarseLipschitzWith_of_coarseAntilipschitzWith",
+    "Metric.CoarseAntilipschitzWith.isQuasiIsometricEmbedding",
     "Metric.QuasiDenseRange", "Metric.isQuasiIsometry_iff_quasiDenseRange",
     "Metric.IsQuasiIsometry.comp"])]
-  Group.Generators.isQuasiIsometry_smul_left
+  Group.Generators.isQuasiIsometry_smul_const

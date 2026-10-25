@@ -19,9 +19,8 @@ every orbit map is a quasi-isometry for the word metric of any finite generating
 
 ## Main statements
 
-* `Group.fg_of_isMetricallyProperSMul_of_isCoboundedSMul`: the Švarc–Milnor lemma, finite
-  generation.
-* `Group.Generators.isQuasiIsometry_smul_left`: the Švarc–Milnor lemma, quasi-isometry.
+* `Group.fg_of_isCoboundedSMul`: the Švarc–Milnor lemma, finite generation.
+* `Group.Generators.isQuasiIsometry_smul_const`: the Švarc–Milnor lemma, quasi-isometry.
 * `Subgroup.isQuasiIsometry_subtype`: a subgroup of finite index of a finitely generated group is
   quasi-isometric to the group, by the inclusion.
 * `Int.quasiIsometric_pi_euclideanSpace`: `ℤⁿ` with a word metric is quasi-isometric to `ℝⁿ`.
@@ -56,7 +55,7 @@ variable {G X : Type*} [Group G] [PseudoMetricSpace X] [Nonempty X] [MulAction G
 
 /-- **Švarc–Milnor lemma**, finite generation: a group acting isometrically, metrically properly
 and coboundedly on a nonempty coarsely connected pseudometric space is finitely generated. -/
-theorem Group.fg_of_isMetricallyProperSMul_of_isCoboundedSMul {r : ℝ≥0}
+theorem Group.fg_of_isCoboundedSMul {r : ℝ≥0}
     (hX : Metric.IsCoarselyConnectedWith X r) (hprop : IsMetricallyProperSMul G X)
     (hcob : IsCoboundedSMul G X) : Group.FG G :=
   sorry
@@ -65,7 +64,7 @@ theorem Group.fg_of_isMetricallyProperSMul_of_isCoboundedSMul {r : ℝ≥0}
 coboundedly on a nonempty coarsely geodesic pseudometric space is quasi-isometric to the space:
 every orbit map `g ↦ g • x₀` is a quasi-isometry for the word metric of any finite generating
 family. -/
-theorem Group.Generators.isQuasiIsometry_smul_left {ι : Type*} [Finite ι] (P : Generators G ι)
+theorem Group.Generators.isQuasiIsometry_smul_const {ι : Type*} [Finite ι] (P : Generators G ι)
     {r L C : ℝ≥0} (hX : Metric.IsCoarselyGeodesicWith X r L C)
     (hprop : IsMetricallyProperSMul G X) (hcob : IsCoboundedSMul G X) (x₀ : X) :
     letI := P.normedGroup

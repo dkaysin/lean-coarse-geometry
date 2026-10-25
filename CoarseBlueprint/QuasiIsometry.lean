@@ -45,12 +45,11 @@ attribute [blueprint "Metric.IsQuasiIsometricEmbedding"
     $(c, b)$-quasi-isometric embedding for some $c, b$. -/)]
   Metric.IsQuasiIsometricEmbedding
 
-attribute [blueprint
-  "Metric.IsQuasiIsometricEmbedding.of_coarseLipschitzWith_of_coarseAntilipschitzWith"
+attribute [blueprint "Metric.CoarseAntilipschitzWith.isQuasiIsometricEmbedding"
   (latexEnv := "lemma")
   (statement := /-- A map that is coarse Lipschitz and coarse antilipschitz, with possibly
     different constants, is a $(c, b)$-quasi-isometric embedding for some $c, b$. -/)]
-  Metric.IsQuasiIsometricEmbedding.of_coarseLipschitzWith_of_coarseAntilipschitzWith
+  Metric.CoarseAntilipschitzWith.isQuasiIsometricEmbedding
 
 attribute [blueprint "Metric.IsQuasiIsometry"
   (title := /-- Quasi-isometry -/)
@@ -91,14 +90,14 @@ attribute [blueprint "Metric.IsQuasiIsometry.comp" (latexEnv := "lemma")
     composite $g \circ f$ is a quasi-isometric embedding (L\"oh, Prop.~5.1.11 (4)): if $f$ is $(L_1,
     C_1)$- and $g$ is $(L_2, C_2)$-coarse Lipschitz, then $g \circ f$ is $(L_2 L_1, L_2 C_1 +
     C_2)$-coarse Lipschitz, the antilipschitz bounds compose in the same way, and
-    Lemma~\ref{Metric.IsQuasiIsometricEmbedding.of_coarseLipschitzWith_of_coarseAntilipschitzWith}
+    Lemma~\ref{Metric.CoarseAntilipschitzWith.isQuasiIsometricEmbedding}
     merges the constants. The same argument makes $f' \circ g'$ a quasi-isometric embedding, and it
     is a quasi-inverse of $g \circ f$. Finite distance is preserved by precomposition with any map
     (with the same constant) and by postcomposition with an $(L, C)$-coarse Lipschitz map (distance
     $D$ becomes $L D + C$; L\"oh, Prop.~5.1.11 (3)). So $f' g' g f$ is at finite distance from $f'
     f$, hence, by the triangle inequality, from the identity; and symmetrically for $g f f' g'$. -/)
   (proofUses := ["Metric.IsQuasiIsometry",
-    "Metric.IsQuasiIsometricEmbedding.of_coarseLipschitzWith_of_coarseAntilipschitzWith"])]
+    "Metric.CoarseAntilipschitzWith.isQuasiIsometricEmbedding"])]
   Metric.IsQuasiIsometry.comp
 
 attribute [blueprint "Metric.QuasiIsometric.refl"

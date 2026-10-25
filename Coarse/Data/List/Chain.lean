@@ -10,12 +10,13 @@ public import Mathlib.Data.List.Chain
 /-!
 # Additional lemmas about `List.IsChain`
 
-This file adds `List.IsChain.imp_of_isChain`: an `IsChain` hypothesis transfers to another
-relation along the consecutive pairs of a list that are related by a third relation.
+This file adds `List.IsChain.imp₂`: two `IsChain` hypotheses combine into a third, the analogue of
+`List.Pairwise.imp₂`.
 
 ## Implementation notes
 
-Copied from mathlib4 PR #45132, where it is added to `Mathlib/Data/List/Chain.lean`.
+Copied from mathlib4 PR #45132, where it is added to `Mathlib/Data/List/Chain.lean` as
+`List.IsChain.imp_of_isChain`; renamed here after `List.Pairwise.imp₂`, with its argument order.
 -/
 
 public section
@@ -24,15 +25,15 @@ variable {α : Type*} {R : α → α → Prop}
 
 namespace List
 
-/-- If consecutive elements of `l` are related by `T`, then `IsChain R l` implies `IsChain S l` as
-soon as `R` implies `S` on `T`-related pairs. -/
-theorem IsChain.imp_of_isChain {S T : α → α → Prop} {l : List α} (hT : IsChain T l)
-    (H : ∀ a b, T a b → R a b → S a b) (hR : IsChain R l) : IsChain S l := by
-  induction hT with
+/-- If `IsChain R l` and `IsChain S l`, then `IsChain T l` as soon as `R` and `S` imply `T` on
+consecutive pairs. -/
+theorem IsChain.imp₂ {S T : α → α → Prop} {l : List α} (H : ∀ a b, R a b → S a b → T a b)
+    (hR : IsChain R l) (hS : IsChain S l) : IsChain T l := by
+  induction hR with
   | nil => exact .nil
   | singleton => exact .singleton _
   | cons_cons hab _ ih =>
-    rw [isChain_cons_cons] at hR ⊢
-    exact ⟨H _ _ hab hR.1, ih hR.2⟩
+    rw [isChain_cons_cons] at hS ⊢
+    exact ⟨H _ _ hab hS.1, ih hS.2⟩
 
 end List

@@ -66,7 +66,7 @@ the supremum of distances to the orbit. -/
 /-- For any point `x` in a pseudo metric space with a cocompact additive group action, there
 exists a group element `g` such that the distance from `x` to `g +ᵥ x₀` is strictly less than
 one plus the supremum of distances to the orbit. -/]
-private lemma dist_smul_lt_one_add_sSup_range_infDist_orbit (x x₀ : X) :
+private lemma exists_dist_smul_lt (x x₀ : X) :
     ∃ g : G, dist x (g • x₀) <
       1 + sSup (range fun x ↦ infDist x (orbit G x₀)) :=
   let R := sSup (range fun x ↦ infDist x (orbit G x₀))
@@ -92,7 +92,7 @@ theorem exists_smul_closedBall_eq_univ (x₀ : X) :
     ∃ ε : ℝ, (univ : Set G) • closedBall x₀ ε = univ :=
   ⟨1 + sSup (range fun x ↦ infDist x (orbit G x₀)),
     eq_univ_iff_forall.mpr fun x ↦
-      let ⟨g, hg⟩ := dist_smul_lt_one_add_sSup_range_infDist_orbit (G := G) x x₀
+      let ⟨g, hg⟩ := exists_dist_smul_lt (G := G) x x₀
       mem_smul.mpr ⟨g, mem_univ g, g⁻¹ • x,
         mem_closedBall.mpr (((isometry_smul X g).dist_eq ..).symm ▸
         (smul_inv_smul g x).symm ▸ le_of_lt hg), smul_inv_smul g x⟩⟩

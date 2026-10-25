@@ -58,7 +58,7 @@ variable [CoarseSpace α] [CoarseSpace β] [CoarseSpace γ]
 /-- The forward map of a coarse equivalence is a coarse map. -/
 @[fun_prop]
 protected theorem isCoarseMap (e : α ≃ᶜ β) : IsCoarseMap e.toFun :=
-  ⟨e.controlled_toFun, e.controlled_invFun.isCoarselyProperMap_of_isCoarselyClose_comp_id
+  ⟨e.controlled_toFun, e.controlled_invFun.isCoarselyProperMap_of_comp
     e.isCoarselyClose_id_left⟩
 
 instance : CoeFun (α ≃ᶜ β) (fun _ ↦ α → β) := ⟨fun e ↦ e.toFun⟩
@@ -90,7 +90,7 @@ protected def symm (e : α ≃ᶜ β) : β ≃ᶜ α where
 
 @[fun_prop]
 protected theorem isCoarseMap_symm (e : α ≃ᶜ β) : IsCoarseMap e.symm.toFun :=
-  ⟨e.controlled_invFun, e.controlled_toFun.isCoarselyProperMap_of_isCoarselyClose_comp_id
+  ⟨e.controlled_invFun, e.controlled_toFun.isCoarselyProperMap_of_comp
     e.isCoarselyClose_id_right⟩
 
 @[simp] theorem coe_invFun (e : α ≃ᶜ β) : (e.invFun : β → α) = e.symm := rfl

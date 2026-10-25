@@ -21,7 +21,7 @@ attribute [blueprint "Group.Generators.isQuasiIsometry_id" (latexEnv := "corolla
     L\"oh. -/)
   (proofUses := ["Group.Generators.wordLength_le_mul_wordLength", "Group.Generators.groupNorm",
     "Metric.IsQuasiIsometry",
-    "Metric.IsQuasiIsometricEmbedding.of_coarseLipschitzWith_of_coarseAntilipschitzWith"])]
+    "Metric.CoarseAntilipschitzWith.isQuasiIsometricEmbedding"])]
   Group.Generators.isQuasiIsometry_id
 
 attribute [blueprint "Subgroup.isQuasiIsometry_subtype" (latexEnv := "corollary")
@@ -30,8 +30,8 @@ attribute [blueprint "Subgroup.isQuasiIsometry_subtype" (latexEnv := "corollary"
     $H \to G$ is a quasi-isometry for any finite generating families of $H$ and $G$. -/)
   (proof := /-- $H$ acts on $(G, d_P)$ by left multiplication; the action is metrically proper by
     finiteness of balls and cobounded by finite index. Apply
-    Theorem~\ref{Group.Generators.isQuasiIsometry_smul_left} with $x_0 = 1$. -/)
-  (proofUses := ["Group.Generators.isQuasiIsometry_smul_left",
+    Theorem~\ref{Group.Generators.isQuasiIsometry_smul_const} with $x_0 = 1$. -/)
+  (proofUses := ["Group.Generators.isQuasiIsometry_smul_const",
     "Group.Generators.isCoarselyGeodesicWith", "Group.Generators.finite_setOf_wordLength_le",
     "isMetricallyProperSMul_of_finite", "IsCoboundedSMul.of_finiteIndex"])]
   Subgroup.isQuasiIsometry_subtype
@@ -44,7 +44,7 @@ attribute [blueprint "Int.quasiIsometric_pi_euclideanSpace" (latexEnv := "coroll
     the unit cube as a bounded fundamental set. L\"oh argues directly instead: the inclusion $\Z^n
     \to \R^n$ is a quasi-isometric embedding with quasi-dense image, hence a quasi-isometry
     (Theorem~\ref{Metric.isQuasiIsometry_iff_quasiDenseRange}). Going through
-    Theorem~\ref{Group.Generators.isQuasiIsometry_smul_left} tests the main theorem. -/)
-  (proofUses := ["Group.Generators.isQuasiIsometry_smul_left", "NormedSpace.isCoarselyGeodesicWith",
-    "isMetricallyProperSMul_of_properlyDiscontinuousSMul"])]
+    Theorem~\ref{Group.Generators.isQuasiIsometry_smul_const} tests the main theorem. -/)
+  (proofUses := ["Group.Generators.isQuasiIsometry_smul_const",
+    "NormedSpace.isCoarselyGeodesicWith", "isMetricallyProperSMul_of_properlyDiscontinuousSMul"])]
   Int.quasiIsometric_pi_euclideanSpace

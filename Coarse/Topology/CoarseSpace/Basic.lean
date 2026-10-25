@@ -19,15 +19,15 @@ closeness is an equivalence relation on maps, and that coarse maps compose.
 
 * `CoarseSpace.IsControlled.subset`, `.union`, `.inv`, `.comp`: controlled sets form a coarse
   structure.
-* `CoarseSpace.IsCoarselyBounded.subset`, `.union_of_nonempty_inter`: coarsely bounded sets are
-  closed under subsets and unions with nonempty intersection.
+* `CoarseSpace.IsCoarselyBounded.subset`, `.union`: coarsely bounded sets are closed under
+  subsets and unions with nonempty intersection.
 * `CoarseSpace.IsControlled.isCoarselyBounded_ball`: balls of controlled sets are coarsely
   bounded.
 * `IsCoarselyClose.refl`, `.symm`, `.trans`: closeness is an equivalence relation.
 * `IsCoarselyClose.isControlledMap`: a map close to a controlled map is controlled.
 * `isCoarseMap_id`, `IsCoarseMap.comp`: coarse maps are closed under identity and composition.
-* `IsControlledMap.isCoarselyProperMap_of_isCoarselyClose_comp_id`: a map with a controlled left
-  inverse close to the identity is coarsely proper.
+* `IsControlledMap.isCoarselyProperMap_of_comp`: a map with a controlled left inverse close to
+  the identity is coarsely proper.
 
 ## Implementation notes
 
@@ -122,10 +122,10 @@ theorem isCoarselyBounded_iff : IsCoarselyBounded s ↔ IsControlled (s ×ˢ s) 
 theorem IsCoarselyBounded.subset (hs : IsCoarselyBounded s) (ht : t ⊆ s) : IsCoarselyBounded t :=
   IsControlled.subset hs (prod_mono ht ht)
 
-theorem IsCoarselyBounded.union_of_nonempty_inter (hs : IsCoarselyBounded s)
-    (ht : IsCoarselyBounded t) (hst : (s ∩ t).Nonempty) : IsCoarselyBounded (s ∪ t) :=
+theorem IsCoarselyBounded.union (hs : IsCoarselyBounded s) (ht : IsCoarselyBounded t)
+    (hst : (s ∩ t).Nonempty) : IsCoarselyBounded (s ∪ t) :=
   let ⟨x, hxs, hxt⟩ := hst
-  ((hs.union ht).comp (hs.union ht)).subset fun _ ⟨ha, hb⟩ ↦
+  ((IsControlled.union hs ht).comp (IsControlled.union hs ht)).subset fun _ ⟨ha, hb⟩ ↦
     ⟨x, ha.elim (fun has ↦ .inl ⟨has, hxs⟩) (fun hat ↦ .inr ⟨hat, hxt⟩),
         hb.elim (fun hbs ↦ .inl ⟨hxs, hbs⟩) (fun hbt ↦ .inr ⟨hxt, hbt⟩)⟩
 
@@ -193,7 +193,7 @@ theorem IsControlledMap.isCoarselyBounded_image {s : Set α} (hg : IsControlledM
     (hs : IsCoarselyBounded s) : IsCoarselyBounded (f '' s) :=
   (congrArg IsControlled (prodMap_image_prod f f s s)).mp (isControlledMap_iff.1 hg _ hs)
 
-theorem IsControlledMap.isCoarselyProperMap_of_isCoarselyClose_comp_id
+theorem IsControlledMap.isCoarselyProperMap_of_comp
     {f : β → α} (hf : IsControlledMap f)
     {g : α → β} (hfg : f ∘ g =ᶜ (id : α → α)) :
     IsCoarselyProperMap g := fun _ h ↦
