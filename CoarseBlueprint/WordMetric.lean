@@ -59,13 +59,13 @@ attribute [blueprint "Group.Generators.dist_le_mul_wordLength" (latexEnv := "lem
 
 attribute [blueprint "Group.Generators.wordLength_le_mul_wordLength" (latexEnv := "lemma")
   (title := /-- Change of generators, from the proof of L\"oh Prop.~5.2.5 -/)
-  (statement := /-- Let $Q$ be another generating family and $M$ a bound for the $Q$-lengths of the
-    generators: $|P_i|_Q \le M$ for all $i$ (for finite $P$, $M = \max_i |P_i|_Q$). Then $|g|_Q \le
-    M\,|g|_P$. -/)
+  (statement := /-- Let $Q$ be another generating family and $K$ a bound for the $Q$-lengths of the
+    generators: $|P_i|_Q \le K$ for all $i$ (for finite $P$, $K = \max_i |P_i|_Q$). Then $|g|_Q \le
+    K\,|g|_P$. -/)
   (proof := /-- Lemma~\ref{Group.Generators.dist_le_mul_wordLength} for the identity map
-    $(G, d_P) \to (G, d_Q)$. This is L\"oh's argument: write $g$ as a product of $|g|_P$
-    generators and inverses, and bound each factor's $Q$-length by $M$. -/)
-  (proofUses := ["Group.Generators.dist_le_mul_wordLength", "Group.Generators.groupNorm"])]
+    $G \to (G, d_Q)$, which moves $g$ and $g P_i$ apart by $d_Q(g, g P_i) = |P_i|_Q \le K$, at
+    $1$ and $g$. This is L\"oh's argument: write $g$ as a product of $|g|_P$ generators and
+    inverses, and bound each factor's $Q$-length by $K$. -/)]
   Group.Generators.wordLength_le_mul_wordLength
 
 attribute [blueprint "Group.Generators.finite_setOf_wordLength_le" (latexEnv := "lemma")

@@ -20,8 +20,8 @@ families, and the consequences for the word metric up to quasi-isometry.
 
 * `Group.Generators.dist_le_mul_wordLength`: a map out of `G` that moves points by at most `K`
   under right multiplication by a generator satisfies `dist (φ g) (φ h) ≤ K * |g⁻¹ * h|`.
-* `Group.Generators.wordLength_le_mul_wordLength`: the word length for `Q` is at most `M` times
-  the word length for `P` if every generator of `P` has `Q`-length at most `M`.
+* `Group.Generators.wordLength_le_mul_wordLength`: the word length for `Q` is at most `K` times
+  the word length for `P` if every generator of `P` has `Q`-length at most `K`.
 * `Group.Generators.finite_setOf_wordLength_le`: balls of the word metric of a finite generating
   family are finite.
 * `Group.Generators.isCoarselyGeodesicWith`: a group with the word metric is
@@ -79,14 +79,22 @@ theorem dist_le_mul_wordLength {X : Type*} [PseudoMetricSpace X] {φ : G → X} 
     _ ≤ K * l.length := by gcongr
     _ = K * P.wordLength (g⁻¹ * h) := by rw [← hlg, hl.eq]
 
-/-- If every generator of `P` has word length at most `M` for `Q`, then the word length for `Q` is
-at most `M` times the word length for `P`.
+/-- If every generator of `P` has word length at most `K` for `Q`, then the word length for `Q` is
+at most `K` times the word length for `P`.
 
 [C. Löh, *Geometric Group Theory*][loeh2017], proof of Proposition 5.2.5. -/
-theorem wordLength_le_mul_wordLength (Q : Generators G κ) {M : ℕ}
-    (hM : ∀ i, Q.wordLength (P.val i) ≤ M) (g : G) :
-    Q.wordLength g ≤ M * P.wordLength g :=
-  sorry
+theorem wordLength_le_mul_wordLength (Q : Generators G κ) {K : ℕ}
+    (hK : ∀ i, Q.wordLength (P.val i) ≤ K) (g : G) :
+    Q.wordLength g ≤ K * P.wordLength g := by
+  -- Apply `dist_le_mul_wordLength` to the identity into the word metric of `Q`, in which
+  -- `dist g (g * P.val i) = |P.val i|_Q`.
+  let := Q.normedGroup
+  have hg := P.dist_le_mul_wordLength (φ := id) (K := K) (fun g i ↦ by
+    change (Q.wordLength (g⁻¹ * (g * P.val i)) : ℝ) ≤ ((K : ℝ≥0) : ℝ)
+    simpa using hK i) 1 g
+  change (Q.wordLength (1⁻¹ * g) : ℝ) ≤ ((K : ℝ≥0) : ℝ) * P.wordLength (1⁻¹ * g) at hg
+  simp only [inv_one, one_mul, NNReal.coe_natCast] at hg
+  exact_mod_cast hg
 
 /-- For a finite generating family, there are finitely many elements of word length at most
 `n`. -/
