@@ -2,11 +2,6 @@
 
 PORT ?= 8000
 
-# The blueprint is extracted again only if one of these changed since the stamp.
-LEAN_SRCS := $(shell find Coarse CoarseBlueprint -name '*.lean') Coarse.lean CoarseBlueprint.lean \
-	lakefile.toml lake-manifest.json lean-toolchain
-EXTRACTED := .lake/build/blueprint/stamp
-
 .DEFAULT_GOAL := help
 .PHONY: help cache build check mk_all blueprint web pdf serve frontier status sorries lines clean-blueprint
 
@@ -26,11 +21,10 @@ check: ## What CI checks: build with warnings as errors, root import file up to 
 mk_all: ## Regenerate Coarse.lean and CoarseBlueprint.lean
 	lake exe mk_all
 
-blueprint: $(EXTRACTED) ## Build the tags and extract the blueprint to .lake/build/blueprint
-
-$(EXTRACTED): $(LEAN_SRCS)
+# The stamp records when the blueprint was extracted, for `make frontier`.
+blueprint: ## Build the tags and extract the blueprint to .lake/build/blueprint
 	lake build CoarseBlueprint:blueprint
-	touch $@
+	touch .lake/build/blueprint/stamp
 
 web: blueprint ## Render the blueprint web page to blueprint/web
 	leanblueprint web
