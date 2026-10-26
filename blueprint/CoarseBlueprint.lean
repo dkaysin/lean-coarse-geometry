@@ -325,13 +325,13 @@ attribute [blueprint "Metric.QuasiGeodesic.nonempty_coarseGeodesic" (latexEnv :=
   (statement := /-- Let $\gamma$ be a $(c, b)$-quasi-geodesic from $x$ to $x'$, and let
     $\delta > 0$ with $c \delta + b \le r$. Then there is an
     $(r, c / \delta, c b / \delta + 1)$-coarse geodesic from $x$ to $x'$. -/)
-  (proof := /-- Let $\gamma$ be defined on $[t, t']$, $\ell = t' - t$ and
-    $m = \max\{\lceil \ell / \delta \rceil, 1\}$, so that $m \le \ell / \delta + 1$. The points
-    $\gamma(t + k \ell / m)$, $k = 0, \dots, m$, have parameters $\ell / m \le \delta$ apart, so by
-    the upper bound of $\gamma$ they are consecutively at distance at most $c \delta + b \le r$,
-    and Lemma~\ref{Metric.exists_ripsGraph_walk_length_le} gives an $r$-chain with at most $m$
-    steps. The lower bound of $\gamma$ at $t$ and $t'$ gives $\ell \le c\,d(x, x') + c b$, so
-    $m \le (c / \delta)\,d(x, x') + c b / \delta + 1$. -/)]
+  (proof := /-- Let $\gamma$ be defined on $[t, t']$ and
+    $m = \max\{\lceil (t' - t) / \delta \rceil, 1\}$, so that $m \le (t' - t) / \delta + 1$. The
+    points $\gamma(t + k (t' - t) / m)$, $k = 0, \dots, m$, have parameters
+    $(t' - t) / m \le \delta$ apart, so by the upper bound of $\gamma$ they are consecutively at
+    distance at most $c \delta + b \le r$, and Lemma~\ref{Metric.exists_ripsGraph_walk_length_le}
+    gives an $r$-chain with at most $m$ steps. The lower bound of $\gamma$ at $t$ and $t'$ gives
+    $t' - t \le c\,d(x, x') + c b$, so $m \le (c / \delta)\,d(x, x') + c b / \delta + 1$. -/)]
   Metric.QuasiGeodesic.nonempty_coarseGeodesic
 
 attribute [blueprint "Metric.IsCoarselyGeodesicSpaceWith.coarseLipschitzWith" (latexEnv := "lemma")
@@ -394,11 +394,11 @@ attribute [blueprint "Metric.IsQuasiGeodesicSpace"
 
 attribute [blueprint "Metric.isQuasiIsometricEmbeddingWith_natFloor" (latexEnv := "lemma")
   (title := /-- Step functions -/)
-  (statement := /-- For $\ell \ge 0$, the map $t \mapsto \lfloor t \rfloor$ from $[0, \ell]$ to
-    $\{0, \dots, \lfloor \ell \rfloor\}$ is a $(1, 1)$-quasi-isometric embedding. So a
-    quasi-isometric embedding of $\{0, \dots, \lfloor \ell \rfloor\}$ gives one of $[0, \ell]$ by
+  (statement := /-- For $t' \ge 0$, the map $s \mapsto \lfloor s \rfloor$ from $[0, t']$ to
+    $\{0, \dots, \lfloor t' \rfloor\}$ is a $(1, 1)$-quasi-isometric embedding. So a
+    quasi-isometric embedding of $\{0, \dots, \lfloor t' \rfloor\}$ gives one of $[0, t']$ by
     composition, a step function. -/)
-  (proof := /-- $\lfloor s \rfloor - \lfloor t \rfloor$ and $s - t$ differ by less than $1$, so
+  (proof := /-- $\lfloor s \rfloor - \lfloor s' \rfloor$ and $s - s'$ differ by less than $1$, so
     their absolute values do too. -/)]
   Metric.isQuasiIsometricEmbeddingWith_natFloor
 
