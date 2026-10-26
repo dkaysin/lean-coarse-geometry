@@ -62,6 +62,16 @@ attribute [blueprint "Metric.exists_ripsGraph_walk_length_le" (latexEnv := "lemm
     graph has no loops), in which case the chain is kept. -/)]
   Metric.exists_ripsGraph_walk_length_le
 
+attribute [blueprint "Metric.IsCoarselyGeodesicWith.coarseLipschitzWith" (latexEnv := "lemma")
+  (title := /-- Bounded steps, cf.\ Dru\c{t}u--Kapovich, Lem.~8.8 -/)
+  (statement := /-- On an $(r, L, C)$-coarsely geodesic space, a map that moves points at distance
+    at most $r$ by at most $A$ is $(A L, A C)$-coarse Lipschitz. -/)
+  (proof := /-- Join $x$ to $y$ by an $r$-chain with $n \le L\,d(x, y) + C$ steps. Each step moves
+    by at most $A$, so $d(f x, f y) \le A n \le A L\,d(x, y) + A C$ by
+    Lemma~\ref{SimpleGraph.Walk.dist_le_mul_length}. Dru\c{t}u--Kapovich prove it
+    for geodesic spaces, cutting a geodesic into steps of length $r$. -/)]
+  Metric.IsCoarselyGeodesicWith.coarseLipschitzWith
+
 attribute [blueprint "NormedSpace.isCoarselyGeodesicWith" (latexEnv := "lemma")
   (statement := /-- A real normed space is $(r, 1/r, 1)$-coarsely geodesic for every $r > 0$. -/)
   (proof := /-- Take the points $x + \frac{k}{m}(y - x)$ for $k = 0, \dots, m$ and $m = \max(\lceil

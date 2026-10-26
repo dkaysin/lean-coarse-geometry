@@ -5,6 +5,7 @@ Authors: Dmitry Kaysin
 -/
 module
 
+public import Coarse.Topology.MetricSpace.CoarseLipschitz
 public import Mathlib.Analysis.Normed.Module.Basic
 public import Mathlib.Combinatorics.SimpleGraph.Connectivity.Connected
 public import Mathlib.Topology.MetricSpace.Pseudo.Defs
@@ -33,6 +34,9 @@ any two points are joined by an `r`-chain, and *`(r, L, C)`-coarsely geodesic* i
   times its length.
 * `Metric.exists_ripsGraph_walk_length_le`: a sequence of points whose first `n` steps have length
   at most `r` gives an `r`-chain with at most `n` steps.
+* `Metric.IsCoarselyGeodesicWith.coarseLipschitzWith`: on an `(r, L, C)`-coarsely geodesic space, a
+  map that moves points at distance at most `r` by at most `A` is `(A * L, A * C)`-coarse
+  Lipschitz.
 * `NormedSpace.isCoarselyGeodesicWith`: a real normed space is `(r, r⁻¹, 1)`-coarsely geodesic for
   every `r > 0`.
 
@@ -41,6 +45,10 @@ any two points are joined by an `r`-chain, and *`(r, L, C)`-coarsely geodesic* i
 An `r`-chain is a walk in `Metric.ripsGraph X r`, and its number of steps is the length of the
 walk. A walk does not repeat a point in consecutive steps; dropping such repetitions only shortens
 a chain.
+
+## References
+
+* [C. Druțu, M. Kapovich, *Geometric Group Theory*][drutu2018], Lemma 8.8
 
 ## Tags
 
@@ -106,6 +114,22 @@ def IsCoarselyConnected (X : Type*) [PseudoMetricSpace X] : Prop :=
 constants `r`, `L` and `C`. -/
 def IsCoarselyGeodesic (X : Type*) [PseudoMetricSpace X] : Prop :=
   ∃ r L C, IsCoarselyGeodesicWith X r L C
+
+/-- On an `(r, L, C)`-coarsely geodesic space, a map that moves points at distance at most `r` by
+at most `A` is `(A * L, A * C)`-coarse Lipschitz.
+
+[C. Druțu, M. Kapovich, *Geometric Group Theory*][drutu2018], Lemma 8.8,
+for geodesic spaces. -/
+theorem IsCoarselyGeodesicWith.coarseLipschitzWith {X Y : Type*} [PseudoMetricSpace X]
+    [PseudoMetricSpace Y] {r L C A : ℝ≥0} (hX : IsCoarselyGeodesicWith X r L C) {f : X → Y}
+    (hf : ∀ x y, dist x y ≤ r → dist (f x) (f y) ≤ A) : CoarseLipschitzWith (A * L) (A * C) f := by
+  intro x y
+  -- Follow a chain from `x` to `y` with at most `L * dist x y + C` steps.
+  obtain ⟨p, hp⟩ := hX x y
+  calc dist (f x) (f y) ≤ A * p.length :=
+        p.dist_le_mul_length fun u v (h : (ripsGraph X r).Adj u v) ↦ hf u v h.2
+    _ ≤ A * (L * dist x y + C) := by gcongr
+    _ = A * L * dist x y + A * C := by ring
 
 end Metric
 
