@@ -33,5 +33,6 @@ public import Coarse.Topology.MetricSpace.Hyperbolic
 public import Coarse.Topology.MetricSpace.IsometricSMul
 public import Coarse.Topology.MetricSpace.QuasiGeodesic
 public import Coarse.Topology.MetricSpace.QuasiGeodesicStability
+public import Coarse.Topology.MetricSpace.QuasiHyperbolic
 public import Coarse.Topology.MetricSpace.QuasiIsometry
 public import Coarse.Topology.MetricSpace.QuasiIsometry.Examples

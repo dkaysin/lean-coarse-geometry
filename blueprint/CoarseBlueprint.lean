@@ -18,6 +18,7 @@ import Coarse.Topology.CoarseSpace.CoarseEquiv.Defs
 import Coarse.Topology.CoarseSpace.Metric.SvarcMilnor
 import Coarse.Topology.MetricSpace.QuasiGeodesic
 import Coarse.Topology.MetricSpace.QuasiGeodesicStability
+import Coarse.Topology.MetricSpace.QuasiHyperbolic
 import Coarse.Topology.MetricSpace.QuasiIsometry
 
 /-!
@@ -378,8 +379,9 @@ attribute [blueprint "Metric.IsQuasiGeodesicWith"
     $(c, b)$-quasi-isometric embedding
     (Definition~\ref{Metric.IsQuasiIsometricEmbeddingWith}) with $\gamma(t) = x$ and
     $\gamma(t') = x'$. It need not be continuous. In Lean, $\gamma$ is a map $\R \to X$ satisfying
-    the two bounds for parameters in $[t, t']$. -/)]
-  Metric.IsQuasiGeodesicWith
+    the two bounds for parameters in $[t, t']$. Its image is a \emph{$(c, b)$-quasi-geodesic
+    segment} from $x$ to $x'$. -/)]
+  Metric.IsQuasiGeodesicWith Metric.IsQuasiGeodesicSegmentWith
 
 attribute [blueprint "Metric.IsQuasiGeodesicSpaceWith"
   (title := /-- Quasi-geodesic space, L\"oh Def.~5.3.4 -/)
@@ -725,6 +727,7 @@ Blueprint nodes for milestone M6. None is formalized yet.
 Blueprint nodes for `Coarse/Topology/MetricSpace/Hyperbolic.lean` and
 `Coarse/Geometry/Group/Hyperbolic.lean` (copies of open Mathlib pull requests, the first with our
 section on slim triangles), and for `Coarse/Topology/MetricSpace/Geodesic.lean` and
+`Coarse/Topology/MetricSpace/QuasiHyperbolic.lean` and
 `Coarse/Geometry/Group/HyperbolicGenerators.lean` (milestone M7), and the corollary of stability
 in `Coarse/Topology/MetricSpace/QuasiGeodesicStability.lean`.
 -/
@@ -800,6 +803,16 @@ attribute [blueprint "Metric.isHyperbolic_iff_exists_hasSlimTrianglesWith"
   (proofUses := ["Metric.HasSlimTrianglesWith.isHyperbolicWith",
     "Metric.IsHyperbolicWith.hasSlimTrianglesWith"])]
   Metric.isHyperbolic_iff_exists_hasSlimTrianglesWith
+
+attribute [blueprint "Metric.HasSlimQuasiGeodesicTrianglesWith"
+  (title := /-- Slim quasi-geodesic triangles, L\"oh Def.~7.2.5 -/)
+  (statement := /-- Let $c, b \ge 0$. A \emph{$(c, b)$-quasi-geodesic triangle} with vertices $x, y,
+    z$ in a pseudometric space $X$ consists of $(c, b)$-quasi-geodesic segments from $x$ to $y$,
+    from $y$ to $z$ and from $z$ to $x$, its sides. It is \emph{$\delta$-slim} if every point of
+    each side is within distance $\delta$ of a point of one of the other two sides. The space $X$
+    has \emph{$\delta$-slim $(c, b)$-quasi-geodesic triangles} if every $(c, b)$-quasi-geodesic
+    triangle in $X$ is $\delta$-slim. -/)]
+  Metric.HasSlimQuasiGeodesicTrianglesWith
 
 attribute [blueprint "Metric.IsQuasiIsometricEmbedding.exists_hasSlimTrianglesWith"
   (latexEnv := "corollary")

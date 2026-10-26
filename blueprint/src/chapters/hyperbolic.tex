@@ -8,8 +8,8 @@ equivalences between them. There are three, one for each class of spaces on whic
         hyperbolic spaces and groups below, copies of open Mathlib pull requests, use it;
   \item \emph{slim geodesic triangles}, for geodesic spaces (L\"oh, Definition 7.2.2;
         Bridson--Haefliger, Definition III.H.1.1);
-  \item \emph{quasi-hyperbolicity}, slim quasi-geodesic triangles for all constants, for coarsely
-        geodesic spaces (L\"oh, Definition 7.2.6).
+  \item \emph{quasi-hyperbolicity}, slim quasi-geodesic triangles (L\"oh, Definition 7.2.5) for
+        all constants, for coarsely geodesic spaces (L\"oh, Definition 7.2.6).
 \end{itemize}
 The first two depend on exact distances: an isometry preserves them, a quasi-isometry need not,
 even between coarsely geodesic spaces (the graph of $|x|$ in $\R^2$ is bilipschitz to $\R$ and
@@ -80,16 +80,19 @@ $3\delta$ in both directions.
 Quasi-geodesics are defined in Chapter~\ref{chap:coarsely-geodesic}
 (Definition~\ref{Metric.IsQuasiGeodesicWith}).
 
+\inputleannode{Metric.HasSlimQuasiGeodesicTrianglesWith}
+
+L\"oh takes $c, b > 0$; here $c, b \ge 0$, as for quasi-geodesics. A geodesic is a
+$(1, 0)$-quasi-geodesic and conversely, so $\delta$-slim $(1, 0)$-quasi-geodesic triangles are
+$\delta$-slim geodesic triangles (Definition~\ref{Metric.HasSlimTrianglesWith}).
+
 \begin{definition}[Quasi-hyperbolic space, cf.\ L\"oh Def.~7.2.6]
   \label{Metric.IsQuasiHyperbolic}
-  \uses{Metric.IsCoarselyGeodesicSpace, Metric.IsQuasiGeodesicWith}
-  A \emph{$(c, b)$-quasi-geodesic triangle} with vertices $x, y, z$ in a pseudometric space $X$
-  consists of $(c, b)$-quasi-geodesics from $x$ to $y$, from $y$ to $z$ and from $z$ to $x$, its
-  sides. It is \emph{$\delta$-slim} if every point of the image of each side is within distance
-  $\delta$ of a point of the image of one of the other two sides. The space $X$ is
-  \emph{quasi-hyperbolic} if it is coarsely geodesic
+  \uses{Metric.IsCoarselyGeodesicSpace, Metric.HasSlimQuasiGeodesicTrianglesWith}
+  A pseudometric space $X$ is \emph{quasi-hyperbolic} if it is coarsely geodesic
   (Definition~\ref{Metric.IsCoarselyGeodesicSpace}) and for all $c, b \ge 0$ there is $\delta$ such
-  that every $(c, b)$-quasi-geodesic triangle in $X$ is $\delta$-slim.
+  that $X$ has $\delta$-slim $(c, b)$-quasi-geodesic triangles
+  (Definition~\ref{Metric.HasSlimQuasiGeodesicTrianglesWith}).
 \end{definition}
 
 \paragraph{Differences from L\"oh's definition.} L\"oh asks that $X$ be $(c, b)$-quasi-geodesic
@@ -101,8 +104,7 @@ slim for all $c, b \ge 0$. Nothing is lost: a $(c, b)$-quasi-geodesic is a
 $(c', b')$-quasi-geodesic whenever $c \le c'$ and $b \le b'$, so the
 triangles for small constants are among those for large ones. Without a hypothesis on $X$ the
 condition would hold in spaces where quasi-geodesics join only nearby points, such as
-$\{2^n \mid n \in \N\} \subseteq \R$. As for slim geodesic triangles, $\delta$-slimness is asked of
-every side, which is the same as asking it of the first side of every triangle.
+$\{2^n \mid n \in \N\} \subseteq \R$.
 
 \begin{lemma}[Invariance of quasi-hyperbolicity, L\"oh Prop.~7.2.9]
   \label{Metric.IsQuasiIsometricEmbedding.isQuasiHyperbolic}

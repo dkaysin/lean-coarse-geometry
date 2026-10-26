@@ -18,11 +18,14 @@ A *`(c, b)`-quasi-geodesic* from `x` to `x'` in a pseudometric space is a map `�
 satisfying the bounds of a `(c, b)`-quasi-isometric embedding, with `γ t = x` and `γ t' = x'`; it
 need not be continuous. A *`(c, b)`-quasi-geodesic space* is a space in which any two points are
 joined by a `(c, b)`-quasi-geodesic; up to the constants, these are the coarsely geodesic spaces.
+A *`(c, b)`-quasi-geodesic segment* is the image of a `(c, b)`-quasi-geodesic.
 
 ## Main definitions
 
 * `Metric.IsQuasiGeodesicWith c b γ t t' x x'`: the map `γ : ℝ → X` is a `(c, b)`-quasi-geodesic on
   `[t, t']` from `x` to `x'`.
+* `Metric.IsQuasiGeodesicSegmentWith c b s x x'`: the set `s` is the image of a
+  `(c, b)`-quasi-geodesic from `x` to `x'`.
 * `Metric.IsQuasiGeodesicSpaceWith X c b`: any two points of `X` are joined by a
   `(c, b)`-quasi-geodesic.
 * `Metric.IsQuasiGeodesicSpace X`: `X` is a `(c, b)`-quasi-geodesic space for some `c` and `b`.
@@ -80,6 +83,11 @@ structure IsQuasiGeodesicWith (c b : ℝ≥0) (γ : ℝ → X) (t t' : ℝ) (x x
   apply_right : γ t' = x'
   dist_le : ∀ s ∈ Set.Icc t t', ∀ s' ∈ Set.Icc t t', dist (γ s) (γ s') ≤ c * |s - s'| + b
   le_dist : ∀ s ∈ Set.Icc t t', ∀ s' ∈ Set.Icc t t', |s - s'| ≤ c * dist (γ s) (γ s') + c * b
+
+/-- A set `s` is a **`(c, b)`-quasi-geodesic segment** from `x` to `x'` if it is the image of a
+`(c, b)`-quasi-geodesic from `x` to `x'`. -/
+def IsQuasiGeodesicSegmentWith (c b : ℝ≥0) (s : Set X) (x x' : X) : Prop :=
+  ∃ (γ : ℝ → X) (t t' : ℝ), IsQuasiGeodesicWith c b γ t t' x x' ∧ γ '' Set.Icc t t' = s
 
 /-- A pseudometric space is a **`(c, b)`-quasi-geodesic space** if any two points are joined by a
 `(c, b)`-quasi-geodesic.
