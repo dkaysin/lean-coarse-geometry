@@ -83,6 +83,17 @@ attribute [blueprint "Metric.isQuasiIsometry_iff_quasiDenseRange"
     distance from the identity. -/)]
   Metric.isQuasiIsometry_iff_quasiDenseRange
 
+attribute [blueprint "Metric.isQuasiIsometry_of_bilipschitz" (latexEnv := "lemma")
+  (title := /-- Bilipschitz maps -/)
+  (statement := /-- A surjective map that is Lipschitz and antilipschitz (for possibly different
+    constants) is a quasi-isometry. -/)
+  (proof := /-- The two bounds are coarse bounds with additive constant $0$, so the map is a
+    quasi-isometric embedding by
+    Lemma~\ref{Metric.CoarseAntilipschitzWith.isQuasiIsometricEmbedding}; it is surjective, so its
+    range is quasi-dense, and Theorem~\ref{Metric.isQuasiIsometry_iff_quasiDenseRange}
+    concludes. -/)]
+  Metric.isQuasiIsometry_of_bilipschitz
+
 attribute [blueprint "Metric.IsQuasiIsometry.comp" (latexEnv := "lemma")
   (title := /-- L\"oh, Prop.~5.1.11 (5) -/)
   (statement := /-- The composition of two quasi-isometries is a quasi-isometry. -/)

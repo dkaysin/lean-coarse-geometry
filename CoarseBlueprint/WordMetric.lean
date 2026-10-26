@@ -60,10 +60,10 @@ attribute [blueprint "Group.Generators.dist_le_mul_wordLength" (latexEnv := "lem
     all $g \in G$ and all $i$. Then $d(\varphi(g), \varphi(h)) \le K\,|g^{-1} h|_P$ for all
     $g, h$: $\varphi$ is $K$-Lipschitz for the word metric of $P$. -/)
   (proof := /-- Adjacent vertices of the Cayley graph differ by right multiplication by a
-    generator, in one direction or the other, so $\varphi$ moves them by at most $K$. By the
-    triangle inequality along a walk, $\varphi$ then moves the endpoints of a walk by at most $K$
-    times its length. A geodesic word for $g^{-1} h$ gives a walk from $g$ to $h$ of length at most
-    $|g^{-1} h|_P$. -/)]
+    generator, in one direction or the other, so $\varphi$ moves them by at most $K$. By
+    Lemma~\ref{SimpleGraph.Walk.dist_le_mul_length}, $\varphi$ then moves the endpoints of a walk
+    by at most $K$ times its length. A geodesic word for $g^{-1} h$ gives a walk from $g$ to $h$ of
+    length at most $|g^{-1} h|_P$. -/)]
   Group.Generators.dist_le_mul_wordLength
 
 attribute [blueprint "Group.Generators.wordLength_le_mul_wordLength" (latexEnv := "lemma")

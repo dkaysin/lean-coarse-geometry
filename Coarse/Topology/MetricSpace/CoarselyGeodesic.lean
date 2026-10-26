@@ -31,6 +31,8 @@ any two points are joined by an `r`-chain, and *`(r, L, C)`-coarsely geodesic* i
 * `SimpleGraph.Walk.dist_le_mul_length`: a map from the vertices of a graph into a pseudometric
   space that moves adjacent vertices by at most `K` moves the endpoints of a walk by at most `K`
   times its length.
+* `Metric.exists_ripsGraph_walk_length_le`: a sequence of points whose first `n` steps have length
+  at most `r` gives an `r`-chain with at most `n` steps.
 * `NormedSpace.isCoarselyGeodesicWith`: a real normed space is `(r, r⁻¹, 1)`-coarsely geodesic for
   every `r > 0`.
 

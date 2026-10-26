@@ -13,16 +13,25 @@ Blueprint nodes for the corollaries in `Coarse/Geometry/Group/{WordMetricBounds,
 SvarcMilnor}.lean` (milestone M6).
 -/
 
+attribute [blueprint "Group.Generators.WithWordMetric.exists_lipschitzWith_congr"
+  (latexEnv := "lemma")
+  (title := /-- Change of generators is Lipschitz -/)
+  (statement := /-- For a finite generating family $P$ and any generating family $Q$ of $G$, the
+    identity $\mathrm{congr}_{P,Q} \colon (G, d_P) \to (G, d_Q)$ is Lipschitz. -/)
+  (proof := /-- The generators of $P$ have $Q$-lengths bounded by some $K$, as there are finitely
+    many, and Lemma~\ref{Group.Generators.wordLength_le_mul_wordLength} gives $d_Q \le K d_P$. -/)]
+  Group.Generators.WithWordMetric.exists_lipschitzWith_congr
+
 attribute [blueprint "Group.Generators.WithWordMetric.isQuasiIsometry_congr"
   (latexEnv := "corollary")
   (title := /-- Change of generators, L\"oh Prop.~5.2.5 -/)
   (statement := /-- For finite generating families $P$ and $Q$ of $G$, the identity
     $\mathrm{congr}_{P,Q} \colon (G, d_P) \to (G, d_Q)$ is a quasi-isometry (it is even
     bilipschitz). -/)
-  (proof := /-- Lemma~\ref{Group.Generators.wordLength_le_mul_wordLength} in both directions, as in
-    L\"oh: $\mathrm{congr}_{P,Q}$ is a bijection that is Lipschitz in both directions. A surjective
-    map that is Lipschitz and antilipschitz is a quasi-isometric embedding with quasi-dense range,
-    hence a quasi-isometry by Theorem~\ref{Metric.isQuasiIsometry_iff_quasiDenseRange}. -/)]
+  (proof := /-- As in L\"oh: by
+    Lemma~\ref{Group.Generators.WithWordMetric.exists_lipschitzWith_congr} in both
+    directions, $\mathrm{congr}_{P,Q}$ is a bijection that is Lipschitz with a Lipschitz inverse,
+    hence antilipschitz, and Lemma~\ref{Metric.isQuasiIsometry_of_bilipschitz} concludes. -/)]
   Group.Generators.WithWordMetric.isQuasiIsometry_congr
 
 attribute [blueprint "Subgroup.isQuasiIsometry_subtype" (latexEnv := "corollary")

@@ -46,12 +46,28 @@ attribute [blueprint "Metric.IsCoarselyGeodesic"
     $r, L, C$. -/)]
   Metric.IsCoarselyGeodesic
 
+attribute [blueprint "SimpleGraph.Walk.dist_le_mul_length" (latexEnv := "lemma")
+  (title := /-- Maps along walks -/)
+  (statement := /-- If a map $\varphi$ from the vertices of a graph to a pseudometric space moves
+    adjacent vertices by at most $K$, then $d(\varphi(u), \varphi(v)) \le K n$ for every walk of
+    length $n$ from $u$ to $v$. -/)
+  (proof := /-- Induction on the walk, with the triangle inequality at each step. -/)]
+  SimpleGraph.Walk.dist_le_mul_length
+
+attribute [blueprint "Metric.exists_ripsGraph_walk_length_le" (latexEnv := "lemma")
+  (title := /-- Chains from sequences -/)
+  (statement := /-- If $x_0, x_1, \dots$ is a sequence of points with $d(x_k, x_{k+1}) \le r$ for
+    $k < n$, then there is an $r$-chain from $x_0$ to $x_n$ with at most $n$ steps. -/)
+  (proof := /-- Induction on $n$: append $x_{n+1}$ to the chain, unless it equals $x_n$ (the Rips
+    graph has no loops), in which case the chain is kept. -/)]
+  Metric.exists_ripsGraph_walk_length_le
+
 attribute [blueprint "NormedSpace.isCoarselyGeodesicWith" (latexEnv := "lemma")
   (statement := /-- A real normed space is $(r, 1/r, 1)$-coarsely geodesic for every $r > 0$. -/)
   (proof := /-- Take the points $x + \frac{k}{m}(y - x)$ for $k = 0, \dots, m$ and $m = \max(\lceil
     \|x - y\| / r \rceil, 1)$: consecutive points are at distance $\|x - y\| / m \le r$, and
-    $m \le \|x - y\| / r + 1$. Dropping repeated consecutive points leaves an $r$-chain with at
-    most $m$ steps. -/)]
+    $m \le \|x - y\| / r + 1$. Lemma~\ref{Metric.exists_ripsGraph_walk_length_le} turns them into
+    an $r$-chain with at most $m$ steps. -/)]
   NormedSpace.isCoarselyGeodesicWith
 
 attribute [blueprint "Group.Generators.isCoarselyGeodesicWith" (latexEnv := "lemma")

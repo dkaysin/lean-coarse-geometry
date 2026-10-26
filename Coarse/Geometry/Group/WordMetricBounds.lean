@@ -28,6 +28,8 @@ families, and the consequences for the word metric up to quasi-isometry.
   family are finite.
 * `Group.Generators.isCoarselyGeodesicWith`: a group with the word metric is
   `(1, 1, 0)`-coarsely geodesic.
+* `Group.Generators.WithWordMetric.exists_lipschitzWith_congr`: for a finite generating family
+  `P`, the identity of the group is Lipschitz from the word metric of `P` to any other word metric.
 * `Group.Generators.WithWordMetric.isQuasiIsometry_congr`: for two finite generating families,
   the identity of the group is a quasi-isometry between the two word metrics.
 
