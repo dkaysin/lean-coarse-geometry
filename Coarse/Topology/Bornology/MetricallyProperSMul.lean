@@ -89,6 +89,12 @@ theorem IsMetricallyProperSMul.subgroup {G X : Type*} [Group G] [MulAction G X] 
     (h : IsMetricallyProperSMul G X) (H : Subgroup G) : IsMetricallyProperSMul H X :=
   fun s hs ↦ (h s hs).preimage Subtype.val_injective.injOn
 
+/-- The restriction of an isometric action to a subgroup is isometric. -/
+@[to_additive /-- The restriction of an isometric additive action to a subgroup is isometric. -/]
+instance Subgroup.isIsometricSMul {G X : Type*} [Group G] [PseudoEMetricSpace X] [MulAction G X]
+    [IsIsometricSMul G X] (H : Subgroup G) : IsIsometricSMul H X :=
+  ⟨fun h ↦ isometry_smul X (h : G)⟩
+
 /-- If `G` acts isometrically and coboundedly, then so does every subgroup of finite index. -/
 @[to_additive /-- If `G` acts isometrically and coboundedly by translations, then so does every
 subgroup of finite index. -/]
