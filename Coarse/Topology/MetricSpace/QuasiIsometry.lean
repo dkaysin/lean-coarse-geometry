@@ -43,6 +43,8 @@ with quasi-dense range.
 * `Metric.isQuasiIsometry_iff_quasiDenseRange`: a map is a quasi-isometry if and only if it is a
   quasi-isometric embedding with quasi-dense range.
 * `Metric.isQuasiIsometry_of_bilipschitz`: a surjective bilipschitz map is a quasi-isometry.
+* `Metric.CoarseLipschitzWith.isQuasiIsometry`: a coarse Lipschitz map with a coarse Lipschitz
+  quasi-inverse is a quasi-isometry.
 
 ## Implementation notes
 
@@ -63,6 +65,7 @@ whole space for some `C`, in the sense of `Metric.IsCover`, which is stated with
 
 * [C. Löh, *Geometric Group Theory: An Introduction*][loeh2017], Definition 5.1.6 and
   Proposition 5.1.10
+* [C. Druțu, M. Kapovich, *Geometric Group Theory*][drutu2018], Definition 8.10
 
 ## Tags
 
@@ -288,5 +291,25 @@ theorem isQuasiIsometry_of_bilipschitz {K₁ K₂ : ℝ≥0} (hf₁ : Antilipsch
     ⟨hf₁.coarseAntilipschitzWith.isQuasiIsometricEmbedding hf₂.coarseLipschitzWith, 0, fun y ↦
       let ⟨x, hx⟩ := hf y
       ⟨x, by simp [hx]⟩⟩
+
+/-- A coarse Lipschitz map with a coarse Lipschitz quasi-inverse is a quasi-isometry: if `f` and
+`g` are coarse Lipschitz and both composites have finite distance from the identity, then `f` is a
+quasi-isometry.
+
+[C. Druțu, M. Kapovich, *Geometric Group Theory*][drutu2018], Definition 8.10. -/
+theorem CoarseLipschitzWith.isQuasiIsometry {g : β → α}
+    (hf : CoarseLipschitzWith L₁ C₁ f) (hg : CoarseLipschitzWith L₂ C₂ g)
+    (hgf : HasFiniteDist (g ∘ f) id) (hfg : HasFiniteDist (f ∘ g) id) :
+    IsQuasiIsometry f := by
+  obtain ⟨D, hD⟩ := hgf
+  obtain ⟨D', hD'⟩ := hfg
+  simp only [Function.comp_apply, id_eq] at hD hD'
+  -- `x` and `y` are within `D` of `g (f x)` and `g (f y)`, which `g` keeps close.
+  have hlower : CoarseAntilipschitzWith L₂ (C₂ + 2 * D) f := fun x y ↦ by
+    grw [dist_triangle4 x (g (f x)) (g (f y)) y, dist_comm x, hD x, hD y, hg (f x) (f y)]
+    push_cast
+    linarith
+  exact isQuasiIsometry_iff_quasiDenseRange.2
+    ⟨hlower.isQuasiIsometricEmbedding hf, D', fun y ↦ ⟨g y, hD' y⟩⟩
 
 end Metric

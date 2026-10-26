@@ -94,6 +94,19 @@ attribute [blueprint "Metric.isQuasiIsometry_of_bilipschitz" (latexEnv := "lemma
     concludes. -/)]
   Metric.isQuasiIsometry_of_bilipschitz
 
+attribute [blueprint "Metric.CoarseLipschitzWith.isQuasiIsometry" (latexEnv := "lemma")
+  (title := /-- Coarse Lipschitz quasi-inverse, cf.\ Dru\c{t}u--Kapovich, Def.~8.10 -/)
+  (statement := /-- If $f \colon X \to Y$ and $g \colon Y \to X$ are coarse Lipschitz and $g \circ
+    f$ and $f \circ g$ have finite distance from the identity, then $f$ is a quasi-isometry. -/)
+  (proof := /-- If $g$ is $(L, C)$-coarse Lipschitz and $d(g f x, x) \le D$, then $d(x, y) \le d(g f
+    x, g f y) + 2D \le L\,d(f x, f y) + C + 2D$, so $f$ is coarse antilipschitz, hence a
+    quasi-isometric embedding by
+    Lemma~\ref{Metric.CoarseAntilipschitzWith.isQuasiIsometricEmbedding}. Since $f \circ g$ has
+    finite distance from the identity, $f$ has quasi-dense range, and
+    Theorem~\ref{Metric.isQuasiIsometry_iff_quasiDenseRange} concludes. Dru\c{t}u--Kapovich take
+    this as the definition of a quasi-isometry. -/)]
+  Metric.CoarseLipschitzWith.isQuasiIsometry
+
 attribute [blueprint "Metric.IsQuasiIsometry.comp" (latexEnv := "lemma")
   (title := /-- L\"oh, Prop.~5.1.11 (5) -/)
   (statement := /-- The composition of two quasi-isometries is a quasi-isometry. -/)
