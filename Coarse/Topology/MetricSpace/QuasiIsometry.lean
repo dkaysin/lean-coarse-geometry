@@ -42,6 +42,7 @@ with quasi-dense range.
 * `Metric.IsQuasiIsometry.comp`: the composition of two quasi-isometries is a quasi-isometry.
 * `Metric.isQuasiIsometry_iff_quasiDenseRange`: a map is a quasi-isometry if and only if it is a
   quasi-isometric embedding with quasi-dense range.
+* `Metric.isQuasiIsometry_of_bilipschitz`: a surjective bilipschitz map is a quasi-isometry.
 
 ## Implementation notes
 
@@ -279,5 +280,13 @@ theorem isQuasiIsometry_iff_quasiDenseRange :
       · exact hf.of_hasFiniteDist_comp_id hfg
       · exact hf.hasFiniteDist_comp_id hfg
       · exact hfg
+
+/-- A surjective bilipschitz map is a quasi-isometry. -/
+theorem isQuasiIsometry_of_bilipschitz {K₁ K₂ : ℝ≥0} (hf₁ : AntilipschitzWith K₁ f)
+    (hf₂ : LipschitzWith K₂ f) (hf : Function.Surjective f) : IsQuasiIsometry f :=
+  isQuasiIsometry_iff_quasiDenseRange.2
+    ⟨hf₁.coarseAntilipschitzWith.isQuasiIsometricEmbedding hf₂.coarseLipschitzWith, 0, fun y ↦
+      let ⟨x, hx⟩ := hf y
+      ⟨x, by simp [hx]⟩⟩
 
 end Metric

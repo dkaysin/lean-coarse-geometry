@@ -133,15 +133,6 @@ theorem exists_lipschitzWith_congr [Finite ι] : ∃ K, LipschitzWith K (congr P
   rw [dist_eq, dist_eq, ofWordMetric_congr, ofWordMetric_congr, NNReal.coe_natCast]
   exact_mod_cast P.wordLength_le_mul_wordLength Q (fun i ↦ hK ⟨i, rfl⟩) _
 
-/-- A surjective bilipschitz map is a quasi-isometry. -/
-theorem _root_.Metric.isQuasiIsometry_of_bilipschitz {α β : Type*} [PseudoMetricSpace α]
-    [PseudoMetricSpace β] {f : α → β} {K₁ K₂ : ℝ≥0} (hf₁ : AntilipschitzWith K₁ f)
-    (hf₂ : LipschitzWith K₂ f) (hf : Function.Surjective f) : Metric.IsQuasiIsometry f :=
-  Metric.isQuasiIsometry_iff_quasiDenseRange.2
-    ⟨hf₁.coarseAntilipschitzWith.isQuasiIsometricEmbedding hf₂.coarseLipschitzWith, 0, fun y ↦
-      let ⟨x, hx⟩ := hf y
-      ⟨x, by simp [hx]⟩⟩
-
 /-- For finite generating families `P` and `Q` of `G`, the identity of `G` is a quasi-isometry
 from the word metric of `P` to the word metric of `Q`.
 
