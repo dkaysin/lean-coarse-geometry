@@ -54,7 +54,7 @@ $(\delta)$-hyperbolicity in the sense of Bridson--Haefliger, Definition III.H.1.
 Mathlib has no geodesics. Here a geodesic is an isometric map from an interval, as in L\"oh and
 Bridson--Haefliger (design decision D17).
 
-\inputleannode{Metric.Geodesic}
+\inputleannode{Metric.IsGeodesic}
 
 \inputleannode{Metric.HasSlimTrianglesWith}
 
@@ -78,11 +78,11 @@ $3\delta$ in both directions.
 \section*{Quasi-hyperbolic spaces}
 
 Quasi-geodesics are defined in Chapter~\ref{chap:coarsely-geodesic}
-(Definition~\ref{Metric.QuasiGeodesic}).
+(Definition~\ref{Metric.IsQuasiGeodesicWith}).
 
 \begin{definition}[Quasi-hyperbolic space, cf.\ L\"oh Def.~7.2.6]
   \label{Metric.IsQuasiHyperbolic}
-  \uses{Metric.IsCoarselyGeodesicSpace, Metric.QuasiGeodesic}
+  \uses{Metric.IsCoarselyGeodesicSpace, Metric.IsQuasiGeodesicWith}
   A \emph{$(c, b)$-quasi-geodesic triangle} with vertices $x, y, z$ in a pseudometric space $X$
   consists of $(c, b)$-quasi-geodesics from $x$ to $y$, from $y$ to $z$ and from $z$ to $x$, its
   sides. It is \emph{$\delta$-slim} if every point of the image of each side is within distance
@@ -111,7 +111,7 @@ every side, which is the same as asking it of the first side of every triangle.
   geodesic and $Y$ is quasi-hyperbolic, then $X$ is quasi-hyperbolic.
 \end{lemma}
 \begin{proof}
-  \uses{Metric.QuasiGeodesic}
+  \uses{Metric.IsQuasiGeodesicWith}
   Let $f$ be a $(c_0, b_0)$-quasi-isometric embedding and $c, b \ge 0$. Composed with $f$, a
   $(c, b)$-quasi-geodesic of $X$ is a $(c', b')$-quasi-geodesic of $Y$, with $c', b'$ depending
   only on $c, b, c_0, b_0$; take $\delta$ for $c', b'$ in $Y$. The image under $f$ of a
@@ -123,13 +123,13 @@ every side, which is the same as asking it of the first side of every triangle.
 
 \begin{theorem}[Hyperbolicity and quasi-hyperbolicity, L\"oh Thm.~7.2.10]
   \label{Metric.isQuasiHyperbolic_iff_exists_hasSlimTrianglesWith}
-  \uses{Metric.IsQuasiHyperbolic, Metric.HasSlimTrianglesWith, Metric.Geodesic}
+  \uses{Metric.IsQuasiHyperbolic, Metric.HasSlimTrianglesWith, Metric.IsGeodesic}
   A geodesic pseudometric space is quasi-hyperbolic if and only if it has $\delta$-slim triangles
   for some $\delta$.
 \end{theorem}
 \begin{proof}
   \uses{Metric.HasSlimTrianglesWith.exists_hausdorffDist_le,
-    Metric.IsGeodesicSpace.isCoarselyGeodesicSpaceWith, Metric.QuasiGeodesic}
+    Metric.IsGeodesicSpace.isCoarselyGeodesicSpaceWith, Metric.IsQuasiGeodesicWith}
   ``Only if'': a geodesic triangle is a $(1, 0)$-quasi-geodesic triangle, so take $\delta$ for $c =
   1$, $b = 0$. ``If'': a geodesic space is coarsely geodesic
   (Lemma~\ref{Metric.IsGeodesicSpace.isCoarselyGeodesicSpaceWith}). Let the triangles be
@@ -145,7 +145,7 @@ every side, which is the same as asking it of the first side of every triangle.
 \begin{corollary}[Hyperbolicity and quasi-isometric embeddings, Bridson--Haefliger Thm.~III.H.1.9,
   L\"oh Cor.~7.2.13]
   \label{Metric.IsQuasiIsometricEmbedding.exists_hasSlimTrianglesWith}
-  \uses{Metric.IsQuasiIsometricEmbedding, Metric.HasSlimTrianglesWith, Metric.Geodesic}
+  \uses{Metric.IsQuasiIsometricEmbedding, Metric.HasSlimTrianglesWith, Metric.IsGeodesic}
   Let $X$ and $Y$ be geodesic pseudometric spaces and $f \colon X \to Y$ a quasi-isometric
   embedding. If $Y$ has $\delta$-slim triangles for some $\delta$, then $X$ has $\delta'$-slim
   triangles for some $\delta'$.

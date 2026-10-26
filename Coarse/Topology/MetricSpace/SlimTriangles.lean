@@ -55,8 +55,9 @@ variable {X : Type*} [PseudoMetricSpace X] {δ : ℝ}
 /-- A pseudometric space has **`δ`-slim triangles** if for every geodesic triangle, every point of
 one side is within distance `δ` of a point of one of the other two sides. -/
 def HasSlimTrianglesWith (X : Type*) [PseudoMetricSpace X] (δ : ℝ) : Prop :=
-  ∀ ⦃x y z : X⦄ (γ₁ : Geodesic x y) (γ₂ : Geodesic y z) (γ₃ : Geodesic z x),
-    ∀ p ∈ Set.range γ₁, ∃ q ∈ Set.range γ₂ ∪ Set.range γ₃, dist p q ≤ δ
+  ∀ ⦃x y z : X⦄ ⦃γ₁ γ₂ γ₃ : ℝ → X⦄ ⦃t₁ t₁' t₂ t₂' t₃ t₃' : ℝ⦄, IsGeodesic γ₁ t₁ t₁' x y →
+    IsGeodesic γ₂ t₂ t₂' y z → IsGeodesic γ₃ t₃ t₃' z x → ∀ p ∈ γ₁ '' Set.Icc t₁ t₁',
+      ∃ q ∈ γ₂ '' Set.Icc t₂ t₂' ∪ γ₃ '' Set.Icc t₃ t₃', dist p q ≤ δ
 
 /-- A geodesic space with `δ`-slim triangles satisfies the four-point condition with constant
 `3 * δ`. -/

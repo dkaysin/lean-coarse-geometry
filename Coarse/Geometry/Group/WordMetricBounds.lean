@@ -126,7 +126,7 @@ theorem isCoarselyGeodesicSpaceWith :
   intro x y
   obtain ⟨l, hl, hlg⟩ := P.exists_isGeodesic (x.ofWordMetric⁻¹ * y.ofWordMetric)
   obtain ⟨p, hp⟩ := P.exists_walk_of_word x.ofWordMetric l
-  refine ⟨⟨(p.map φ).copy rfl (by simp [φ, hlg]), ?_⟩⟩
+  refine ⟨(p.map φ).copy rfl (by simp [φ, hlg]), ⟨?_⟩⟩
   rw [SimpleGraph.Walk.length_copy, SimpleGraph.Walk.length_map, WithWordMetric.dist_eq, ← hlg,
     hl.eq]
   simpa using hp

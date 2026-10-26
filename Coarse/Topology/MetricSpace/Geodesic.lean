@@ -17,14 +17,14 @@ by a geodesic.
 
 ## Main definitions
 
-* `Metric.Geodesic x x'`: a geodesic from `x` to `x'`, bundled with its interval `[t, t']`.
+* `Metric.IsGeodesic γ t t' x x'`: the map `γ : ℝ → X` is a geodesic on `[t, t']` from `x` to `x'`.
 * `Metric.IsGeodesicSpace X`: any two points of `X` are joined by a geodesic.
 
 ## Implementation notes
 
-A geodesic bundles its endpoints `t ≤ t'` with the map `γ : Set.Icc t t' → X`; the isometry forces
-`t' - t = dist x x'`. Since the domain depends on the geodesic, it coerces to a function through
-`CoeFun` rather than `FunLike`. Geodesics are not required to be injective, which matters only in
+A geodesic is a map `γ : ℝ → X` of which only the values on `[t, t']` matter, as for Mathlib's
+`Manifold.pathELength`: this avoids subtypes of `ℝ`. The isometry on `[t, t']` forces
+`t' - t = dist x x'`. Geodesics are not required to be injective, which matters only in
 pseudometric spaces.
 
 ## References
@@ -44,24 +44,16 @@ namespace Metric
 
 variable {X : Type*} [PseudoMetricSpace X]
 
-/-- A **geodesic** from `x` to `x'` is an isometric map `γ : [t, t'] → X` with `γ t = x` and
-`γ t' = x'`. -/
-structure Geodesic (x x' : X) where
-  t : ℝ
-  t' : ℝ
+/-- A map `γ : ℝ → X` is a **geodesic** on `[t, t']` from `x` to `x'` if it is isometric on
+`[t, t']`, with `γ t = x` and `γ t' = x'`. -/
+structure IsGeodesic (γ : ℝ → X) (t t' : ℝ) (x x' : X) : Prop where
   le : t ≤ t'
-  toFun : Set.Icc t t' → X
-  isometry : Isometry toFun
-  apply_left : toFun ⟨t, Set.left_mem_Icc.2 le⟩ = x
-  apply_right : toFun ⟨t', Set.right_mem_Icc.2 le⟩ = x'
-
-attribute [coe] Geodesic.toFun
-
-instance {x x' : X} : CoeFun (Geodesic x x') fun γ ↦ Set.Icc γ.t γ.t' → X :=
-  ⟨Geodesic.toFun⟩
+  apply_left : γ t = x
+  apply_right : γ t' = x'
+  dist_eq : ∀ s ∈ Set.Icc t t', ∀ s' ∈ Set.Icc t t', dist (γ s) (γ s') = |s - s'|
 
 /-- A pseudometric space is **geodesic** if any two points are joined by a geodesic. -/
 def IsGeodesicSpace (X : Type*) [PseudoMetricSpace X] : Prop :=
-  ∀ x x' : X, Nonempty (Geodesic x x')
+  ∀ x x' : X, ∃ (γ : ℝ → X) (t t' : ℝ), IsGeodesic γ t t' x x'
 
 end Metric
