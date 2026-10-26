@@ -4,18 +4,94 @@
 % \inputleannode{label}; `lake build :blueprint` must run first. Nodes not formalized yet are
 % written in LaTeX in the chapter files, without \notready. A Lean node whose statement awaits
 % review is tagged `notReady := true`, which LeanArchitect renders as \notready.
+%
+% Each chapter is one milestone of the project. The list below names, for each, the key
+% definitions and results; it says the same as the milestone's row in the roadmap and the
+% chapter's introduction.
 
 % Makes \inputleannode and \inputleanmodule available.
 \input{../../.lake/build/blueprint/library/CoarseBlueprint}
 
-\input{chapters/overview}
+This blueprint formalizes parts of coarse geometry and geometric group theory in Lean~4, in a
+form that can move into Mathlib. Work is organized in \emph{milestones}, groups of definitions
+and theorems chosen one at a time, with one chapter each. A chapter contains its main
+statements, the definitions that Mathlib does not have yet and the statements need, then the
+results their proofs need. Definitions and statements are formalized first, with the proofs left
+open, and proved later; so a node may have its statement formalized long before its proof.
+
+Each chapter follows a reference text. The default is C.~L\"oh, \emph{Geometric Group Theory:
+An Introduction}, Springer, 2017; item numbers without a book refer to it. Hyperbolic spaces
+also follow M.~R.~Bridson and A.~Haefliger, \emph{Metric Spaces of Non-Positive Curvature},
+Springer, 1999. Coarse spaces of bounded geometry follow J.~Roe, \emph{Lectures on
+Coarse Geometry}, American Mathematical Society, 2003.
+
+The milestones, one per chapter, in order:
+\begin{itemize}
+  \item M1, \emph{Quasi-isometries} (Chapter~\ref{chap:quasi-isometry}): coarse Lipschitz and
+        coarse antilipschitz maps, maps at finite distance, quasi-isometric embeddings,
+        quasi-isometries and quasi-dense range; quasi-isometries are the quasi-isometric
+        embeddings with quasi-dense range (Proposition 5.1.10), bilipschitz maps and coarse
+        Lipschitz maps with a coarse Lipschitz quasi-inverse are quasi-isometries, and
+        quasi-isometries compose.
+  \item M2, \emph{Word metrics} (Chapter~\ref{chap:word-metric}): generating families, word
+        length, word metrics and Cayley graphs, and a group with the word metric of a generating
+        family; the Cayley-graph distance is the word metric, maps with bounded steps along the
+        generators are Lipschitz for the word metric, word lengths for two finite generating
+        families bound each other, and balls are finite.
+  \item M3, \emph{Coarsely geodesic spaces} (Chapter~\ref{chap:coarsely-geodesic}): the Rips
+        graph, coarsely connected and coarsely geodesic spaces; maps with bounded steps on
+        coarsely geodesic spaces are coarse Lipschitz, and normed spaces, geodesic spaces and word
+        metrics are coarsely geodesic.
+  \item M4, \emph{Hypotheses on the action} (Chapter~\ref{chap:actions}): metrically proper and
+        cobounded actions; properly discontinuous actions, actions of finite groups and
+        restrictions of metrically proper actions to subgroups are metrically proper, cocompact
+        actions are cobounded,
+        subgroups of finite index act coboundedly, and a group acts on itself with a word
+        metric isometrically and metrically properly.
+  \item M5, \emph{The \v{S}varc--Milnor lemma} (Chapter~\ref{chap:svarc-milnor}): a group acting
+        isometrically, metrically properly and coboundedly on a coarsely geodesic space is
+        finitely generated, and its orbit maps are quasi-isometries for the word metric of any
+        finite generating family (Proposition 5.4.1); the topological form (Corollary 5.4.2).
+  \item M6, \emph{Corollaries} (Chapter~\ref{chap:corollaries}): independence of the word metric
+        from the finite generating family up to quasi-isometry (Proposition 5.2.5), finite-index
+        subgroups, quotients by finite normal subgroups (Corollary 5.4.7), and
+        $\Z^n \sim_{QI} \R^n$ (Example 5.2.8).
+  \item M7, \emph{Coarse spaces} (Chapter~\ref{chap:coarse-spaces}): the coarse-space library
+        the project contains: coarse spaces, coarsely close maps, coarse maps, coarse
+        equivalences and the metric coarse structure; the controlled sets of a pseudometric
+        space, and a coarse \v{S}varc--Milnor lemma.
+  \item M8, \emph{Uniformly discrete spaces and bounded geometry}
+        (Chapter~\ref{chap:bounded-geometry}): uniformly discrete spaces and bounded geometry
+        for metric spaces (Definition 5.6.11), bounded geometry and uniform local finiteness for
+        coarse spaces (Roe, \S3.1); word metrics are uniformly discrete with bounded geometry,
+        coarse bounds on uniformly discrete spaces are Lipschitz bounds (Proposition 5.2.9), and
+        the metric and coarse notions agree on metric spaces.
+  \item M9, \emph{Definitions of hyperbolicity} (Chapter~\ref{chap:hyperbolic}): Gromov's
+        four-point condition, geodesic spaces and slim geodesic triangles, quasi-geodesics and
+        quasi-hyperbolic spaces (Definition 7.2.6), hyperbolic groups; the four-point condition
+        and slim triangles agree on geodesic spaces (Exercise 7.E.10), quasi-hyperbolicity is
+        invariant under quasi-isometric embeddings (Proposition 7.2.9), slim triangles and
+        quasi-hyperbolicity agree on geodesic spaces (Theorem 7.2.10), Bridson--Haefliger's
+        Theorem III.H.1.9, the four-point condition and quasi-hyperbolicity agree on word
+        metrics, L\"oh's definition of hyperbolic groups (Definition 7.3.1), and the
+        independence of hyperbolicity of a group from its generating family.
+  \item M10, \emph{Geometric realisation and stability of quasi-geodesics}
+        (Chapter~\ref{chap:stability}): the geometric realisation of a graph; its vertices sit
+        isometrically and $\frac12$-densely and it is geodesic, the four-point condition passes
+        from a quasi-dense isometric subspace to the whole space, and quasi-geodesics in spaces
+        with slim triangles are stable (Bridson--Haefliger, Theorem III.H.1.7).
+  \item M11, \emph{The Gromov boundary} (Chapter~\ref{chap:gromov-boundary}): the Gromov
+        boundary of a hyperbolic space; not planned yet.
+\end{itemize}
+
 \input{chapters/quasi_isometry}
 \input{chapters/word_metric}
 \input{chapters/coarsely_geodesic}
 \input{chapters/actions}
 \input{chapters/svarc_milnor}
 \input{chapters/corollaries}
-\input{chapters/hyperbolic}
-\input{chapters/stability}
 \input{chapters/coarse_spaces}
 \input{chapters/bounded_geometry}
+\input{chapters/hyperbolic}
+\input{chapters/stability}
+\input{chapters/gromov_boundary}

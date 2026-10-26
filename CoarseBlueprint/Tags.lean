@@ -163,9 +163,9 @@ attribute [blueprint "Metric.QuasiIsometric.refl"
 /-! ## Word metrics
 
 Blueprint nodes for `Coarse/GroupTheory/Generators.lean` and
-`Coarse/Geometry/Group/{WordMetric, CayleySimpleGraph}.lean` (milestone M3; copies of open Mathlib
+`Coarse/Geometry/Group/{WordMetric, CayleySimpleGraph}.lean` (milestone M2; copies of open Mathlib
 pull requests), and for `Coarse/Geometry/Group/{WithWordMetric, WordMetricBounds}.lean`
-(milestone M3).
+(milestone M2).
 -/
 
 attribute [blueprint "Group.Generators"
@@ -236,7 +236,7 @@ attribute [blueprint "Group.Generators.finite_setOf_wordLength_le" (latexEnv := 
 /-! ## Coarsely geodesic spaces
 
 Blueprint nodes for `Coarse/Topology/MetricSpace/CoarselyGeodesic.lean` and the word-metric
-instance in `Coarse/Geometry/Group/WordMetricBounds.lean` (milestone M2).
+instance in `Coarse/Geometry/Group/WordMetricBounds.lean` (milestone M3).
 -/
 
 attribute [blueprint "Metric.ripsGraph"
@@ -489,12 +489,68 @@ attribute [blueprint "Int.quasiIsometric_pi_euclideanSpace" (latexEnv := "coroll
     "NormedSpace.isCoarselyGeodesicWith", "isMetricallyProperSMul_of_properlyDiscontinuousSMul"])]
   Int.quasiIsometric_pi_euclideanSpace
 
+/-! ## Coarse spaces
+
+Blueprint nodes for `Coarse/Topology/CoarseSpace/` (milestone M7; a copy of S. Ghobash's
+coarse-space library).
+-/
+
+attribute [blueprint "CoarseSpace"
+  (title := /-- Coarse space -/)
+  (statement := /-- A \emph{coarse structure} on $X$ is a family of \emph{controlled} subsets of
+    $X \times X$ that contains the diagonal and is closed under subsets, finite unions,
+    inverses and composition. It is encoded by the filter of complements of controlled
+    sets. -/)]
+  CoarseSpace
+
+attribute [blueprint "IsCoarselyClose"
+  (title := /-- Coarsely close maps -/)
+  (statement := /-- Maps $f, g \colon W \to X$ are \emph{coarsely close} if
+    $\{(f w, g w)\}$ is controlled. -/)]
+  IsCoarselyClose
+
+attribute [blueprint "IsCoarseMap"
+  (title := /-- Coarse map -/)
+  (statement := /-- A map is \emph{coarse} if it maps controlled sets to controlled sets and
+    preimages of coarsely bounded sets are coarsely bounded. -/)]
+  IsCoarseMap
+
+attribute [blueprint "CoarseEquiv"
+  (title := /-- Coarse equivalence -/)
+  (statement := /-- A \emph{coarse equivalence} is a pair of controlled maps in opposite
+    directions whose composites are coarsely close to the identities. -/)]
+  CoarseEquiv
+
+attribute [blueprint "PseudoEMetricSpace.toCoarseSpace"
+  (title := /-- Metric coarse structure -/)
+  (statement := /-- In a pseudo-(e)metric space, a set of pairs is controlled if the distance
+    is bounded on it. -/)]
+  PseudoEMetricSpace.toCoarseSpace
+
+attribute [blueprint "Metric.isControlled_iff" (latexEnv := "lemma")
+  (title := /-- Controlled sets of a pseudometric space -/)
+  (statement := /-- In a pseudometric space, a set of pairs is controlled for the metric coarse
+    structure if and only if the distance is bounded on it. -/)]
+  Metric.isControlled_iff
+
+attribute [blueprint "mulOrbitMetricCoarseEquiv"
+  (title := /-- Coarse \v{S}varc--Milnor lemma -/)
+  (statement := /-- A group with a proper left-invariant metric, acting isometrically, properly
+    discontinuously and cocompactly on a proper metric space, is coarsely equivalent to it via
+    an orbit map. -/)]
+  mulOrbitMetricCoarseEquiv
+
+/-! ## Uniformly discrete spaces and bounded geometry
+
+Blueprint nodes for milestone M8. None is formalized yet.
+-/
+
 /-! ## Definitions of hyperbolicity
 
 Blueprint nodes for `Coarse/Topology/MetricSpace/Hyperbolic.lean` and
 `Coarse/Geometry/Group/Hyperbolic.lean` (copies of open Mathlib pull requests), and for
 `Coarse/Topology/MetricSpace/{Geodesic, SlimTriangles}.lean` and
-`Coarse/Geometry/Group/HyperbolicGenerators.lean` (milestone M7).
+`Coarse/Geometry/Group/HyperbolicGenerators.lean` (milestone M9).
 -/
 
 attribute [blueprint "Metric.IsHyperbolicWith"
@@ -581,59 +637,12 @@ attribute [blueprint "Group.Generators.isHyperbolic_iff"
     "Group.Generators.isQuasiHyperbolic_iff"])]
   Group.Generators.isHyperbolic_iff
 
-
 /-! ## Geometric realisation and stability of quasi-geodesics
 
-Blueprint nodes for milestone M9. None is formalized yet.
+Blueprint nodes for milestone M10. None is formalized yet.
 -/
 
-/-! ## Coarse spaces
+/-! ## The Gromov boundary
 
-Blueprint nodes for `Coarse/Topology/CoarseSpace/` (a copy of S. Ghobash's coarse-space
-library).
+Blueprint nodes for milestone M11. None is planned yet.
 -/
-
-attribute [blueprint "CoarseSpace"
-  (title := /-- Coarse space -/)
-  (statement := /-- A \emph{coarse structure} on $X$ is a family of \emph{controlled} subsets of
-    $X \times X$ that contains the diagonal and is closed under subsets, finite unions,
-    inverses and composition. It is encoded by the filter of complements of controlled
-    sets. -/)]
-  CoarseSpace
-
-attribute [blueprint "IsCoarselyClose"
-  (title := /-- Coarsely close maps -/)
-  (statement := /-- Maps $f, g \colon W \to X$ are \emph{coarsely close} if
-    $\{(f w, g w)\}$ is controlled. -/)]
-  IsCoarselyClose
-
-attribute [blueprint "IsCoarseMap"
-  (title := /-- Coarse map -/)
-  (statement := /-- A map is \emph{coarse} if it maps controlled sets to controlled sets and
-    preimages of coarsely bounded sets are coarsely bounded. -/)]
-  IsCoarseMap
-
-attribute [blueprint "CoarseEquiv"
-  (title := /-- Coarse equivalence -/)
-  (statement := /-- A \emph{coarse equivalence} is a pair of controlled maps in opposite
-    directions whose composites are coarsely close to the identities. -/)]
-  CoarseEquiv
-
-attribute [blueprint "PseudoEMetricSpace.toCoarseSpace"
-  (title := /-- Metric coarse structure -/)
-  (statement := /-- In a pseudo-(e)metric space, a set of pairs is controlled if the distance
-    is bounded on it. -/)]
-  PseudoEMetricSpace.toCoarseSpace
-
-attribute [blueprint "Metric.isControlled_iff" (latexEnv := "lemma")
-  (title := /-- Controlled sets of a pseudometric space -/)
-  (statement := /-- In a pseudometric space, a set of pairs is controlled for the metric coarse
-    structure if and only if the distance is bounded on it. -/)]
-  Metric.isControlled_iff
-
-attribute [blueprint "mulOrbitMetricCoarseEquiv"
-  (title := /-- Coarse \v{S}varc--Milnor lemma -/)
-  (statement := /-- A group with a proper left-invariant metric, acting isometrically, properly
-    discontinuously and cocompactly on a proper metric space, is coarsely equivalent to it via
-    an orbit map. -/)]
-  mulOrbitMetricCoarseEquiv

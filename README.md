@@ -3,11 +3,12 @@
 A Lean 4 playground for coarse geometry and geometric group theory, built on Mathlib and
 written so that its material can move into Mathlib.
 
-The project grows by targets, definitions and theorems chosen one at a time: so far the
-Švarc–Milnor lemma with its corollaries, and the comparison of the slim-triangle and four-point
-definitions of hyperbolic spaces, and uniformly discrete spaces and bounded geometry for metric
-and coarse spaces; next, the Gromov boundary. For each target it adds the
-definitions that Mathlib lacks, states the results in Lean first and proves them afterwards.
+The project grows by milestones, groups of definitions and theorems chosen one at a time, one
+blueprint chapter each: so far the Švarc–Milnor lemma with its corollaries, the definitions of
+hyperbolic spaces and groups and the equivalences between them, and uniformly discrete spaces and
+bounded geometry for metric and coarse spaces; next, the Gromov boundary. For each milestone it
+adds the definitions that Mathlib lacks, states the results in Lean first and proves them
+afterwards.
 
 - `Coarse/`: the library.
 - `blueprint/` and `CoarseBlueprint/`: the blueprint, listing every definition and theorem with

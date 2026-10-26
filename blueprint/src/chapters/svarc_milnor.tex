@@ -1,11 +1,30 @@
 \chapter{The \v{S}varc--Milnor lemma}
 \label{chap:svarc-milnor}
 
-Milestone M5. $G$ acts isometrically on a nonempty pseudometric space $X$, $s \subseteq X$ is
-bounded with $\bigcup_g g s = X$, $x_0 \in s$ and $r \ge 0$. Let $B$ be the closed
-$r$-thickening of $s$, which is bounded. Both proofs use the set
-\[ S = \{g \in G \mid g B \cap B \ne \emptyset\}, \]
-the set in the definition of a metrically proper action, written in Lean with Mathlib's
+Milestone M5. Let a group $G$ act by isometries on a pseudometric space $X$. Assume that $X$ is
+\emph{coarsely geodesic} (Chapter~\ref{chap:coarsely-geodesic}): there are constants $r, L, C$
+such that any two points $x, y$ are joined by a chain $x = x_0, x_1, \dots, x_n = y$ with
+$d(x_i, x_{i+1}) \le r$ and $n \le L\,d(x, y) + C$. Assume that the action is \emph{cobounded}:
+some bounded $s \subseteq X$ has translates covering $X$. Fix $x_0 \in s$, let $B$ be the closed
+$r$-thickening of $s$, which is bounded, and put
+\[ S = \{g \in G \mid g B \cap B \ne \emptyset\}. \]
+Then
+\begin{enumerate}
+  \item $S$ generates $G$;
+  \item $d(g x_0, h x_0) \le 2 \diam B\,|g^{-1}h|_S$ and
+        $|g^{-1}h|_S \le L\,d(g x_0, h x_0) + C + 1$ for all $g, h \in G$;
+  \item every point of $X$ is within $\diam s$ of the orbit $G x_0$;
+  \item if moreover the action is \emph{metrically proper}, then $S$ is finite, so $G$ is
+        finitely generated, and the orbit map is a quasi-isometry for the word metric of any
+        finite generating family.
+\end{enumerate}
+Parts 1--3 need no properness. Part 1 uses only the existence of $r$-chains; the bound on their
+length is needed for the lower bound in part 2 and cannot be dropped: $\Z$ acting by
+translations on $(\R, \sqrt{d})$ satisfies every other hypothesis, but its orbit map is not a
+quasi-isometry.
+
+In the nodes below $X$ is nonempty. Both proofs use the set $S$, the set in the definition of a
+metrically proper action, written in Lean with Mathlib's
 \texttt{Metric.cthickening} and no new definition; it is L\"oh's generating set in Prop.~5.4.1.
 The steps are stated with the word length and no metric on $G$ (design decision D8). The
 hypotheses give a bounded $s$ whose translates cover $X$ but need not contain $x_0$; both proofs

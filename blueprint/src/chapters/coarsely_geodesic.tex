@@ -1,11 +1,18 @@
 \chapter{Coarsely geodesic spaces}
 \label{chap:coarsely-geodesic}
 
-Milestone M2. An \emph{$r$-chain} from $x$ to $y$ is a sequence $x = x_0, \dots, x_n = y$ with
+Milestone M3. An \emph{$r$-chain} from $x$ to $y$ is a sequence $x = x_0, \dots, x_n = y$ with
 $d(x_i, x_{i+1}) \le r$; $n$ is its number of steps. In Lean a chain is a walk in the Rips graph at
 scale $r$, so that $n$ is the length of the walk (design decisions D6, D13). The definitions follow
 Cornulier--de la Harpe, Def.~3.B.1 (a), (c) and Def.~3.B.5; their name for our coarsely geodesic
 spaces is \emph{large-scale geodesic}.
+
+\paragraph{Why chains.} The chain hypothesis replaces quasi-geodesic paths in the \v{S}varc--Milnor
+lemma (Chapter~\ref{chap:svarc-milnor}). It makes the proof a finite counting argument, needs no
+theory of geodesic spaces, and holds for word metrics themselves ($r = L = 1$, $C = 0$), so the
+corollaries follow by letting a group act on itself. No generality is lost: in every pseudometric
+space the chain condition is equivalent, with other constants, to L\"oh's (non-continuous)
+quasi-geodesic condition (Definition 5.3.4).
 
 \inputleannode{Metric.ripsGraph}
 
