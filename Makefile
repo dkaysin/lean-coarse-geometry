@@ -29,7 +29,7 @@ mk_all: ## Regenerate Coarse.lean and CoarseBlueprint.lean
 blueprint: $(EXTRACTED) ## Build the tags and extract the blueprint to .lake/build/blueprint
 
 $(EXTRACTED): $(LEAN_SRCS)
-	lake build CoarseBlueprint :blueprint
+	lake build CoarseBlueprint:blueprint
 	touch $@
 
 web: blueprint ## Render the blueprint web page to blueprint/web

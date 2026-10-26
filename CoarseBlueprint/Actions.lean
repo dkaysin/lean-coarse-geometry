@@ -3,6 +3,8 @@ Copyright (c) 2026 Dmitry Kaysin. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Dmitry Kaysin
 -/
+module
+
 import Architect
 import Coarse.Topology.Bornology.MetricallyProperSMul
 
