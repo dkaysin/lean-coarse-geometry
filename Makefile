@@ -8,7 +8,7 @@ LEAN_SRCS := $(shell find Coarse CoarseBlueprint -name '*.lean') Coarse.lean Coa
 EXTRACTED := .lake/build/blueprint/stamp
 
 .DEFAULT_GOAL := help
-.PHONY: help cache build check mk_all blueprint web pdf serve frontier status sorries clean-blueprint
+.PHONY: help cache build check mk_all blueprint web pdf serve frontier status sorries lines clean-blueprint
 
 help: ## List the targets
 	@grep -E '^[a-z_-]+:.*## ' $(MAKEFILE_LIST) | awk -F ':.*## ' '{printf "  %-16s %s\n", $$1, $$2}'
@@ -50,6 +50,9 @@ status: blueprint ## List the state of every blueprint node
 
 sorries: ## List every sorry in the library
 	@grep -rn --include='*.lean' -w sorry Coarse || echo "No sorry."
+
+lines: ## List lines over 100 characters in Coarse/ and CoarseBlueprint/ (no build)
+	@python3 -c "import glob,sys; bad=[f'{f}:{i}: {len(l)} characters' for f in sorted(glob.glob('Coarse*/**/*.lean',recursive=True)) for i,l in enumerate(open(f,encoding='utf-8').read().split(chr(10)),1) if len(l)>100]; print(chr(10).join(bad) or 'No line over 100 characters.'); sys.exit(1 if bad else 0)"
 
 clean-blueprint: ## Remove the rendered blueprint
 	rm -rf blueprint/web blueprint/print blueprint/lean_decls
