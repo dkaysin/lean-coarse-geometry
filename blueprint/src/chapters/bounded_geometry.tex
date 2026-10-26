@@ -54,6 +54,32 @@ uniformly discrete: $\{n\} \cup \{n + 1/n\}$, $n \ge 1$, in $\R$ is a counterexa
   finite for a finite family (Lemma~\ref{Group.Generators.finite_setOf_wordLength_le}).
 \end{proof}
 
+\begin{lemma}[Coarse bounds on uniformly discrete spaces, cf.\ L\"oh Prop.~5.2.9]
+  \label{Metric.CoarseLipschitzWith.exists_lipschitzWith}
+  \uses{DiscreteUniformity, Metric.CoarseLipschitzWith, Metric.CoarseAntilipschitzWith}
+  Let $f \colon X \to Y$ be a map of pseudometric spaces.
+  \begin{enumerate}
+    \item If $X$ is uniformly discrete and $f$ is coarse Lipschitz, then $f$ is Lipschitz.
+    \item If $Y$ is uniformly discrete and $f$ is injective and coarse antilipschitz, then $f$ is
+          antilipschitz.
+  \end{enumerate}
+  In particular an injective quasi-isometric embedding between uniformly discrete spaces is a
+  bilipschitz embedding.
+  \plannedlean{Metric.CoarseAntilipschitzWith.exists_antilipschitzWith}
+\end{lemma}
+\begin{proof}
+  Let $\varepsilon > 0$ bound the distances between distinct points from below
+  (Definition~\ref{DiscreteUniformity}). (1) If $d(f x, f y) \le L\,d(x, y) + C$, then for $x \ne
+  y$, $C \le (C/\varepsilon)\,d(x, y)$, so $d(f x, f y) \le (L + C/\varepsilon)\,d(x, y)$; for $x =
+  y$ both sides are $0$. (2) If $d(x, y) \le K\,d(f x, f y) + C$, then for $x \ne y$, $f x \ne f y$,
+  so $C \le (C/\varepsilon)\,d(f x, f y)$, and $d(x, y) \le (K + C/\varepsilon)\,d(f x, f y)$.
+\end{proof}
+
+With Lemma~\ref{Group.Generators.WithWordMetric.hasBoundedGeometry}, this gives L\"oh's
+Proposition 5.2.9: a bijective quasi-isometry between finitely generated groups with the word
+metrics of finite generating families is a bilipschitz equivalence. Injectivity suffices, and the
+Lipschitz bound needs neither injectivity nor a uniformly discrete codomain.
+
 \section*{Coarse spaces}
 
 \paragraph{Roe's definition.} Let $X$ be a coarse space. For $E \subseteq X \times X$ and
@@ -175,6 +201,7 @@ the distance is bounded on it
   uniformly locally finite.
 \end{lemma}
 \begin{proof}
+  \uses{Metric.isControlled_iff}
   The set $\{(x, y) \mid d(x, y) \le r\}$ is controlled, and its ball at $x$ is the closed ball
   of radius $r$ about $x$. Every controlled set is contained in one of these sets, so its balls
   are contained in closed balls of a fixed radius.
@@ -190,6 +217,7 @@ the distance is bounded on it
   largest size of such a subset is Mathlib's packing number \texttt{Metric.packingNumber}.)
 \end{theorem}
 \begin{proof}
+  \uses{Metric.isControlled_iff}
   For $\varepsilon \ge 0$ write $E_\varepsilon = \{(x, y) \mid d(x, y) \le \varepsilon\}$; a set
   is $E_\varepsilon$-separated exactly when its points are pairwise at distance greater than
   $\varepsilon$ (\texttt{Metric.isSeparated\_iff\_setRelIsSeparated}).

@@ -1,0 +1,198 @@
+\chapter{Hyperbolicity and the choice of generators}
+\label{chap:hyperbolic-generators}
+
+Milestone M9. A group is hyperbolic if the word metric of \emph{some} finite generating family
+satisfies the four-point condition (Definition~\ref{Group.Generators.IsHyperbolicWith}). This
+chapter shows that then the word metric of \emph{every} finite generating family does. Change of
+generators alone does not give this: the four-point condition is not a quasi-isometry invariant of
+coarsely geodesic spaces (the graph of $|x|$ in $\R^2$ is bilipschitz to $\R$ and not hyperbolic).
+It is invariant among geodesic spaces, through slim triangles and the stability of
+quasi-geodesics (Bridson--Haefliger, Theorems III.H.1.7 and III.H.1.9). So the word metric is first
+replaced by the geometric realisation of the Cayley graph, a geodesic space in which the group sits
+isometrically and $\frac12$-densely (design decision D18).
+
+How the realisation is encoded in Lean is an open decision (D26); its nodes are not implemented
+until it is decided. Stability is proved with chains of points instead of rectifiable paths (design
+decision D27).
+
+\section*{Geometric realisation of a graph}
+
+\begin{definition}[Geometric realisation, cf.\ Bridson--Haefliger Def.~I.1.9]
+  \label{SimpleGraph.Realization}
+  Let $\Gamma$ be a connected simple graph with vertex set $V$ and graph distance $d_\Gamma$. Its
+  \emph{geometric realisation} $|\Gamma|$ is obtained from a copy of $[0, 1]$ for each edge by
+  gluing the endpoints of the copy for the edge $\{u, u'\}$ to the vertices $u$ and $u'$. A point
+  $p$ of $|\Gamma|$ is a vertex or lies inside an edge; a point at parameter $s$ on an edge from $u$
+  to $u'$ has distance $s$ from $u$ and $1 - s$ from $u'$. The distance between $p$ on an edge with
+  endpoints $u, u'$ and $q$ on an edge with endpoints $v, v'$ is the least of the numbers
+  \[ d(p, a) + d_\Gamma(a, b) + d(b, q), \qquad a \in \{u, u'\},\ b \in \{v, v'\}, \]
+  and, if $p$ and $q$ lie on the same edge, of their difference of parameters. Each vertex $v$ is a
+  point of $|\Gamma|$, which defines the \emph{vertex map} $V \to |\Gamma|$.
+  \plannedlean{SimpleGraph.Realization.vertex}
+\end{definition}
+
+\paragraph{Differences from Bridson--Haefliger.} Bridson--Haefliger glue copies of $[0, 1]$ for
+the edges of any graph with edge lengths $\lambda(e) > 0$, and define the distance as the infimum of
+the lengths of piecewise linear paths; that this is a geodesic metric when there are finitely many
+edge lengths is left to the reader (I.1.9, fact 2). Here every edge has length $1$, and the
+distance is given by the formula above, which for unit edges is the length of a shortest path: a
+shortest path from $p$ to $q$ either stays in one edge or leaves the edge of $p$ through an
+endpoint $a$, follows a shortest walk from $a$ to the endpoint $b$ of the edge of $q$ through
+which it arrives, and ends inside that edge. Only unit edges are needed (Cayley graphs), and the formula
+reduces every fact to a finite case analysis on top of the graph distance. Whether the
+construction follows the formula or the quotient is design decision D26.
+
+\begin{lemma}[Vertices of the realisation]
+  \label{SimpleGraph.Realization.dist_vertex}
+  \uses{SimpleGraph.Realization, Metric.QuasiDenseRange}
+  The vertex map of a connected graph $\Gamma$ preserves distances: the distance in $|\Gamma|$
+  between two vertices is their graph distance. Every point of $|\Gamma|$ is within $\frac12$ of a
+  vertex; in particular the vertex map has quasi-dense range.
+  \plannedlean{SimpleGraph.Realization.quasiDenseRange_vertex}
+\end{lemma}
+\begin{proof}
+  A vertex is an endpoint of each edge it lies on, at distance $0$ from itself, so the formula for
+  two vertices $u, v$ has the term $d_\Gamma(u, v)$. Every other term is at least
+  $d_\Gamma(u, v)$: a term through endpoints $a, b$ is at least $d_\Gamma(u, a) + d_\Gamma(a, b) +
+  d_\Gamma(b, v)$, since a point at distance $1$ from a vertex along an edge is the other endpoint,
+  adjacent to it. A point at parameter $s$ on an edge from $u$ to $u'$ is within $\min\{s, 1 - s\}
+  \le \frac12$ of $u$ or $u'$.
+\end{proof}
+
+\begin{lemma}[The realisation is geodesic, cf.\ Bridson--Haefliger I.1.9]
+  \label{SimpleGraph.Realization.isGeodesicSpace}
+  \uses{SimpleGraph.Realization, Metric.IsGeodesic}
+  The geometric realisation of a connected graph is a geodesic space.
+\end{lemma}
+\begin{proof}
+  If $p, q$ lie on one edge and the minimum is their difference of parameters, the segment of the
+  edge between them is a geodesic. Otherwise take endpoints $a, b$ attaining the minimum and a walk
+  $a = w_0, \dots, w_n = b$ with $n = d_\Gamma(a, b)$. Run from $p$ to $a$ along its edge, then
+  along the edges $w_i w_{i+1}$ at unit speed, then from $b$ to $q$. This map $\gamma$ is defined on
+  $[0, d(p, q)]$, $1$-Lipschitz on each piece and hence everywhere, and joins $p$ to $q$. A
+  $1$-Lipschitz map $\gamma \colon [0, \ell] \to X$ with $d(\gamma(0), \gamma(\ell)) = \ell$ is
+  isometric: for $s \le t$, $d(\gamma(s), \gamma(t)) \ge \ell - d(\gamma(0), \gamma(s)) -
+  d(\gamma(t), \gamma(\ell)) \ge \ell - s - (\ell - t) = t - s$.
+\end{proof}
+
+\section*{The four-point condition and quasi-dense subspaces}
+
+The four-point condition passes to subspaces with the same constant
+(\texttt{Metric.IsHyperbolicWith.of\_isometry} in the copied pull request). It also passes from a
+quasi-dense subspace to the whole space, with a larger constant; this is how the word metric and the
+realisation of the Cayley graph are compared.
+
+\begin{lemma}[Four-point condition from a quasi-dense subspace]
+  \label{Metric.IsHyperbolicWith.of_isometry_of_quasiDenseRange}
+  \uses{Metric.IsHyperbolicWith, Metric.QuasiDenseRange}
+  Let $f \colon X \to Y$ be an isometric map of pseudometric spaces such that every point of $Y$ is
+  within $C$ of a point of $f(X)$. If $X$ satisfies the four-point condition with constant
+  $\delta$, then $Y$ satisfies it with constant $\delta + 6C$.
+\end{lemma}
+\begin{proof}
+  Given $w, x, y, z \in Y$, choose $w', x', y', z' \in X$ whose images are within $C$ of them.
+  Each distance between two of the four points changes by at most $2C$ when they are replaced by the
+  images, so each Gromov product, half a sum of three distances, changes by at most $3C$. The
+  four-point condition for $w', x', y', z'$ in $X$, transported by the isometry, gives $(x \cdot
+  z)_w \ge (fx' \cdot fz')_{fw'} - 3C \ge \min\{(fx' \cdot fy')_{fw'}, (fy' \cdot fz')_{fw'}\} -
+  \delta - 3C \ge \min\{(x \cdot y)_w, (y \cdot z)_w\} - \delta - 6C$.
+\end{proof}
+
+\section*{Quasi-geodesics and their stability}
+
+\begin{definition}[Quasi-geodesic, Bridson--Haefliger Def.~I.8.22, L\"oh Def.~5.3.4]
+  \label{Metric.IsQuasiGeodesicWith}
+  \uses{Metric.IsQuasiIsometricEmbeddingWith}
+  Let $X$ be a pseudometric space, $c, b \ge 0$ and $L \ge 0$. A map $\gamma \colon [0, L] \to X$
+  is a \emph{$(c, b)$-quasi-geodesic} from $x$ to $y$ if it is a $(c, b)$-quasi-isometric embedding
+  (Definition~\ref{Metric.IsQuasiIsometricEmbeddingWith}) with $\gamma(0) = x$ and $\gamma(L) =
+  y$. It need not be continuous.
+\end{definition}
+
+\paragraph{Differences from the references.} Bridson--Haefliger allow any interval of $\R$, or its
+intersection with $\Z$, as the domain; L\"oh any closed interval $[t, t']$, with $c > 0$. Here the
+interval is $[0, L]$, which loses nothing for closed intervals (translate the parameter), and the
+constants may be $0$, as for quasi-isometric embeddings (L\"oh's form of the lower bound is
+recovered for $c \ne 0$). Quasi-geodesics on integers appear only inside the proof of
+Theorem~\ref{Metric.HasSlimTrianglesWith.exists_hausdorffDist_le}, as chains; rays and lines are
+not needed. A geodesic (Definition~\ref{Metric.IsGeodesic}) is a $(1, 0)$-quasi-geodesic, and the
+composition of a $(c, b)$-quasi-isometric embedding with a geodesic is a $(c, b)$-quasi-geodesic.
+
+\begin{theorem}[Stability of quasi-geodesics, cf.\ Bridson--Haefliger Thm.~III.H.1.7, L\"oh
+  Thm.~7.2.11]
+  \label{Metric.HasSlimTrianglesWith.exists_hausdorffDist_le}
+  \uses{Metric.HasSlimTrianglesWith, Metric.IsGeodesic, Metric.IsQuasiGeodesicWith}
+  Let $X$ be a geodesic pseudometric space with $\delta$-slim triangles, and $c, b \ge 0$. There is
+  $R$ such that for every $(c, b)$-quasi-geodesic $\gamma$ and every geodesic $\gamma'$ from $x$
+  to $y$ in $X$, the Hausdorff distance between the images of $\gamma$ and $\gamma'$ is at most
+  $R$.
+\end{theorem}
+\begin{proof}
+  Increasing $c$ keeps $\gamma$ a quasi-geodesic, so assume $c \ge 1$, and put $r = c + b$.
+
+  \emph{Chains.} If $x_0, \dots, x_n$ ($n \ge 1$) satisfy $d(x_i, x_{i+1}) \le r$ and $n \le 2^k$,
+  then every point of a geodesic from $x_0$ to $x_n$ is within $k\delta + r$ of some $x_i$.
+  Induction on $k$: for $n = 1$ every point $p$ of the geodesic has $d(p, x_0) \le d(x_0, x_1) \le
+  r$. For $n \ge 2$ let $m = \lceil n/2 \rceil$, so $1 \le m < n$ and both halves of the chain have
+  at most $2^{k-1}$ steps. Geodesics from $x_0$ to $x_m$, from $x_m$ to $x_n$ and the given one
+  reversed form a geodesic triangle, so every point of the given geodesic is within $\delta$ of a
+  point of one of the other two sides, which by induction is within $(k-1)\delta + r$ of a point of
+  the corresponding half.
+
+  \emph{Sampling.} If $\gamma$ is defined on $[0, L]$, let $n = \lceil L \rceil$, $x_i = \gamma(i)$
+  for $i < n$ and $x_n = \gamma(L)$. Consecutive points are within $r$, every point $\gamma(t)$ is
+  within $r$ of some $x_i$, and $d(x_i, x_j) \le c|i - j| + b$ and $|i - j| \le c\,d(x_i, x_j) +
+  cb + 1$.
+
+  \emph{The geodesic is near $\gamma$.} Let $\gamma'$ be defined on $[0, \ell]$. The distance from
+  $\gamma'(s)$ to the finite set $\{x_i\}$ is continuous in $s$; let $D$ be its maximum, attained at
+  $p = \gamma'(s_0)$. Let $y = \gamma'(\max\{s_0 - 2D, 0\})$ and $z = \gamma'(\min\{s_0 + 2D,
+  \ell\})$, and choose chain points $x_i, x_j$ within $D$ of $y, z$, with $x_i = x_0$ if $y =
+  \gamma'(0)$ and $x_j = x_n$ if $z = \gamma'(\ell)$. Then $d(x_i, x_j) \le 6D$, so $|i - j| \le
+  6cD + cb + 1$. Join $y$ to $x_i$ by a geodesic sampled at steps of length at most $r$ (at most $D
+  + 1$ steps, as $r \ge 1$), follow the chain from $x_i$ to $x_j$, and join $x_j$ to $z$ likewise:
+  a chain from $y$ to $z$ with at most $(6c + 2)D + cb + 3$ steps of length at most $r$. The part of
+  $\gamma'$ from $y$ to $z$ is a geodesic, so by the chain lemma $p$ is within $\delta \lceil
+  \log_2((6c + 2)D + cb + 3) \rceil + r$ of a point of this chain. Every such point is at distance
+  at least $D$ from $p$: the points $x_k$ by the choice of $D$, and the points sampled between $y$
+  and $x_i$ because they are within $D$ of $y$ while $d(p, y) = 2D$ (similarly for $z$). Hence $D
+  \le \delta \lceil \log_2((6c + 2)D + cb + 3) \rceil + r$, which bounds $D$ by a constant $D_0$
+  depending only on $\delta$, $c$ and $b$. So the image of $\gamma'$ lies within $D_0$ of the
+  points $x_k$, which lie on $\gamma$.
+
+  \emph{$\gamma$ is near the geodesic.} Fix $m$. The sets of $s \in [0, \ell]$ with $\gamma'(s)$
+  within $D_0$ of some $x_k$ with $k \le m$, respectively $k \ge m$, are closed, cover $[0, \ell]$,
+  and contain $0$, respectively $\ell$. As $[0, \ell]$ is connected, some $\gamma'(s)$ is within
+  $D_0$ of $x_k$ and of $x_{k'}$ with $k \le m \le k'$. Then $k' - k \le 2cD_0 + cb + 1$, so
+  $d(x_m, \gamma'(s)) \le D_0 + c(k' - k) + b$. Every point of $\gamma$ is within $r$ of some
+  $x_m$, which gives the bound $R$. Both images are bounded, so the Hausdorff distance is finite.
+\end{proof}
+
+\begin{theorem}[Hyperbolicity and quasi-isometric embeddings, Bridson--Haefliger Thm.~III.H.1.9,
+  cf.\ L\"oh Cor.~7.2.13]
+  \label{Metric.IsQuasiIsometricEmbedding.exists_hasSlimTrianglesWith}
+  \uses{Metric.IsQuasiIsometricEmbedding, Metric.HasSlimTrianglesWith, Metric.IsGeodesic}
+  Let $X$ and $Y$ be geodesic pseudometric spaces and $f \colon X \to Y$ a quasi-isometric
+  embedding. If $Y$ has $\delta$-slim triangles for some $\delta$, then $X$ has $\delta'$-slim
+  triangles for some $\delta'$.
+\end{theorem}
+\begin{proof}
+  \uses{Metric.HasSlimTrianglesWith.exists_hausdorffDist_le, Metric.IsQuasiGeodesicWith}
+  Let $f$ be a $(c, b)$-quasi-isometric embedding, and $R$ as in
+  Theorem~\ref{Metric.HasSlimTrianglesWith.exists_hausdorffDist_le} for $Y$, $\delta$, $c$ and $b$.
+  The image of a geodesic of $X$ under $f$ is a $(c, b)$-quasi-geodesic of $Y$. Given a geodesic
+  triangle of $X$, choose geodesics of $Y$ between the images of its vertices; they form a
+  $\delta$-slim triangle. For $p$ on one side of the triangle in $X$, $f(p)$ is within $R$ of a
+  point of the corresponding side in $Y$, which is within $\delta$ of a point of another side,
+  which is within $R$ of $f(p')$ for some $p'$ on another side in $X$. So $d(f(p), f(p')) \le 2R +
+  \delta$, and the lower bound of $f$ gives $d(p, p') \le c(2R + \delta) + cb$. Take $\delta' =
+  c(2R + \delta + b)$.
+\end{proof}
+
+L\"oh states the invariance for quasi-isometries of geodesic spaces (Cor.~7.2.13 (3)), through
+quasi-hyperbolicity (Def.~7.2.6) and its invariance (Prop.~7.2.9); Bridson--Haefliger's form needs
+only a quasi-isometric embedding and no quasi-hyperbolicity.
+
+\section*{Independence of the generating family}
+
+\inputleannode{Group.Generators.isHyperbolic_iff}

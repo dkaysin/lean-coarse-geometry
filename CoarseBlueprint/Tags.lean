@@ -493,8 +493,7 @@ attribute [blueprint "Int.quasiIsometric_pi_euclideanSpace" (latexEnv := "coroll
 
 Blueprint nodes for `Coarse/Topology/MetricSpace/Hyperbolic.lean` and
 `Coarse/Geometry/Group/Hyperbolic.lean` (copies of open Mathlib pull requests), and for
-`Coarse/Topology/MetricSpace/{Geodesic, SlimTriangles}.lean` and
-`Coarse/Geometry/Group/HyperbolicGenerators.lean` (milestone M7).
+`Coarse/Topology/MetricSpace/{Geodesic, SlimTriangles}.lean` (milestone M7).
 -/
 
 attribute [blueprint "Metric.IsHyperbolicWith"
@@ -568,28 +567,48 @@ attribute [blueprint "Metric.isHyperbolic_iff_exists_hasSlimTrianglesWith"
     "Metric.IsHyperbolicWith.hasSlimTrianglesWith"])]
   Metric.isHyperbolic_iff_exists_hasSlimTrianglesWith
 
+
+/-! ## Hyperbolicity and the choice of generators
+
+Blueprint nodes for `Coarse/Geometry/Group/HyperbolicGenerators.lean` (milestone M9).
+-/
+
 attribute [blueprint "Group.Generators.isHyperbolic_iff"
   (title := /-- Independence of the generating family -/)
   (statement := /-- For a finite generating family $P$ of $G$, $G$ is hyperbolic if and only if it
     is $\delta$-hyperbolic for the word metric of $P$ for some $\delta$: whether $G$ is hyperbolic
     does not depend on the family. -/)
-  (proof := /-- Not planned yet (design decision D18).
-    Corollary~\ref{Group.Generators.WithWordMetric.isQuasiIsometry_congr} alone does not suffice:
-    the four-point condition is not a quasi-isometry invariant of coarsely geodesic spaces (the
-    graph of $|x|$ in $\R^2$ is bilipschitz to $\R$ and not hyperbolic). L\"oh defines hyperbolic
-    groups by quasi-hyperbolicity of the Cayley graph (slim quasi-geodesic triangles, Definition
-    7.3.1), which is a quasi-isometry invariant directly: quasi-geodesic triangles can be pushed
-    forward and pulled back along quasi-isometric embeddings (Proposition 7.2.9). For the four-point
-    condition: pass from the word metric to the geometric realisation of the Cayley graph, a
-    geodesic space in which it is $\frac12$-dense, with a larger constant; switch to slim triangles
-    by Theorem~\ref{Metric.isHyperbolic_iff_exists_hasSlimTrianglesWith}; and carry them along the
-    quasi-isometry of Corollary~\ref{Group.Generators.WithWordMetric.isQuasiIsometry_congr}. That
-    last step is L\"oh's Corollary 7.2.13 (from Proposition 7.2.9 and Theorem 7.2.10, whose proof
-    uses the stability of quasi-geodesics, Theorem 7.2.11), or Bridson--Haefliger Thm.~III.H.1.9
-    (from Thm.~III.H.1.7). -/)
-  (proofUses := ["Group.Generators.IsHyperbolicWith",
-    "Group.Generators.WithWordMetric.isQuasiIsometry_congr",
-    "Metric.isHyperbolic_iff_exists_hasSlimTrianglesWith"])]
+  (proof := /-- ``If'' holds by definition. For ``only if'', let $Q$ be a finite generating family
+    whose word metric satisfies the four-point condition with constant $\delta$. For a finite
+    generating family $F$, the Cayley graph of $F$ is connected, as $F$ generates $G$; write
+    $|F|$ for its geometric realisation (Definition~\ref{SimpleGraph.Realization}) and $\iota_F
+    \colon (G, d_F) \to |F|$ for the vertex map. By
+    Lemma~\ref{SimpleGraph.Realization.dist_vertex} and
+    Theorem~\ref{Group.Generators.dist_cayleySimpleGraph}, $\iota_F$ is isometric and every point of
+    $|F|$ is within $\frac12$ of its image, so it is a quasi-isometry
+    (Theorem~\ref{Metric.isQuasiIsometry_iff_quasiDenseRange}); and $|F|$ is geodesic
+    (Lemma~\ref{SimpleGraph.Realization.isGeodesicSpace}).
+
+    By Lemma~\ref{Metric.IsHyperbolicWith.of_isometry_of_quasiDenseRange}, $|Q|$ satisfies the
+    four-point condition with constant $\delta + 3$, so it has $3(\delta + 3)$-slim triangles
+    (Lemma~\ref{Metric.IsHyperbolicWith.hasSlimTrianglesWith}). The composite of a quasi-inverse of
+    $\iota_P$, the change of generators $(G, d_P) \to (G, d_Q)$
+    (Corollary~\ref{Group.Generators.WithWordMetric.isQuasiIsometry_congr}) and $\iota_Q$ is a
+    quasi-isometry $|P| \to |Q|$ (Lemma~\ref{Metric.IsQuasiIsometry.comp},
+    Theorem~\ref{Metric.QuasiIsometric.refl}), so $|P|$ has slim triangles
+    (Theorem~\ref{Metric.IsQuasiIsometricEmbedding.exists_hasSlimTrianglesWith}) and satisfies the
+    four-point condition (Lemma~\ref{Metric.HasSlimTrianglesWith.isHyperbolicWith}). It passes to
+    the isometric image of $(G, d_P)$ with the same constant (restriction to a subspace, in the
+    copied pull request). -/)
+  (proofUses := ["Group.Generators.IsHyperbolicWith", "SimpleGraph.Realization",
+    "SimpleGraph.Realization.dist_vertex", "SimpleGraph.Realization.isGeodesicSpace",
+    "Group.Generators.dist_cayleySimpleGraph", "Metric.isQuasiIsometry_iff_quasiDenseRange",
+    "Metric.IsHyperbolicWith.of_isometry_of_quasiDenseRange",
+    "Metric.IsHyperbolicWith.hasSlimTrianglesWith",
+    "Group.Generators.WithWordMetric.isQuasiIsometry_congr", "Metric.IsQuasiIsometry.comp",
+    "Metric.QuasiIsometric.refl",
+    "Metric.IsQuasiIsometricEmbedding.exists_hasSlimTrianglesWith",
+    "Metric.HasSlimTrianglesWith.isHyperbolicWith"])]
   Group.Generators.isHyperbolic_iff
 
 /-! ## Coarse spaces
@@ -629,6 +648,12 @@ attribute [blueprint "PseudoEMetricSpace.toCoarseSpace"
   (statement := /-- In a pseudo-(e)metric space, a set of pairs is controlled if the distance
     is bounded on it. -/)]
   PseudoEMetricSpace.toCoarseSpace
+
+attribute [blueprint "Metric.isControlled_iff" (latexEnv := "lemma")
+  (title := /-- Controlled sets of a pseudometric space -/)
+  (statement := /-- In a pseudometric space, a set of pairs is controlled for the metric coarse
+    structure if and only if the distance is bounded on it. -/)]
+  Metric.isControlled_iff
 
 attribute [blueprint "mulOrbitMetricCoarseEquiv"
   (title := /-- Coarse \v{S}varc--Milnor lemma -/)

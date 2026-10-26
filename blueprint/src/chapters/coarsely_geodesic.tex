@@ -25,4 +25,18 @@ spaces is \emph{large-scale geodesic}.
 
 \inputleannode{NormedSpace.isCoarselyGeodesicWith}
 
+\begin{lemma}[Geodesic spaces are coarsely geodesic]
+  \label{Metric.IsGeodesicSpace.isCoarselyGeodesicWith}
+  \uses{Metric.IsGeodesic, Metric.IsCoarselyGeodesicWith}
+  A geodesic pseudometric space is $(r, 1/r, 1)$-coarsely geodesic for every $r > 0$.
+\end{lemma}
+\begin{proof}
+  \uses{Metric.exists_ripsGraph_walk_length_le}
+  Let $\gamma$ be a geodesic from $x$ to $y$, $d = d(x, y)$ and $m = \max\{\lceil d/r \rceil,
+  1\}$, so that $m \le d/r + 1$. The points $\gamma(kd/m)$, $k = 0, \dots, m$, are consecutively
+  at distance $d/m \le r$, so Lemma~\ref{Metric.exists_ripsGraph_walk_length_le} gives a walk from
+  $x$ to $y$ in the Rips graph at scale $r$ with at most $m$ steps. This is the proof of
+  Lemma~\ref{NormedSpace.isCoarselyGeodesicWith} with the geodesic in place of the segment.
+\end{proof}
+
 \inputleannode{Group.Generators.isCoarselyGeodesicWith}

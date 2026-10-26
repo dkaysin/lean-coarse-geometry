@@ -6,7 +6,7 @@ pull requests. They use Gromov's four-point condition, which makes sense in ever
 space. L\"oh (Definition 7.2.2) and Bridson--Haefliger (Definition III.H.1.1) define hyperbolicity
 of a geodesic space by slim geodesic triangles instead. This chapter adds that definition and shows
 that the two agree on geodesic spaces (L\"oh, Exercise 7.E.10; Bridson--Haefliger,
-Proposition III.H.1.22), as a first step towards the independence of the generating family.
+Proposition III.H.1.22).
 
 Write $(x \cdot y)_w = \frac12\bigl(d(w, x) + d(w, y) - d(x, y)\bigr)$ for the Gromov product
 (\texttt{Metric.gromovProduct w x y} in Mathlib; Bridson--Haefliger, Definition III.H.1.19). The
@@ -15,8 +15,9 @@ $(x \cdot z)_w \ge \min\{(x \cdot y)_w, (y \cdot z)_w\} - \delta$ for all $w, x,
 $(\delta)$-hyperbolicity in the sense of Bridson--Haefliger, Definition III.H.1.20.
 
 Mathlib has no geodesics. Here a geodesic is an isometric map from an interval, as in L\"oh and
-Bridson--Haefliger (design decision D17). The route to
-Theorem~\ref{Group.Generators.isHyperbolic_iff} is an open decision (D18).
+Bridson--Haefliger (design decision D17).
+Chapter~\ref{chap:hyperbolic-generators} uses the comparison to show that hyperbolicity of a group
+does not depend on the generating family.
 
 \inputleannode{Metric.IsHyperbolicWith}
 \inputleannode{Group.Generators.IsHyperbolicWith}
@@ -41,5 +42,3 @@ $3\delta$ in both directions.
 \inputleannode{Metric.IsHyperbolicWith.hasSlimTrianglesWith}
 
 \inputleannode{Metric.isHyperbolic_iff_exists_hasSlimTrianglesWith}
-
-\inputleannode{Group.Generators.isHyperbolic_iff}

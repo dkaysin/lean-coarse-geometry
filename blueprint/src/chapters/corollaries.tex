@@ -9,4 +9,26 @@ Milestone M6. Each corollary is a separate pull request and a test of the API.
 
 \inputleannode{Subgroup.isQuasiIsometry_subtype}
 
+\begin{corollary}[Quotients by finite normal subgroups, L\"oh Cor.~5.4.7]
+  \label{QuotientGroup.isQuasiIsometry_mk}
+  \uses{Group.Generators.WithWordMetric, Metric.IsQuasiIsometry}
+  Let $N$ be a finite normal subgroup of $G$, and $P$, $Q$ finite generating families of $G$ and
+  $G/N$. Then the quotient map $(G, d_P) \to (G/N, d_Q)$ is a quasi-isometry.
+\end{corollary}
+\begin{proof}
+  \uses{Group.Generators.isQuasiIsometry_smul_const,
+    Group.Generators.WithWordMetric.isMetricallyProperSMul, Group.Generators.isCoarselyGeodesicWith,
+    IsMetricallyProperSMul, IsCoboundedSMul}
+  $G$ acts on $(G/N, d_Q)$ through the quotient map, $g \cdot x = (gN)x$, isometrically
+  (Lemma~\ref{Group.Generators.WithWordMetric.isMetricallyProperSMul}, for $G/N$ acting on itself).
+  The action is metrically proper: for a bounded $B$, the elements $g$ with $g B \cap B \ne
+  \emptyset$ are the preimage under the quotient map of the finite set of $h \in G/N$ with $h B \cap
+  B \ne \emptyset$ (by the same lemma), and this preimage is finite since $N$ is. The action is
+  cobounded, with the set $\{1\}$, since the quotient map is surjective. The word metric of $Q$ is
+  coarsely geodesic (Lemma~\ref{Group.Generators.isCoarselyGeodesicWith}). Apply
+  Theorem~\ref{Group.Generators.isQuasiIsometry_smul_const} with $x_0 = 1$, whose orbit map is the
+  quotient map. L\"oh's statement also says that $G/N$ is finitely generated if and only if $G$ is;
+  that part is not stated here.
+\end{proof}
+
 \inputleannode{Int.quasiIsometric_pi_euclideanSpace}

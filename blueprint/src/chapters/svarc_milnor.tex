@@ -16,3 +16,45 @@ map, and $r$-close points have values of $\psi$ that differ by an element of $S$
 \inputleannode{Group.fg_of_isCoboundedSMul}
 
 \inputleannode{Group.Generators.isQuasiIsometry_smul_const}
+
+\section*{Topological form}
+
+L\"oh states the lemma also with topological hypotheses (Corollary 5.4.2): a proper geodesic
+space, and an action that is proper (for every compact $K$, only finitely many $g$ have $g K \cap
+K \ne \emptyset$; Mathlib's \texttt{ProperlyDiscontinuousSMul}) and cocompact (the orbit space is
+compact). These imply the hypotheses above
+(Lemmas~\ref{isMetricallyProperSMul_of_properlyDiscontinuousSMul},
+\ref{isCoboundedSMul_of_compactSpace_quotient} and
+\ref{Metric.IsGeodesicSpace.isCoarselyGeodesicWith}).
+
+\begin{corollary}[\v{S}varc--Milnor lemma, topological form, finite generation, L\"oh
+  Cor.~5.4.2]
+  \label{Group.fg_of_properlyDiscontinuousSMul}
+  \uses{Metric.IsGeodesic}
+  A group acting isometrically, properly discontinuously and cocompactly on a nonempty proper
+  geodesic pseudometric space is finitely generated.
+\end{corollary}
+\begin{proof}
+  \uses{Group.fg_of_isCoboundedSMul, isMetricallyProperSMul_of_properlyDiscontinuousSMul,
+    isCoboundedSMul_of_compactSpace_quotient, Metric.IsGeodesicSpace.isCoarselyGeodesicWith}
+  The action is metrically proper
+  (Lemma~\ref{isMetricallyProperSMul_of_properlyDiscontinuousSMul}) and cobounded
+  (Lemma~\ref{isCoboundedSMul_of_compactSpace_quotient}), and the space is coarsely geodesic
+  (Lemma~\ref{Metric.IsGeodesicSpace.isCoarselyGeodesicWith}), hence coarsely connected, as it is
+  nonempty. Apply Theorem~\ref{Group.fg_of_isCoboundedSMul}.
+\end{proof}
+
+\begin{corollary}[\v{S}varc--Milnor lemma, topological form, quasi-isometry, L\"oh Cor.~5.4.2]
+  \label{Group.Generators.isQuasiIsometry_smul_const_of_properlyDiscontinuousSMul}
+  \uses{Metric.IsGeodesic, Metric.IsQuasiIsometry, Group.Generators.WithWordMetric}
+  Under the same hypotheses, every orbit map $g \mapsto g x_0$ is a quasi-isometry from $G$ with
+  the word metric of any finite generating family.
+\end{corollary}
+\begin{proof}
+  \uses{Group.Generators.isQuasiIsometry_smul_const,
+    isMetricallyProperSMul_of_properlyDiscontinuousSMul, isCoboundedSMul_of_compactSpace_quotient,
+    Metric.IsGeodesicSpace.isCoarselyGeodesicWith}
+  As for Corollary~\ref{Group.fg_of_properlyDiscontinuousSMul}, with
+  Theorem~\ref{Group.Generators.isQuasiIsometry_smul_const} in place of
+  Theorem~\ref{Group.fg_of_isCoboundedSMul}.
+\end{proof}
