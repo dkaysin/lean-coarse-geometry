@@ -306,16 +306,24 @@ attribute [blueprint "Metric.exists_ripsGraph_walk_length_le" (latexEnv := "lemm
     graph has no loops), in which case the chain is kept. -/)]
   Metric.exists_ripsGraph_walk_length_le
 
-attribute [blueprint "Metric.exists_ripsGraph_walk_of_dist_le" (latexEnv := "lemma")
-  (title := /-- Chains from coarse Lipschitz paths -/)
-  (statement := /-- Let $f \colon [0, \ell] \to X$ satisfy $d(f s, f t) \le c\,|s - t| + b$, and let
-    $\delta > 0$ with $c \delta + b \le r$. Then there is an $r$-chain from $f(0)$ to $f(\ell)$ with
-    at most $\ell / \delta + 1$ steps. -/)
-  (proof := /-- Let $m = \max\{\lceil \ell / \delta \rceil, 1\}$, so that $m \le \ell / \delta + 1$.
-    The points $f(k \ell / m)$, $k = 0, \dots, m$, have parameters $\ell / m \le \delta$ apart, so
-    they are consecutively at distance at most $c \delta + b \le r$, and
+attribute [blueprint "Metric.IsGeodesic.isQuasiGeodesicWith" (latexEnv := "lemma")
+  (title := /-- Geodesics are quasi-geodesics -/)
+  (statement := /-- A geodesic $\gamma \colon [t, t'] \to X$ from $x$ to $x'$ is a
+    $(1, 0)$-quasi-geodesic from $x$ to $x'$. -/)
+  (proof := /-- An isometric map is $1$-Lipschitz and $1$-antilipschitz. -/)]
+  Metric.IsGeodesic.isQuasiGeodesicWith
+
+attribute [blueprint "Metric.IsQuasiGeodesicWith.exists_ripsGraph_walk" (latexEnv := "lemma")
+  (title := /-- Chains from quasi-geodesics -/)
+  (statement := /-- Let $\gamma \colon [t, t'] \to X$ be a $(c, b)$-quasi-geodesic from $x$ to
+    $x'$, and let $\delta > 0$ with $c \delta + b \le r$. Then there is an $r$-chain from $x$ to
+    $x'$ with at most $(t' - t) / \delta + 1$ steps. -/)
+  (proof := /-- Let $\ell = t' - t$ and $m = \max\{\lceil \ell / \delta \rceil, 1\}$, so that
+    $m \le \ell / \delta + 1$. The points $\gamma(t + k \ell / m)$, $k = 0, \dots, m$, have
+    parameters $\ell / m \le \delta$ apart, so by the upper bound of $\gamma$ they are
+    consecutively at distance at most $c \delta + b \le r$, and
     Lemma~\ref{Metric.exists_ripsGraph_walk_length_le} gives the chain. -/)]
-  Metric.exists_ripsGraph_walk_of_dist_le
+  Metric.IsQuasiGeodesicWith.exists_ripsGraph_walk
 
 attribute [blueprint "Metric.IsCoarselyGeodesicWith.coarseLipschitzWith" (latexEnv := "lemma")
   (title := /-- Bounded steps, cf.\ Dru\c{t}u--Kapovich, Lem.~8.8 -/)
@@ -339,10 +347,11 @@ attribute [blueprint "Metric.IsGeodesicSpace.isCoarselyGeodesicWith" (latexEnv :
   (title := /-- Geodesic spaces are coarsely geodesic -/)
   (statement := /-- A geodesic pseudometric space is $(r, 1/r, 1)$-coarsely geodesic for every
     $r > 0$. -/)
-  (proof := /-- A geodesic $\gamma$ from $x$ to $y$, extended to $\R$, satisfies
-    $d(\gamma s, \gamma t) = |s - t|$ on $[0, d(x, y)]$.
-    Lemma~\ref{Metric.exists_ripsGraph_walk_of_dist_le} with $c = 1$, $b = 0$ and $\delta = r$
-    gives an $r$-chain from $x$ to $y$ with at most $d(x, y)/r + 1$ steps. -/)]
+  (proof := /-- A geodesic $\gamma \colon [t, t'] \to X$ from $x$ to $x'$ is a
+    $(1, 0)$-quasi-geodesic (Lemma~\ref{Metric.IsGeodesic.isQuasiGeodesicWith}), and
+    $t' - t = d(x, x')$.
+    Lemma~\ref{Metric.IsQuasiGeodesicWith.exists_ripsGraph_walk} with $\delta = r$ gives an
+    $r$-chain from $x$ to $x'$ with at most $d(x, x')/r + 1$ steps. -/)]
   Metric.IsGeodesicSpace.isCoarselyGeodesicWith
 
 attribute [blueprint "Group.Generators.isCoarselyGeodesicWith" (latexEnv := "lemma")
@@ -356,11 +365,11 @@ attribute [blueprint "Group.Generators.isCoarselyGeodesicWith" (latexEnv := "lem
 
 attribute [blueprint "Metric.IsQuasiGeodesicWith"
   (title := /-- Quasi-geodesic, Bridson--Haefliger Def.~I.8.22, L\"oh Def.~5.3.4 -/)
-  (statement := /-- Let $X$ be a pseudometric space, $c, b \ge 0$ and $\ell \ge 0$. A map $\gamma
-    \colon [0, \ell] \to X$ is a \emph{$(c, b)$-quasi-geodesic} from $x$ to $y$ if it is a
+  (statement := /-- Let $X$ be a pseudometric space, $c, b \ge 0$ and $t \le t'$. A map $\gamma
+    \colon [t, t'] \to X$ is a \emph{$(c, b)$-quasi-geodesic} from $x$ to $x'$ if it is a
     $(c, b)$-quasi-isometric embedding
-    (Definition~\ref{Metric.IsQuasiIsometricEmbeddingWith}) with $\gamma(0) = x$ and
-    $\gamma(\ell) = y$. It need not be continuous. -/)]
+    (Definition~\ref{Metric.IsQuasiIsometricEmbeddingWith}) with $\gamma(t) = x$ and
+    $\gamma(t') = x'$. It need not be continuous. -/)]
   Metric.IsQuasiGeodesicWith
 
 attribute [blueprint "Metric.IsQuasiGeodesicSpaceWith"
@@ -394,11 +403,11 @@ attribute [blueprint "Metric.isCoarselyGeodesic_iff_isQuasiGeodesicSpace"
       \item an $(r, L, C)$-coarsely geodesic space is a
             $(\max\{r, L, 1\}, \max\{r, C + 1\})$-quasi-geodesic space.
     \end{itemize} -/)
-  (proof := /-- \emph{Quasi-geodesics give chains.} Let $\gamma \colon [0, \ell] \to X$ be a
-    $(c, b)$-quasi-geodesic from $x$ to $y$. By
-    Lemma~\ref{Metric.exists_ripsGraph_walk_of_dist_le} with $\delta = 1$, there is a $(c +
-    b)$-chain from $x$ to $y$ with at most $\ell + 1$ steps. The lower bound of $\gamma$ at $0$
-    and $\ell$ gives $\ell \le c\,d(x, y) + c b$.
+  (proof := /-- \emph{Quasi-geodesics give chains.} Let $\gamma \colon [t, t'] \to X$ be a
+    $(c, b)$-quasi-geodesic from $x$ to $x'$. By
+    Lemma~\ref{Metric.IsQuasiGeodesicWith.exists_ripsGraph_walk} with $\delta = 1$, there is a
+    $(c + b)$-chain from $x$ to $x'$ with at most $t' - t + 1$ steps. The lower bound of $\gamma$
+    at $t$ and $t'$ gives $t' - t \le c\,d(x, x') + c b$.
 
     \emph{Chains give quasi-geodesics.} Let $d_r$ be the distance of the Rips graph at scale $r$.
     Take a walk $x = x_0, \dots, x_n = y$ in it of length $n = d_r(x, y)$. For $i \le j$,
@@ -407,9 +416,10 @@ attribute [blueprint "Metric.isCoarselyGeodesic_iff_isQuasiGeodesicSpace"
     Lemma~\ref{SimpleGraph.Walk.dist_getVert_of_length_eq_dist} and the hypothesis. So $i \mapsto
     x_i$ is $r$-Lipschitz and $(L, C)$-coarse antilipschitz on $\{0, \dots, n\}$. Its composition
     $\gamma(t) = x_{\lfloor t \rfloor}$ with the step map of
-    Lemma~\ref{Metric.isQuasiIsometricEmbeddingWith_natFloor} is $(r, r)$-coarse Lipschitz and $(L,
-    C + 1)$-coarse antilipschitz, hence a $(\max\{r, L, 1\}, \max\{r, C + 1\})$-quasi-geodesic
-    by Lemma~\ref{Metric.CoarseAntilipschitzWith.isQuasiIsometricEmbedding}.
+    Lemma~\ref{Metric.isQuasiIsometricEmbeddingWith_natFloor}, on $[0, n]$, is $(r, r)$-coarse
+    Lipschitz and $(L, C + 1)$-coarse antilipschitz, hence a
+    $(\max\{r, L, 1\}, \max\{r, C + 1\})$-quasi-geodesic by
+    Lemma~\ref{Metric.CoarseAntilipschitzWith.isQuasiIsometricEmbedding}.
 
     The equivalence follows from the two parts. -/)]
   Metric.isCoarselyGeodesic_iff_isQuasiGeodesicSpace
@@ -727,10 +737,10 @@ attribute [blueprint "Group.Generators.IsHyperbolicWith"
 
 attribute [blueprint "Metric.IsGeodesic"
   (title := /-- Geodesic space, L\"oh Def.~5.3.1, Bridson--Haefliger Def.~I.1.3 -/)
-  (statement := /-- Let $X$ be a pseudometric space. A \emph{geodesic} from $x$ to $y$ is an
-    isometric map $\gamma \colon [0, d(x, y)] \to X$ with $\gamma(0) = x$ and $\gamma(d(x, y)) = y$
-    (an isometric map from any interval $[0, \ell]$ with these endpoints has $\ell = d(x, y)$). The
-    space $X$ is \emph{geodesic} if any two points are joined by a geodesic. -/)]
+  (statement := /-- Let $X$ be a pseudometric space. A \emph{geodesic} from $x$ to $x'$ is an
+    isometric map $\gamma \colon [t, t'] \to X$, for some $t \le t'$, with $\gamma(t) = x$ and
+    $\gamma(t') = x'$ (then $t' - t = d(x, x')$). The space $X$ is \emph{geodesic} if any two points
+    are joined by a geodesic. -/)]
   Metric.IsGeodesic Metric.IsGeodesicSpace
 
 attribute [blueprint "Metric.HasSlimTrianglesWith"

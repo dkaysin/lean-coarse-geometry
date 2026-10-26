@@ -35,13 +35,9 @@ Theorem~\ref{Metric.isCoarselyGeodesic_iff_isQuasiGeodesicSpace}).
 
 \inputleannode{Metric.exists_ripsGraph_walk_length_le}
 
-\inputleannode{Metric.exists_ripsGraph_walk_of_dist_le}
-
 \inputleannode{Metric.IsCoarselyGeodesicWith.coarseLipschitzWith}
 
 \inputleannode{NormedSpace.isCoarselyGeodesicWith}
-
-\inputleannode{Metric.IsGeodesicSpace.isCoarselyGeodesicWith}
 
 \inputleannode{Group.Generators.isCoarselyGeodesicWith}
 
@@ -51,17 +47,22 @@ Theorem~\ref{Metric.isCoarselyGeodesic_iff_isQuasiGeodesicSpace}).
 
 \paragraph{Differences from the references.} Bridson--Haefliger allow any interval of $\R$, or its
 intersection with $\Z$, as the domain; L\"oh any closed interval $[t, t']$, with $c > 0$. Here the
-interval is $[0, \ell]$, which loses nothing for closed intervals (translate the parameter), and the
-constants may be $0$, as for quasi-isometric embeddings (L\"oh's form of the lower bound is
-recovered for $c \ne 0$). Quasi-geodesics on integers appear only inside the proof of
+domain is a closed interval $[t, t']$, as in L\"oh, and the constants may be $0$, as for
+quasi-isometric embeddings (L\"oh's form of the lower bound is recovered for $c \ne 0$).
+Quasi-geodesics on integers appear only inside the proof of
 Theorem~\ref{Metric.HasSlimTrianglesWith.exists_hausdorffDist_le}, as chains; rays and lines are
-not needed. A geodesic (Definition~\ref{Metric.IsGeodesic}) is a $(1, 0)$-quasi-geodesic, and the
-composition of a $(c, b)$-quasi-isometric embedding with a $(c', b')$-quasi-geodesic is a
-quasi-geodesic with constants depending only on $c, b, c', b'$.
+not needed. The composition of a $(c, b)$-quasi-isometric embedding with a
+$(c', b')$-quasi-geodesic is a quasi-geodesic with constants depending only on $c, b, c', b'$.
 
 \inputleannode{Metric.IsQuasiGeodesicSpaceWith}
 
 \inputleannode{Metric.IsQuasiGeodesicSpace}
+
+\inputleannode{Metric.IsGeodesic.isQuasiGeodesicWith}
+
+\inputleannode{Metric.IsQuasiGeodesicWith.exists_ripsGraph_walk}
+
+\inputleannode{Metric.IsGeodesicSpace.isCoarselyGeodesicWith}
 
 \inputleannode{Metric.isQuasiIsometricEmbeddingWith_natFloor}
 

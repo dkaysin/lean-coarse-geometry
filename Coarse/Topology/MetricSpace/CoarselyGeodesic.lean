@@ -6,7 +6,6 @@ Authors: Dmitry Kaysin
 module
 
 public import Coarse.Topology.MetricSpace.CoarseLipschitz
-public import Coarse.Topology.MetricSpace.Geodesic
 public import Mathlib.Analysis.Normed.Module.Basic
 public import Mathlib.Combinatorics.SimpleGraph.Connectivity.Connected
 public import Mathlib.Topology.MetricSpace.Pseudo.Defs
@@ -38,16 +37,11 @@ if any two points `x` and `y` are joined by an `r`-chain with at most `L * dist 
   with `j - i` in place of the length.
 * `Metric.exists_ripsGraph_walk_length_le`: a sequence of points whose first `n` steps have length
   at most `r` gives an `r`-chain with at most `n` steps.
-* `Metric.exists_ripsGraph_walk_of_dist_le`: a map on `[0, ℓ]` with
-  `dist (f s) (f t) ≤ c * |s - t| + b` gives an `r`-chain from `f 0` to `f ℓ` with at most
-  `ℓ / δ + 1` steps if `c * δ + b ≤ r`.
 * `Metric.IsCoarselyGeodesicWith.coarseLipschitzWith`: on an `(r, L, C)`-coarsely geodesic space, a
   map that moves points at distance at most `r` by at most `A` is `(A * L, A * C)`-coarse
   Lipschitz.
 * `NormedSpace.isCoarselyGeodesicWith`: a real normed space is `(r, r⁻¹, 1)`-coarsely geodesic for
   every `r > 0`.
-* `Metric.IsGeodesicSpace.isCoarselyGeodesicWith`: a geodesic space is `(r, r⁻¹, 1)`-coarsely
-  geodesic for every `r > 0`.
 
 ## Implementation notes
 
@@ -114,42 +108,6 @@ theorem exists_ripsGraph_walk_length_le {X : Type*} [PseudoMetricSpace X] {r : �
     · have hadj : (ripsGraph X r).Adj (f n) (f (n + 1)) := ⟨h, hf n n.lt_succ_self⟩
       exact ⟨p.concat hadj, by simp; omega⟩
 
-/-- A map on `[0, ℓ]` with `dist (f s) (f t) ≤ c * |s - t| + b`, sampled at parameters at most
-`δ` apart, gives an `r`-chain from `f 0` to `f ℓ` with at most `ℓ / δ + 1` steps, if
-`c * δ + b ≤ r`. -/
-theorem exists_ripsGraph_walk_of_dist_le {X : Type*} [PseudoMetricSpace X] {f : ℝ → X}
-    {ℓ δ : ℝ} {c b r : ℝ≥0} (hℓ : 0 ≤ ℓ) (hδ : 0 < δ)
-    (hf : ∀ s ∈ Set.Icc 0 ℓ, ∀ t ∈ Set.Icc 0 ℓ, dist (f s) (f t) ≤ c * |s - t| + b)
-    (hr : c * δ + b ≤ r) :
-    ∃ p : (ripsGraph X r).Walk (f 0) (f ℓ), (p.length : ℝ) ≤ ℓ / δ + 1 := by
-  -- Cut `[0, ℓ]` into `m ≥ ℓ / δ` steps of equal length.
-  set m := max ⌈ℓ / δ⌉₊ 1
-  have hm : (0 : ℝ) < m := Nat.cast_pos.2 (by omega)
-  have hmem (k : ℕ) (hk : k ≤ m) : (k : ℝ) / m * ℓ ∈ Set.Icc 0 ℓ := by
-    refine ⟨by positivity, mul_le_of_le_one_left hℓ ((div_le_one hm).2 (by exact_mod_cast hk))⟩
-  have hstep (k : ℕ) (hk : k < m) :
-      dist (f ((k : ℝ) / m * ℓ)) (f (((k + 1 : ℕ) : ℝ) / m * ℓ)) ≤ r := by
-    have hlen : ℓ / m ≤ δ := by
-      rw [div_le_iff₀ hm, ← div_le_iff₀' hδ]
-      exact (Nat.le_ceil _).trans (by exact_mod_cast le_max_left _ _)
-    have habs : |(k : ℝ) / m * ℓ - ((k + 1 : ℕ) : ℝ) / m * ℓ| = ℓ / m := by
-      rw [← sub_mul, Nat.cast_succ, ← sub_div, sub_add_cancel_left, abs_mul, abs_div, abs_neg,
-        abs_one, abs_of_pos hm, abs_of_nonneg hℓ, one_div_mul_eq_div]
-    calc dist _ _ ≤ c * |(k : ℝ) / m * ℓ - ((k + 1 : ℕ) : ℝ) / m * ℓ| + b :=
-          hf _ (hmem k hk.le) _ (hmem (k + 1) hk)
-      _ ≤ c * δ + b := by rw [habs]; gcongr
-      _ ≤ r := hr
-  obtain ⟨p, hp⟩ := exists_ripsGraph_walk_length_le _ m hstep
-  refine ⟨p.copy (by simp) (by simp [hm.ne']), ?_⟩
-  -- The number of steps is `m ≤ ℓ / δ + 1`.
-  have hm' : (m : ℝ) ≤ ℓ / δ + 1 := by
-    rcases max_choice ⌈ℓ / δ⌉₊ 1 with h | h <;> rw [show m = _ from h]
-    · exact (Nat.ceil_lt_add_one (by positivity)).le
-    · simp only [Nat.cast_one, le_add_iff_nonneg_left]
-      positivity
-  rw [SimpleGraph.Walk.length_copy]
-  exact (Nat.cast_le.2 hp).trans hm'
-
 /-- A pseudometric space is **`r`-coarsely connected** if it is nonempty and any two points are
 joined by a chain of points in which consecutive points are at distance at most `r`. -/
 def IsCoarselyConnectedWith (X : Type*) [PseudoMetricSpace X] (r : ℝ≥0) : Prop :=
@@ -192,21 +150,6 @@ theorem IsCoarselyGeodesicWith.coarseLipschitzWith {X Y : Type*} [PseudoMetricSp
         p.dist_le_mul_length fun u v (h : (ripsGraph X r).Adj u v) ↦ hf u v h.2
     _ ≤ A * (L * dist x y + C) := by gcongr
     _ = A * L * dist x y + A * C := by ring
-
-/-- A geodesic space is `(r, r⁻¹, 1)`-coarsely geodesic for every `r > 0`. -/
-theorem IsGeodesicSpace.isCoarselyGeodesicWith {X : Type*} [PseudoMetricSpace X]
-    (hX : IsGeodesicSpace X) {r : ℝ≥0} (hr : 0 < r) : IsCoarselyGeodesicWith X r r⁻¹ 1 := by
-  intro x y
-  obtain ⟨γ, hγ⟩ := hX x y
-  -- Sample the geodesic, extended to `ℝ`, at parameters at most `r` apart.
-  obtain ⟨p, hp⟩ := exists_ripsGraph_walk_of_dist_le (f := Set.IccExtend dist_nonneg γ) (δ := r)
-    (c := 1) (b := 0) (r := r) dist_nonneg (by exact_mod_cast hr) (fun s hs t ht ↦ by
-      rw [Set.IccExtend_of_mem _ _ hs, Set.IccExtend_of_mem _ _ ht, hγ.isometry.dist_eq]
-      simp [Subtype.dist_eq, Real.dist_eq]) (by simp)
-  refine ⟨p.copy (by rw [Set.IccExtend_left, hγ.apply_left])
-    (by rw [Set.IccExtend_right, hγ.apply_right]), ?_⟩
-  rw [SimpleGraph.Walk.length_copy, NNReal.coe_one, NNReal.coe_inv, inv_mul_eq_div]
-  exact hp
 
 end Metric
 

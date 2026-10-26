@@ -7,6 +7,7 @@ module
 
 public import Coarse.Geometry.Group.WordMetricBounds
 public import Coarse.Topology.Bornology.MetricallyProperSMul
+public import Coarse.Topology.MetricSpace.QuasiGeodesic
 public import Mathlib.Analysis.InnerProductSpace.PiL2
 public import Mathlib.GroupTheory.Finiteness
 

@@ -123,16 +123,16 @@ Quasi-geodesics are defined in Chapter~\ref{chap:coarsely-geodesic}
   point of one of the other two sides, which by induction is within $(k-1)\delta + r$ of a point of
   the corresponding half.
 
-  \emph{Sampling.} If $\gamma$ is defined on $[0, L]$, let $n = \lceil L \rceil$, $x_i = \gamma(i)$
-  for $i < n$ and $x_n = \gamma(L)$. Consecutive points are within $r$, every point $\gamma(t)$ is
-  within $r$ of some $x_i$, and $d(x_i, x_j) \le c|i - j| + b$ and $|i - j| \le c\,d(x_i, x_j) +
-  cb + 1$.
+  \emph{Sampling.} If $\gamma$ is defined on $[t, t']$, let $n = \lceil t' - t \rceil$,
+  $x_i = \gamma(t + i)$ for $i < n$ and $x_n = \gamma(t')$. Consecutive points are within $r$,
+  every point $\gamma(s)$ is within $r$ of some $x_i$, and $d(x_i, x_j) \le c|i - j| + b$ and
+  $|i - j| \le c\,d(x_i, x_j) + cb + 1$.
 
-  \emph{The geodesic is near $\gamma$.} Let $\gamma'$ be defined on $[0, \ell]$. The distance from
+  \emph{The geodesic is near $\gamma$.} Let $\gamma'$ be defined on $[u, u']$. The distance from
   $\gamma'(s)$ to the finite set $\{x_i\}$ is continuous in $s$; let $D$ be its maximum, attained at
-  $p = \gamma'(s_0)$. Let $y = \gamma'(\max\{s_0 - 2D, 0\})$ and $z = \gamma'(\min\{s_0 + 2D,
-  \ell\})$, and choose chain points $x_i, x_j$ within $D$ of $y, z$, with $x_i = x_0$ if $y =
-  \gamma'(0)$ and $x_j = x_n$ if $z = \gamma'(\ell)$. Then $d(x_i, x_j) \le 6D$, so $|i - j| \le
+  $p = \gamma'(s_0)$. Let $y = \gamma'(\max\{s_0 - 2D, u\})$ and $z = \gamma'(\min\{s_0 + 2D,
+  u'\})$, and choose chain points $x_i, x_j$ within $D$ of $y, z$, with $x_i = x_0$ if $y =
+  \gamma'(u)$ and $x_j = x_n$ if $z = \gamma'(u')$. Then $d(x_i, x_j) \le 6D$, so $|i - j| \le
   6cD + cb + 1$. Join $y$ to $x_i$ by a geodesic sampled at steps of length at most $r$ (at most $D
   + 1$ steps, as $r \ge 1$), follow the chain from $x_i$ to $x_j$, and join $x_j$ to $z$ likewise:
   a chain from $y$ to $z$ with at most $(6c + 2)D + cb + 3$ steps of length at most $r$. The part of
@@ -144,9 +144,9 @@ Quasi-geodesics are defined in Chapter~\ref{chap:coarsely-geodesic}
   depending only on $\delta$, $c$ and $b$. So the image of $\gamma'$ lies within $D_0$ of the
   points $x_k$, which lie on $\gamma$.
 
-  \emph{$\gamma$ is near the geodesic.} Fix $m$. The sets of $s \in [0, \ell]$ with $\gamma'(s)$
-  within $D_0$ of some $x_k$ with $k \le m$, respectively $k \ge m$, are closed, cover $[0, \ell]$,
-  and contain $0$, respectively $\ell$. As $[0, \ell]$ is connected, some $\gamma'(s)$ is within
+  \emph{$\gamma$ is near the geodesic.} Fix $m$. The sets of $s \in [u, u']$ with $\gamma'(s)$
+  within $D_0$ of some $x_k$ with $k \le m$, respectively $k \ge m$, are closed, cover $[u, u']$,
+  and contain $u$, respectively $u'$. As $[u, u']$ is connected, some $\gamma'(s)$ is within
   $D_0$ of $x_k$ and of $x_{k'}$ with $k \le m \le k'$. Then $k' - k \le 2cD_0 + cb + 1$, so
   $d(x_m, \gamma'(s)) \le D_0 + c(k' - k) + b$. Every point of $\gamma$ is within $r$ of some
   $x_m$, which gives the bound $R$. Both images are bounded, so the Hausdorff distance is finite.
