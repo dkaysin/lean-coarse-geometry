@@ -9,6 +9,7 @@ public import Coarse.Combinatorics.SimpleGraph.Metric
 public import Coarse.Topology.MetricSpace.CoarselyGeodesic
 public import Coarse.Topology.MetricSpace.Geodesic
 public import Coarse.Topology.MetricSpace.QuasiIsometry
+public import Coarse.Topology.MetricSpace.QuasiIsometry.Examples
 
 /-!
 # Quasi-geodesics
@@ -33,8 +34,6 @@ be continuous. A *`(c, b)`-quasi-geodesic space* is a space in which any two poi
   gives an `(r, c / δ, c * b / δ + 1)`-coarse geodesic from `x` to `x'` if `c * δ + b ≤ r`.
 * `Metric.IsGeodesicSpace.isCoarselyGeodesicSpaceWith`: a geodesic space is `(r, r⁻¹, 1)`-coarsely
   geodesic for every `r > 0`.
-* `Metric.isQuasiIsometricEmbeddingWith_natFloor`: `s ↦ ⌊s⌋₊` from `[0, t']` to `{0, …, ⌊t'⌋₊}` is a
-  `(1, 1)`-quasi-isometric embedding.
 * `Metric.IsQuasiGeodesicSpaceWith.isCoarselyGeodesicSpaceWith`: a `(c, b)`-quasi-geodesic space is
   `(c + b, c, c * b + 1)`-coarsely geodesic.
 * `Metric.IsCoarselyGeodesicSpaceWith.isQuasiGeodesicSpaceWith`: an `(r, L, C)`-coarsely geodesic
@@ -119,7 +118,8 @@ theorem QuasiGeodesic.nonempty_coarseGeodesic {c b r δ : ℝ≥0} {x x' : X}
   obtain ⟨t, t', hle, γ, hγ, hleft, hright⟩ := γ
   have hδ' : (0 : ℝ) < δ := NNReal.coe_pos.2 hδ
   -- The lower bound of `γ` at the endpoints gives `t' - t ≤ c * dist x x' + c * b`.
-  have hlower := hγ.coarseAntilipschitzWith ⟨t, Set.left_mem_Icc.2 hle⟩ ⟨t', Set.right_mem_Icc.2 hle⟩
+  have hlower :=
+    hγ.coarseAntilipschitzWith ⟨t, Set.left_mem_Icc.2 hle⟩ ⟨t', Set.right_mem_Icc.2 hle⟩
   rw [hleft, hright, Subtype.dist_eq, Real.dist_eq, abs_sub_comm, abs_of_nonneg (sub_nonneg.2 hle),
     NNReal.coe_mul] at hlower
   -- Cut `[t, t']` into `m ≥ (t' - t) / δ` steps of equal length.
@@ -174,58 +174,52 @@ theorem IsGeodesicSpace.isCoarselyGeodesicSpaceWith (hX : IsGeodesicSpace X) {r 
     -- Sample a geodesic at parameters at most `r` apart.
     simpa using (hX x x').some.toQuasiGeodesic.nonempty_coarseGeodesic hr (by simp)
 
-/-- The map `s ↦ ⌊s⌋₊` from `[0, t']` to `{0, …, ⌊t'⌋₊}` is a `(1, 1)`-quasi-isometric embedding:
-it turns maps on `{0, …, ⌊t'⌋₊}` into step functions on `[0, t']`. -/
-theorem isQuasiIsometricEmbeddingWith_natFloor (t' : ℝ≥0) :
-    IsQuasiIsometricEmbeddingWith 1 1 fun s : Set.Icc (0 : ℝ) t' ↦
-      (⟨⌊(s : ℝ)⌋₊, Nat.floor_le_floor s.2.2⟩ : Set.Iic ⌊(t' : ℝ)⌋₊) := by
-  -- `⌊s⌋₊ - ⌊s'⌋₊` and `s - s'` differ by less than `1`.
-  refine ⟨fun s s' ↦ ?_, fun s s' ↦ ?_⟩ <;>
-  · simp only [Subtype.dist_eq, Nat.dist_eq, Real.dist_eq, NNReal.coe_one, one_mul, mul_one]
-    have := Nat.floor_le s.2.1
-    have := Nat.floor_le s'.2.1
-    have := Nat.lt_floor_add_one (s : ℝ)
-    have := Nat.lt_floor_add_one (s' : ℝ)
-    rw [abs_le]
-    constructor <;> linarith [le_abs_self ((s : ℝ) - s'), neg_abs_le ((s : ℝ) - s'),
-      le_abs_self ((⌊(s : ℝ)⌋₊ : ℝ) - ⌊(s' : ℝ)⌋₊), neg_abs_le ((⌊(s : ℝ)⌋₊ : ℝ) - ⌊(s' : ℝ)⌋₊)]
-
 /-- An `(r, L, C)`-coarsely geodesic space is a `(max (max r L) 1, max r (C + 1))`-quasi-geodesic
 space. -/
 theorem IsCoarselyGeodesicSpaceWith.isQuasiGeodesicSpaceWith {r L C : ℝ≥0}
     (h : IsCoarselyGeodesicSpaceWith X r L C) :
     IsQuasiGeodesicSpaceWith X (max (max r L) 1) (max r (C + 1)) := by
   intro x x'
-  -- A shortest chain from `x` to `x'`, indexed by `{0, …, n}`, is `r`-Lipschitz and
-  -- `(L, C)`-coarse antilipschitz; precompose it with `s ↦ ⌊s⌋₊` on `[0, n]`.
+  -- Take a shortest chain `x = x₀, …, xₙ = x'` and the step function `s ↦ x_⌊s⌋₊` on `[0, n]`.
   obtain ⟨⟨q, -⟩⟩ := h x x'
   obtain ⟨p, hp⟩ := q.reachable.exists_walk_length_eq_dist
-  set t' : ℝ≥0 := (p.length : ℝ≥0)
-  have ht' : ⌊(t' : ℝ)⌋₊ = p.length := by simp [t']
-  let f : Set.Iic ⌊(t' : ℝ)⌋₊ → X := fun i ↦ p.getVert i
-  have hf (i j : Set.Iic ⌊(t' : ℝ)⌋₊) (hij : (i : ℕ) ≤ j) :
-      dist (f i) (f j) ≤ r * dist i j ∧ dist i j ≤ L * dist (f i) (f j) + C := by
-    have hj : (j : ℕ) ≤ p.length := ht' ▸ j.2
-    rw [Subtype.dist_eq, Nat.dist_eq, abs_sub_comm, abs_of_nonneg (by simpa using hij),
-      ← Nat.cast_sub hij]
-    obtain ⟨⟨q, hq⟩⟩ := h (f i) (f j)
+  -- On indices, `dist xᵢ xⱼ ≤ r * |i - j|`, and `|i - j|`, the Rips-graph distance between `xᵢ`
+  -- and `xⱼ` since the chain is shortest, is at most `L * dist xᵢ xⱼ + C`.
+  have hidx (i j : ℕ) (hi : i ≤ p.length) (hj : j ≤ p.length) :
+      dist (p.getVert i) (p.getVert j) ≤ r * |(i : ℝ) - j| ∧
+        |(i : ℝ) - j| ≤ L * dist (p.getVert i) (p.getVert j) + C := by
+    wlog hij : i ≤ j generalizing i j
+    · obtain ⟨h₁, h₂⟩ := this j i hj hi (by omega)
+      rw [dist_comm, abs_sub_comm]
+      exact ⟨h₁, h₂⟩
+    rw [abs_sub_comm, abs_of_nonneg (sub_nonneg.2 (Nat.cast_le.2 hij)), ← Nat.cast_sub hij]
     refine ⟨p.dist_getVert_le_mul (φ := id)
       (fun _ _ (hadj : (ripsGraph X r).Adj _ _) ↦ hadj.2) hij hj, ?_⟩
+    obtain ⟨⟨q, hq⟩⟩ := h (p.getVert i) (p.getVert j)
     rw [← p.dist_getVert_of_length_eq_dist hp hij hj]
     exact (Nat.cast_le.2 (SimpleGraph.dist_le q)).trans hq
-  have hlip : CoarseLipschitzWith r 0 f := fun i j ↦ by
-    rcases le_total (i : ℕ) j with hij | hij
-    · simpa using (hf i j hij).1
-    · simpa [dist_comm] using (hf j i hij).1
-  have hanti : CoarseAntilipschitzWith L C f := fun i j ↦ by
-    rcases le_total (i : ℕ) j with hij | hij
-    · exact (hf i j hij).2
-    · simpa [dist_comm] using (hf j i hij).2
-  have hfl := isQuasiIsometricEmbeddingWith_natFloor t'
-  refine ⟨⟨0, t', t'.coe_nonneg, f ∘ fun s ↦ ⟨⌊(s : ℝ)⌋₊, Nat.floor_le_floor s.2.2⟩, ?_,
-    by simp [f], by simp [f, t']⟩⟩
-  simpa using (hanti.comp hfl.coarseAntilipschitzWith).isQuasiIsometricEmbeddingWith
-    (hlip.comp hfl.coarseLipschitzWith)
+  -- On parameters, `|⌊s⌋₊ - ⌊s'⌋₊|` and `|s - s'|` differ by at most `1`.
+  have hfl (s s' : Set.Icc (0 : ℝ) p.length) :
+      |(⌊(s : ℝ)⌋₊ : ℝ) - ⌊(s' : ℝ)⌋₊| ≤ dist s s' + 1 ∧
+        dist s s' ≤ |(⌊(s : ℝ)⌋₊ : ℝ) - ⌊(s' : ℝ)⌋₊| + 1 := by
+    have h₁ := isQuasiIsometricEmbeddingWith_intFloor.coarseLipschitzWith s s'
+    have h₂ := isQuasiIsometricEmbeddingWith_intFloor.coarseAntilipschitzWith s s'
+    simp only [Int.dist_eq, ← natCast_floor_eq_intCast_floor s.2.1,
+      ← natCast_floor_eq_intCast_floor s'.2.1, NNReal.coe_one, one_mul, mul_one] at h₁ h₂
+    rw [Subtype.dist_eq]
+    exact ⟨h₁, h₂⟩
+  let γ : Set.Icc (0 : ℝ) p.length → X := fun s ↦ p.getVert ⌊(s : ℝ)⌋₊
+  have hγ (s : Set.Icc (0 : ℝ) p.length) : ⌊(s : ℝ)⌋₊ ≤ p.length := Nat.floor_le_of_le s.2.2
+  have hlip : CoarseLipschitzWith r r γ := fun s s' ↦
+    calc dist (γ s) (γ s') ≤ r * |(⌊(s : ℝ)⌋₊ : ℝ) - ⌊(s' : ℝ)⌋₊| := (hidx _ _ (hγ s) (hγ s')).1
+      _ ≤ r * (dist s s' + 1) := by gcongr; exact (hfl s s').1
+      _ = r * dist s s' + r := by ring
+  have hanti : CoarseAntilipschitzWith L (C + 1) γ := fun s s' ↦
+    calc dist s s' ≤ |(⌊(s : ℝ)⌋₊ : ℝ) - ⌊(s' : ℝ)⌋₊| + 1 := (hfl s s').2
+      _ ≤ L * dist (γ s) (γ s') + C + 1 := by gcongr; exact (hidx _ _ (hγ s) (hγ s')).2
+      _ = L * dist (γ s) (γ s') + ↑(C + 1) := by push_cast; ring
+  exact ⟨⟨0, p.length, Nat.cast_nonneg _, γ, hanti.isQuasiIsometricEmbeddingWith hlip,
+    by simp [γ], by simp [γ]⟩⟩
 
 /-- A pseudometric space is coarsely geodesic if and only if it is a quasi-geodesic space.
 

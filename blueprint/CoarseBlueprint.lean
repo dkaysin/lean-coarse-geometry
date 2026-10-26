@@ -392,15 +392,13 @@ attribute [blueprint "Metric.IsQuasiGeodesicSpace"
     for some $c, b$. -/)]
   Metric.IsQuasiGeodesicSpace
 
-attribute [blueprint "Metric.isQuasiIsometricEmbeddingWith_natFloor" (latexEnv := "lemma")
-  (title := /-- Step functions -/)
-  (statement := /-- For $t' \ge 0$, the map $s \mapsto \lfloor s \rfloor$ from $[0, t']$ to
-    $\{0, \dots, \lfloor t' \rfloor\}$ is a $(1, 1)$-quasi-isometric embedding. So a
-    quasi-isometric embedding of $\{0, \dots, \lfloor t' \rfloor\}$ gives one of $[0, t']$ by
-    composition, a step function. -/)
+attribute [blueprint "Metric.isQuasiIsometricEmbeddingWith_intFloor" (latexEnv := "lemma")
+  (title := /-- The floor -/)
+  (statement := /-- The floor $s \mapsto \lfloor s \rfloor$ from $\R$ to $\Z$ is a
+    $(1, 1)$-quasi-isometric embedding. -/)
   (proof := /-- $\lfloor s \rfloor - \lfloor s' \rfloor$ and $s - s'$ differ by less than $1$, so
     their absolute values do too. -/)]
-  Metric.isQuasiIsometricEmbeddingWith_natFloor
+  Metric.isQuasiIsometricEmbeddingWith_intFloor
 
 attribute [blueprint "Metric.isCoarselyGeodesicSpace_iff_isQuasiGeodesicSpace"
   (title := /-- Coarsely geodesic and quasi-geodesic spaces -/)
@@ -416,14 +414,14 @@ attribute [blueprint "Metric.isCoarselyGeodesicSpace_iff_isQuasiGeodesicSpace"
     Lemma~\ref{Metric.QuasiGeodesic.nonempty_coarseGeodesic} with $\delta = 1$.
 
     \emph{Chains give quasi-geodesics.} Let $d_r$ be the distance of the Rips graph at scale $r$.
-    Take a walk $x = x_0, \dots, x_n = y$ in it of length $n = d_r(x, y)$. For $i \le j$,
-    $d(x_i, x_j) \le r(j - i)$ by Lemma~\ref{SimpleGraph.Walk.dist_le_mul_length}, and $j - i =
-    d_r(x_i, x_j) \le L\,d(x_i, x_j) + C$ by
-    Lemma~\ref{SimpleGraph.Walk.dist_getVert_of_length_eq_dist} and the hypothesis. So $i \mapsto
-    x_i$ is $r$-Lipschitz and $(L, C)$-coarse antilipschitz on $\{0, \dots, n\}$. Its composition
-    $\gamma(t) = x_{\lfloor t \rfloor}$ with the step map of
-    Lemma~\ref{Metric.isQuasiIsometricEmbeddingWith_natFloor}, on $[0, n]$, is $(r, r)$-coarse
-    Lipschitz and $(L, C + 1)$-coarse antilipschitz, hence a
+    Take a walk $x = x_0, \dots, x_n = x'$ in it of length $n = d_r(x, x')$; it is shortest, so for
+    $i, j \le n$, $|i - j| = d_r(x_i, x_j)$
+    (Lemma~\ref{SimpleGraph.Walk.dist_getVert_of_length_eq_dist}). Hence
+    $d(x_i, x_j) \le r\,|i - j|$ by Lemma~\ref{SimpleGraph.Walk.dist_le_mul_length}, and
+    $|i - j| \le L\,d(x_i, x_j) + C$ by the hypothesis. Let $\gamma(s) = x_{\lfloor s \rfloor}$ on
+    $[0, n]$, a step function. For $s, s' \in [0, n]$, $|\lfloor s \rfloor - \lfloor s' \rfloor|$
+    and $|s - s'|$ differ by at most $1$
+    (Lemma~\ref{Metric.isQuasiIsometricEmbeddingWith_intFloor}), so $\gamma$ is $(r, r)$-coarse Lipschitz and $(L, C + 1)$-coarse antilipschitz, hence a
     $(\max\{r, L, 1\}, \max\{r, C + 1\})$-quasi-geodesic by
     Lemma~\ref{Metric.CoarseAntilipschitzWith.isQuasiIsometricEmbedding}.
 
