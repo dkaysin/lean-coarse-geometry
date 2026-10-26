@@ -5,7 +5,8 @@ written so that its material can move into Mathlib.
 
 The project grows by targets, definitions and theorems chosen one at a time: so far the
 Švarc–Milnor lemma with its corollaries, and the comparison of the slim-triangle and four-point
-definitions of hyperbolic spaces; next, the Gromov boundary. For each target it adds the
+definitions of hyperbolic spaces, and uniformly discrete spaces and bounded geometry for metric
+and coarse spaces; next, the Gromov boundary. For each target it adds the
 definitions that Mathlib lacks, states the results in Lean first and proves them afterwards.
 
 - `Coarse/`: the library.

@@ -1,0 +1,207 @@
+\chapter{Uniformly discrete spaces and bounded geometry}
+\label{chap:bounded-geometry}
+
+Milestone M8. A space has \emph{bounded geometry} if, at each scale, its balls are uniformly
+small. There are two settings. For metric spaces we follow L\"oh (Definition 5.6.11), who
+counts the points of closed balls and pairs bounded geometry with uniform discreteness. For
+coarse spaces we follow J.~Roe, \emph{Lectures on Coarse Geometry}, AMS, 2003 (\S3.1), who
+measures a set at the scale of a controlled set $E$, the \emph{gauge}, by its largest
+$E$-separated subsets. A set $T$ is \emph{$E$-separated} if no two distinct points of $T$ are
+$E$-related (\texttt{SetRel.IsSeparated} in Mathlib), and the \emph{$E$-ball} at $x$ is
+$E_x = \{y \mid (y, x) \in E\}$ (\texttt{SetRel.ball}).
+
+Uniform discreteness is a small-scale condition that coarse structures cannot see; Roe defines
+it for metric spaces only (Example 3.14). On the coarse side its role is played by the
+condition that the diagonal is a gauge. Uniformly discrete metric spaces are Mathlib's
+\texttt{DiscreteUniformity} (design decision D22). The coarse counterpart and its name are an
+open decision (D24); the coarse nodes follow its proposal.
+
+\section*{Metric spaces}
+
+\begin{definition}[Uniformly discrete space, L\"oh Def.~5.6.11]
+  \label{DiscreteUniformity}
+  A pseudometric space $X$ is \emph{uniformly discrete} if there is $\varepsilon > 0$ with
+  $d(x, y) \ge \varepsilon$ for all $x \ne y$. In Lean this is Mathlib's class
+  \texttt{DiscreteUniformity X}, which says that the diagonal is an entourage of the
+  uniformity; for a pseudometric space the two agree, since the sets
+  $\{(x, y) \mid d(x, y) < \varepsilon\}$, $\varepsilon > 0$, form a basis of the uniformity.
+  \plannedlean{Metric.discreteUniformity_iff}
+\end{definition}
+
+\begin{definition}[Bounded geometry, L\"oh Def.~5.6.11]
+  \label{Metric.HasBoundedGeometry}
+  A pseudometric space $X$ has \emph{bounded geometry} if for every $r$ there is $K \in \N$
+  such that every closed ball of radius $r$ in $X$ has at most $K$ points.
+\end{definition}
+
+L\"oh calls a metric space that is uniformly discrete and has bounded geometry a \emph{UDBG
+space}; the conjunction gets no name here. Bounded geometry alone does not make a space
+uniformly discrete: $\{n\} \cup \{n + 1/n\}$, $n \ge 1$, in $\R$ is a counterexample.
+
+\begin{lemma}[Word metrics, cf.\ L\"oh after Def.~5.6.11]
+  \label{Group.Generators.WithWordMetric.hasBoundedGeometry}
+  \uses{Group.Generators.WithWordMetric, DiscreteUniformity, Metric.HasBoundedGeometry}
+  A group with the word metric of a generating family is uniformly discrete. If the family is
+  finite, the word metric has bounded geometry.
+  \plannedlean{Group.Generators.WithWordMetric.instDiscreteUniformity}
+\end{lemma}
+\begin{proof}
+  \uses{Group.Generators.finite_setOf_wordLength_le}
+  Distances are word lengths, which are natural numbers, and only the identity has length
+  $0$; so distinct elements are at distance at least $1$. Left multiplication by $g$ is an
+  isometry taking the closed ball of radius $r$ about $1$ onto the one about $g$, so all closed
+  balls of radius $r$ have as many points as $\{g \mid |g|_S \le \lfloor r \rfloor\}$, which is
+  finite for a finite family (Lemma~\ref{Group.Generators.finite_setOf_wordLength_le}).
+\end{proof}
+
+\section*{Coarse spaces}
+
+\paragraph{Roe's definition.} Let $X$ be a coarse space. For $E \subseteq X \times X$ and
+$S \subseteq X$, the \emph{$E$-capacity} $\operatorname{cap}_E(S) \in \N \cup \{\infty\}$ is the
+largest size of an $E$-separated subset of $S$ (Roe, Definition 3.1). A \emph{gauge} is a
+symmetric $E$ containing the diagonal $\Delta$. A set $F \subseteq X \times X$ is \emph{uniform}
+with respect to a gauge $E$ if $\operatorname{cap}_E(F[E_x])$ and
+$\operatorname{cap}_E(F^{-1}[E_x])$ are bounded uniformly in $x$, where
+$F[A] = \{y \mid \exists a \in A,\ (y, a) \in F\}$ (Definition 3.5). The uniform sets form a
+coarse structure $\mathcal{U}_E$, the \emph{universal bounded geometry structure} based on $E$
+(Proposition 3.7, Definition 3.8), and $X$ has \emph{bounded geometry} if its coarse structure
+is contained in $\mathcal{U}_E$ for some controlled gauge $E$ (Definition 3.9).
+
+The definitions below state the same notion with four simplifications, listed after them with
+the reason for each and the argument that nothing is lost. None of them is forced by Lean:
+Roe's definition could be formalized as it stands. The first avoids proving a theorem before
+the definition can be stated; the other three remove a construction or a hypothesis that the
+definition does not need.
+
+\begin{definition}[Bounded geometry with a gauge, cf.\ Roe Def.~3.5 and~3.9]
+  \label{CoarseSpace.HasBoundedGeometryWith}
+  \uses{CoarseSpace}
+  Let $X$ be a coarse space and $E \subseteq X \times X$. The space has \emph{bounded geometry
+  with gauge $E$} if for every controlled set $F$ there is $K \in \N$ such that for every
+  $x \in X$, every $E$-separated subset of the ball $F_x$ has at most $K$ points.
+\end{definition}
+
+\begin{definition}[Bounded geometry, Roe Def.~3.9]
+  \label{CoarseSpace.HasBoundedGeometry}
+  \uses{CoarseSpace.HasBoundedGeometryWith}
+  A coarse space has \emph{bounded geometry} if it has bounded geometry with some controlled
+  gauge $E$.
+\end{definition}
+
+\subsection*{Differences from Roe's definition}
+
+\begin{enumerate}
+  \item \emph{No universal bounded geometry structure.} Roe says that the coarse structure is
+        contained in $\mathcal{U}_E$. Stated literally in Lean, this needs $\mathcal{U}_E$ as
+        a coarse structure (a \texttt{CoarseSpace}), and a coarse structure must be closed
+        under products: that is Roe's Proposition 3.7, whose proof needs entropy as well as
+        capacity (Lemma 3.6, Proposition 3.2(d)). The definition would then depend on a
+        theorem. Containment only says that every controlled set is uniform with respect to
+        $E$, and that is what Definition~\ref{CoarseSpace.HasBoundedGeometryWith} states, as a
+        property of the coarse structure of $X$; no second coarse structure is built.
+  \item \emph{No capacity function.} Roe measures sets by $\operatorname{cap}_E$, a supremum
+        in $\N \cup \{\infty\}$. Here the definition says directly that every $E$-separated
+        subset has at most $K$ points. Reason: the definition only ever compares a capacity
+        with a bound, and a capacity function would need its own API (values in $\N \cup
+        \{\infty\}$, suprema over subsets) with no other use yet; Mathlib has the metric
+        version, \texttt{Metric.packingNumber}, but none for relations. Nothing is lost:
+        $\operatorname{cap}_E(S) \le K$ exactly when every $E$-separated subset of $S$ has at
+        most $K$ points (an infinite separated set has finite separated subsets of every
+        size). If a later node needs capacities (growth, Roe's Proposition 3.15), the
+        function can be added and this definition restated through it.
+  \item \emph{No conditions on the gauge.} Roe's gauge is symmetric and contains the
+        diagonal; here $E$ is any controlled set. Reason: the conditions are hypotheses every
+        user would have to carry and check, and they do not change which sets are separated.
+        A set is $E$-separated when no two \emph{distinct} points of it are $E$-related in
+        either order (\texttt{SetRel.IsSeparated}); so adding $E^{-1}$ or $\Delta$ to $E$ does
+        not change the $E$-separated sets. Hence if $E$ satisfies the definition, so does the
+        controlled gauge $E \cup E^{-1} \cup \Delta$, with the same constants; and a gauge in
+        Roe's sense is in particular a controlled set. The one place where Roe uses that a
+        gauge contains $\Delta$ is item 4.
+  \item \emph{Balls $F_x$ in place of $F[E_x]$ and $F^{-1}[E_x]$.} Roe bounds separated
+        subsets of two sets for each controlled $F$; here, of one ball $F_x$. Reason: one
+        condition instead of two, and no image of a set under a relation. Nothing is lost
+        because the definition quantifies over \emph{all} controlled sets, which are closed
+        under inverses and products: $F[E_x]$ is the ball at $x$ of $F \circ E$, and
+        $F^{-1}[E_x]$ that of $F^{-1} \circ E$, both controlled when $E$ and $F$ are. So Roe's
+        two conditions for $F$ are this definition's condition for $F \circ E$ and
+        $F^{-1} \circ E$. Conversely $F_x \subseteq F[E_x]$, as $x \in E_x$ for a gauge.
+        This step is valid only for the condition on all controlled sets at once, not for the
+        uniformity of a single set $F$ (Roe's Definition 3.5 itself), which is why that
+        notion is not defined here.
+\end{enumerate}
+
+Two further differences are not choices of this chapter. Roe's coarse structure is a
+collection of controlled sets; Lean's \texttt{CoarseSpace} (Definition~\ref{CoarseSpace})
+stores the filter of their complements, an equivalent encoding. And ``bounded uniformly in
+$x$'' is written as a bound $K \in \N$ on cardinalities taken in $\N \cup \{\infty\}$, so that
+infinite separated sets violate it. The equivalence with Roe's definition argued in items 1--4
+is not formalized: it would need Roe's capacity, gauges and $\mathcal{U}_E$, which are
+not defined here.
+
+\begin{definition}[Uniformly locally finite coarse space, cf.\ Roe Ex.~2.44]
+  \label{CoarseSpace.IsUniformlyLocallyFinite}
+  \uses{CoarseSpace.HasBoundedGeometryWith}
+  A coarse space is \emph{uniformly locally finite} if it has bounded geometry with the
+  diagonal as gauge: for every controlled set $F$ there is $K \in \N$ such that every ball
+  $F_x$ has at most $K$ points.
+\end{definition}
+
+Every set is separated for the diagonal, which gives the second form of the definition. The
+diagonal is controlled, so a uniformly locally finite coarse space has bounded geometry.
+
+\subsection*{Differences from Roe's Example 2.44}
+
+Roe has no name for this condition. In Example 2.44 he defines, on a set $X$, the coarse
+structure whose controlled sets $E$ have sections $E_x$ and $E^x = E^{-1}[\{x\}]$ of uniformly
+bounded size, and Definition 3.8 identifies it with $\mathcal{U}_\Delta$. Here, as in item 1,
+that coarse structure is not built: the definition says that every controlled set of the given
+coarse structure satisfies Roe's condition, which is containment in $\mathcal{U}_\Delta$.
+Only the sections $F_x$ are bounded, not $F^x$: the sections $F^x$ are the balls of the
+controlled set $F^{-1}$ (item 4). The name ``uniformly locally finite'' is a proposal (design
+decision D24), after the name of the same condition for graphs and simplicial complexes.
+
+\section*{Comparison on metric spaces}
+
+A pseudometric space carries the coarse structure in which a set of pairs is controlled when
+the distance is bounded on it
+(Definition~\ref{PseudoEMetricSpace.toCoarseSpace}).
+
+\begin{lemma}[cf.\ Roe Ex.~3.14]
+  \label{Metric.hasBoundedGeometry_iff_isUniformlyLocallyFinite}
+  \uses{Metric.HasBoundedGeometry, CoarseSpace.IsUniformlyLocallyFinite,
+    PseudoEMetricSpace.toCoarseSpace}
+  A pseudometric space has bounded geometry if and only if its metric coarse structure is
+  uniformly locally finite.
+\end{lemma}
+\begin{proof}
+  The set $\{(x, y) \mid d(x, y) \le r\}$ is controlled, and its ball at $x$ is the closed ball
+  of radius $r$ about $x$. Every controlled set is contained in one of these sets, so its balls
+  are contained in closed balls of a fixed radius.
+\end{proof}
+
+\begin{theorem}[cf.\ Roe Ex.~3.13]
+  \label{CoarseSpace.hasBoundedGeometry_iff_packingNumber_le}
+  \uses{CoarseSpace.HasBoundedGeometry, PseudoEMetricSpace.toCoarseSpace}
+  The metric coarse structure of a pseudometric space $X$ has bounded geometry if and only if
+  there is $\varepsilon \ge 0$ such that for every $r$ there is $K \in \N$ with the following
+  property: for every $x \in X$, every subset of the closed ball of radius $r$ about $x$ whose
+  points are pairwise at distance greater than $\varepsilon$ has at most $K$ points. (The
+  largest size of such a subset is Mathlib's packing number \texttt{Metric.packingNumber}.)
+\end{theorem}
+\begin{proof}
+  For $\varepsilon \ge 0$ write $E_\varepsilon = \{(x, y) \mid d(x, y) \le \varepsilon\}$; a set
+  is $E_\varepsilon$-separated exactly when its points are pairwise at distance greater than
+  $\varepsilon$ (\texttt{Metric.isSeparated\_iff\_setRelIsSeparated}).
+  ($\Rightarrow$) A controlled gauge $E$ lies in some $E_\varepsilon$, so every
+  $E_\varepsilon$-separated set is $E$-separated; apply the definition to $F = E_r$, whose
+  balls are the closed balls of radius $r$.
+  ($\Leftarrow$) Take $E_\varepsilon$ as the gauge. A controlled $F$ lies in some $E_r$, so its
+  balls lie in closed balls of radius $r$, and the bound for $r$ applies.
+\end{proof}
+
+Combining the two results with the remark after
+Definition~\ref{CoarseSpace.IsUniformlyLocallyFinite}: a pseudometric space of bounded geometry
+in L\"oh's sense has bounded geometry in Roe's sense (take $\varepsilon = 0$). The converse
+fails, since bounded geometry in Roe's sense is invariant under coarse equivalence and L\"oh's
+is not: $\R$ is coarsely equivalent to $\Z$.
