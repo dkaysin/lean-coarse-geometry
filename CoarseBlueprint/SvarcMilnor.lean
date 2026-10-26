@@ -40,7 +40,7 @@ attribute [blueprint "Group.fg_of_isCoboundedSMul"
     translates $g B$ with $g \notin S$, the proof thickens $B$ by the step size $r$. -/)]
   Group.fg_of_isCoboundedSMul
 
-attribute [blueprint "Group.Generators.isQuasiIsometry_smul_const" (notReady := true)
+attribute [blueprint "Group.Generators.isQuasiIsometry_smul_const"
   (title := /-- \v{S}varc--Milnor lemma, quasi-isometry -/)
   (statement := /-- Under the same hypotheses, with $X$ coarsely geodesic, every orbit map $g
     \mapsto g x_0$ is a quasi-isometry from $G$ with the word metric of any finite generating
