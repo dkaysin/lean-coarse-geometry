@@ -227,19 +227,13 @@ lemma quasiDenseRange_iff_exists_isCover {ι : Type*} {f : ι → β} :
   · obtain ⟨_, ⟨x, rfl⟩, hx⟩ := h (Set.mem_univ y)
     exact ⟨x, by simpa [edist_dist, dist_comm] using hx⟩
 
-namespace IsQuasiIsometricEmbedding
-
-variable {g : β → α}
-
-/-- If `f` is a quasi-isometric embedding and `f ∘ g` has finite distance from the identity,
-then `g` is a quasi-isometric embedding.
+/-- If `f` is a `(c, b)`-quasi-isometric embedding and `f ∘ g` is within `D` of the identity,
+then `g` is a `(max c 1, max c 1 * (2 * D + b))`-quasi-isometric embedding.
 
 [C. Löh, *Geometric Group Theory*][loeh2017], proof of Proposition 5.1.10. -/
-lemma of_hasFiniteDist_comp_id (hf : IsQuasiIsometricEmbedding f)
-    (hfg : HasFiniteDist (f ∘ g) id) : IsQuasiIsometricEmbedding g := by
-  obtain ⟨c, b, hf⟩ := hf
-  obtain ⟨D, hD⟩ := hfg
-  simp only [Function.comp_apply, id_eq] at hD
+lemma IsQuasiIsometricEmbeddingWith.of_dist_comp_le {g : β → α} {D : ℝ≥0}
+    (hf : IsQuasiIsometricEmbeddingWith c b f) (hD : ∀ y, dist (f (g y)) y ≤ D) :
+    IsQuasiIsometricEmbeddingWith (max c 1) (max c 1 * (2 * D + b)) g := by
   -- `dist (f (g y)) (f (g y'))` and `dist y y'` differ by at most `2 * D`.
   have h₁ : CoarseLipschitzWith c (c * (2 * D + b)) g := fun y y' ↦ by
     have h := dist_triangle4 (f (g y)) y y' (f (g y'))
@@ -251,7 +245,25 @@ lemma of_hasFiniteDist_comp_id (hf : IsQuasiIsometricEmbedding f)
     grw [h, dist_comm y, hD y, hD y', hf.coarseLipschitzWith (g y) (g y')]
     push_cast
     exact le_of_eq (by ring)
-  exact h₂.isQuasiIsometricEmbedding h₁
+  have hM : 1 ≤ max c 1 := le_max_right c 1
+  refine ⟨h₁.mono (le_max_left c 1) (by gcongr; exact le_max_left c 1),
+    h₂.mono (le_max_left c 1) ?_⟩
+  calc 2 * D + b = 1 * (1 * (2 * D + b)) := by simp
+    _ ≤ max c 1 * (max c 1 * (2 * D + b)) := by gcongr
+
+namespace IsQuasiIsometricEmbedding
+
+variable {g : β → α}
+
+/-- If `f` is a quasi-isometric embedding and `f ∘ g` has finite distance from the identity,
+then `g` is a quasi-isometric embedding.
+
+[C. Löh, *Geometric Group Theory*][loeh2017], proof of Proposition 5.1.10. -/
+lemma of_hasFiniteDist_comp_id (hf : IsQuasiIsometricEmbedding f)
+    (hfg : HasFiniteDist (f ∘ g) id) : IsQuasiIsometricEmbedding g :=
+  let ⟨_, _, hf⟩ := hf
+  let ⟨_, hD⟩ := hfg
+  ⟨_, _, hf.of_dist_comp_le hD⟩
 
 /-- If `f` is a quasi-isometric embedding and `f ∘ g` has finite distance from the identity, then
 so does `g ∘ f`.
