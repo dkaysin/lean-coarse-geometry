@@ -3,7 +3,7 @@
 PORT ?= 8000
 
 .DEFAULT_GOAL := help
-.PHONY: help cache build check mk_all blueprint web pdf serve frontier status sorries lines clean-blueprint
+.PHONY: help cache build check mk_all blueprint web serve frontier status sorries lines clean-blueprint
 
 help: ## List the targets
 	@grep -E '^[a-z_-]+:.*## ' $(MAKEFILE_LIST) | awk -F ':.*## ' '{printf "  %-16s %s\n", $$1, $$2}'
@@ -32,9 +32,6 @@ web: blueprint ## Render the blueprint web page to blueprint/web
 	leanblueprint web
 	python3 scripts/blueprint_links.py $(if $(SOURCE),--source $(SOURCE))
 
-pdf: blueprint ## Render the blueprint pdf to blueprint/print/print.pdf
-	leanblueprint pdf
-
 serve: web ## Render and serve the web blueprint at http://localhost:8000 (PORT=… to change)
 	python3 -m http.server $(PORT) --directory blueprint/web
 
@@ -51,4 +48,4 @@ lines: ## List lines over 100 characters in Coarse/ and CoarseBlueprint/ (no bui
 	@python3 -c "import glob,sys; bad=[f'{f}:{i}: {len(l)} characters' for f in sorted(glob.glob('Coarse*/**/*.lean',recursive=True)) for i,l in enumerate(open(f,encoding='utf-8').read().split(chr(10)),1) if len(l)>100]; print(chr(10).join(bad) or 'No line over 100 characters.'); sys.exit(1 if bad else 0)"
 
 clean-blueprint: ## Remove the rendered blueprint
-	rm -rf blueprint/web blueprint/print blueprint/lean_decls
+	rm -rf blueprint/web blueprint/lean_decls

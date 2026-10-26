@@ -1,4 +1,4 @@
-% Macros and settings shared by the pdf and the web version.
+% Macros and settings of the blueprint.
 
 \newtheorem{theorem}{Theorem}[chapter]
 \newtheorem{proposition}[theorem]{Proposition}
@@ -9,8 +9,8 @@
 \newtheorem{definition}[theorem]{Definition}
 
 % A node's label is its Lean name. \plannedlean{Lean.Name, ...} lists the further declarations a
-% node not formalized yet is planned to have; it is defined in macros/print.tex and
-% macros/web.tex. Write names unescaped (`a_b`, not `a\_b`).
+% node not formalized yet is planned to have. Write names unescaped (`a_b`, not `a\_b`).
+\newcommand{\plannedlean}[1]{\par\noindent\emph{Planned Lean name:} \texttt{#1}.\par}
 
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\Z}{\mathbb{Z}}
