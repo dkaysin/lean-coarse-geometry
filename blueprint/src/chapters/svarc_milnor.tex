@@ -7,7 +7,11 @@ $r$-thickening of $s$, which is bounded. Both proofs use the set
 \[ S = \{g \in G \mid g B \cap B \ne \emptyset\}, \]
 the set in the definition of a metrically proper action, written in Lean with Mathlib's
 \texttt{Metric.cthickening} and no new definition; it is L\"oh's generating set in Prop.~5.4.1.
-The steps are stated with the word length and no metric on $G$ (design decision D8).
+The steps are stated with the word length and no metric on $G$ (design decision D8). The
+hypotheses give a bounded $s$ whose translates cover $X$ but need not contain $x_0$; both proofs
+replace $s$ by $s \cup \{x_0\}$, which is still bounded. Both proofs choose, for each $y \in X$, a
+translate $\psi(y) s$ containing $y$; the map $\psi \colon X \to G$ is a quasi-inverse of the orbit
+map, and $r$-close points have values of $\psi$ that differ by an element of $S$.
 
 \inputleannode{Group.fg_of_isCoboundedSMul}
 
