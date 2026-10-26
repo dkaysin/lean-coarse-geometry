@@ -1,4 +1,4 @@
-# coarse
+# lean-coarse-geometry
 
 A Lean 4 playground for coarse geometry and geometric group theory, built on Mathlib and
 written so that its material can move into Mathlib.
