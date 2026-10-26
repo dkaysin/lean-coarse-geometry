@@ -1,0 +1,17 @@
+# Builds the API documentation with doc-gen4: `make docs`. A separate package, so that the library
+# does not depend on doc-gen4. It shares the packages of the library; `lake update coarse` resolves
+# them from the library's manifest.
+name = "docbuild"
+reservoir = false
+version = "0.1.0"
+packagesDir = "../.lake/packages"
+
+# The tag matching `lean-toolchain`; bump it together with the toolchain.
+[[require]]
+scope = "leanprover"
+name = "doc-gen4"
+rev = "v4.36.0-rc1"
+
+[[require]]
+name = "coarse"
+path = "../"

@@ -4,6 +4,10 @@
 .cache
 # `lake` stores its files here:
 .lake
+# Written by `make docs`:
+/docbuild/lake-manifest.json
+/docbuild/lean-toolchain
+/docbuild/docs/
 # Blueprint build output (`leanblueprint web`):
 /blueprint/web/
 /blueprint/lean_decls

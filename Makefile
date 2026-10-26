@@ -3,7 +3,7 @@
 PORT ?= 8000
 
 .DEFAULT_GOAL := help
-.PHONY: help cache build check mk_all blueprint web serve frontier status sorries lines clean-blueprint
+.PHONY: help cache build check mk_all blueprint web serve docs frontier status sorries lines clean-blueprint
 
 help: ## List the targets
 	@grep -E '^[a-z_-]+:.*## ' $(MAKEFILE_LIST) | awk -F ':.*## ' '{printf "  %-16s %s\n", $$1, $$2}'
@@ -34,6 +34,12 @@ web: blueprint ## Render the blueprint web page to blueprint/web
 
 serve: web ## Render and serve the web blueprint at http://localhost:8000 (PORT=… to change)
 	python3 -m http.server $(PORT) --directory blueprint/web
+
+# The first run also documents the Mathlib modules that the library imports, which takes a while.
+# doc-gen4 reads the bibliography from docbuild/docs/references.bib.
+docs: ## Build the API documentation to docbuild/.lake/build/doc
+	mkdir -p docbuild/docs && cp docs/references.bib docbuild/docs/
+	cd docbuild && MATHLIB_NO_CACHE_ON_UPDATE=1 lake update coarse && lake build Coarse:docs
 
 frontier: ## List the frontier, nodes awaiting review, sorried and blocked nodes (no build)
 	python3 scripts/blueprint_frontier.py
