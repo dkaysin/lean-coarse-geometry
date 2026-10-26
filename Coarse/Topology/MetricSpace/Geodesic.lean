@@ -17,14 +17,15 @@ by a geodesic.
 
 ## Main definitions
 
-* `Metric.IsGeodesic x x' γ`: the map `γ : Set.Icc t t' → X` is a geodesic from `x` to `x'`.
+* `Metric.Geodesic x x'`: a geodesic from `x` to `x'`, bundled with its interval `[t, t']`.
 * `Metric.IsGeodesicSpace X`: any two points of `X` are joined by a geodesic.
 
 ## Implementation notes
 
-The interval `[t, t']` of a geodesic from `x` to `x'` is arbitrary, with `t ≤ t'` as a field; the
-isometry forces `t' - t = dist x x'`. Geodesics are not required to be injective, which matters
-only in pseudometric spaces.
+A geodesic bundles its endpoints `t ≤ t'` with the map `γ : Set.Icc t t' → X`; the isometry forces
+`t' - t = dist x x'`. Since the domain depends on the geodesic, it coerces to a function through
+`CoeFun` rather than `FunLike`. Geodesics are not required to be injective, which matters only in
+pseudometric spaces.
 
 ## References
 
@@ -43,16 +44,24 @@ namespace Metric
 
 variable {X : Type*} [PseudoMetricSpace X]
 
-/-- A map `γ : [t, t'] → X` is a **geodesic** from `x` to `x'` if it is an isometry with
-`γ t = x` and `γ t' = x'`. -/
-structure IsGeodesic {t t' : ℝ} (x x' : X) (γ : Set.Icc t t' → X) : Prop where
-  isometry : Isometry γ
+/-- A **geodesic** from `x` to `x'` is an isometric map `γ : [t, t'] → X` with `γ t = x` and
+`γ t' = x'`. -/
+structure Geodesic (x x' : X) where
+  t : ℝ
+  t' : ℝ
   le : t ≤ t'
-  apply_left : γ ⟨t, Set.left_mem_Icc.2 le⟩ = x
-  apply_right : γ ⟨t', Set.right_mem_Icc.2 le⟩ = x'
+  toFun : Set.Icc t t' → X
+  isometry : Isometry toFun
+  apply_left : toFun ⟨t, Set.left_mem_Icc.2 le⟩ = x
+  apply_right : toFun ⟨t', Set.right_mem_Icc.2 le⟩ = x'
+
+attribute [coe] Geodesic.toFun
+
+instance {x x' : X} : CoeFun (Geodesic x x') fun γ ↦ Set.Icc γ.t γ.t' → X :=
+  ⟨Geodesic.toFun⟩
 
 /-- A pseudometric space is **geodesic** if any two points are joined by a geodesic. -/
 def IsGeodesicSpace (X : Type*) [PseudoMetricSpace X] : Prop :=
-  ∀ x x' : X, ∃ (t t' : ℝ) (γ : Set.Icc t t' → X), IsGeodesic x x' γ
+  ∀ x x' : X, Nonempty (Geodesic x x')
 
 end Metric

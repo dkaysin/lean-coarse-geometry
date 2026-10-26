@@ -59,7 +59,7 @@ $y$, by the triangle inequality. With slim triangles there is a converse:
 
 \begin{lemma}[cf.\ Dru\c{t}u--Kapovich Lem.~11.22]
   \label{Metric.HasSlimTrianglesWith.infDist_le_gromovProduct_add}
-  \uses{Metric.HasSlimTrianglesWith, Metric.IsGeodesic}
+  \uses{Metric.HasSlimTrianglesWith, Metric.Geodesic}
   Let $X$ be a geodesic pseudometric space with $\delta$-slim triangles, $\gamma$ a geodesic from
   $x$ to $y$ and $p \in X$. Some point of $\gamma$ is within $(x \cdot y)_p + 2\delta$ of $p$.
 \end{lemma}
@@ -77,7 +77,7 @@ $y$, by the triangle inequality. With slim triangles there is a converse:
 
 \begin{lemma}[Quasi-isometric embeddings and Gromov products]
   \label{Metric.IsQuasiIsometricEmbedding.exists_gromovProduct_le}
-  \uses{Metric.IsQuasiIsometricEmbedding, Metric.IsGeodesic, Metric.HasSlimTrianglesWith}
+  \uses{Metric.IsQuasiIsometricEmbedding, Metric.Geodesic, Metric.HasSlimTrianglesWith}
   Let $X$ and $Y$ be geodesic pseudometric spaces, $Y$ with $\delta$-slim triangles, and $f \colon
   X \to Y$ a quasi-isometric embedding. There are $A, B \ge 0$ such that for all $p, x, y \in X$
   \[ (x \cdot y)_p \le A\,(f x \cdot f y)_{f p} + B \quad\text{and}\quad
@@ -86,7 +86,7 @@ $y$, by the triangle inequality. With slim triangles there is a converse:
 \end{lemma}
 \begin{proof}
   \uses{Metric.HasSlimTrianglesWith.infDist_le_gromovProduct_add,
-    Metric.HasSlimTrianglesWith.exists_hausdorffDist_le, Metric.IsQuasiGeodesicWith,
+    Metric.HasSlimTrianglesWith.exists_hausdorffDist_le, Metric.QuasiGeodesic,
     Metric.IsQuasiIsometricEmbedding.exists_hasSlimTrianglesWith}
   Let $f$ be a $(c, b)$-quasi-isometric embedding, so $d(f u, f v) \le c\,d(u, v) + b$ and $d(u, v)
   \le c\,d(f u, f v) + cb$. For a geodesic $\gamma$ from $x$ to $y$, $f \circ \gamma$ is a $(c,
@@ -139,7 +139,7 @@ $y$, by the triangle inequality. With slim triangles there is a converse:
   Thm.~11.108, L\"oh Prop.~8.3.3 (1)]
   \label{Metric.IsQuasiIsometricEmbedding.isUniformEmbedding_gromovBoundaryMap}
   \uses{Metric.GromovBoundary.map, Metric.GromovBoundary.instUniformSpace,
-    Metric.IsQuasiIsometricEmbedding, Metric.IsGeodesic}
+    Metric.IsQuasiIsometricEmbedding, Metric.Geodesic}
   Let $X$ and $Y$ be geodesic hyperbolic pseudometric spaces and $f \colon X \to Y$ a
   quasi-isometric embedding. Then $f$ sends sequences to sequences equivalent at infinity exactly
   when they are, and $\partial f$ is a uniform embedding.
@@ -170,7 +170,7 @@ $y$, by the triangle inequality. With slim triangles there is a converse:
 \begin{corollary}[Quasi-isometries, Bridson--Haefliger Thm.~III.H.3.9, L\"oh Prop.~8.3.3]
   \label{Metric.IsQuasiIsometry.gromovBoundaryEquiv}
   \uses{Metric.IsQuasiIsometry, Metric.GromovBoundary.map, Metric.GromovBoundary.instUniformSpace,
-    Metric.IsGeodesic}
+    Metric.Geodesic}
   A quasi-isometry $f \colon X \to Y$ of geodesic hyperbolic pseudometric spaces induces a uniform
   equivalence $\partial f \colon \partial X \to \partial Y$, in particular a homeomorphism.
 \end{corollary}
