@@ -35,10 +35,11 @@ Let a group $G$ act by isometries on a pseudometric space $X$. Assume that $X$ i
 \emph{coarsely geodesic}: there are constants $r, L, C$ such that any two points $x, y$ are joined
 by a chain $x = x_0, x_1, \dots, x_n = y$ with $d(x_i, x_{i+1}) \le r$ and $n \le L\,d(x, y) + C$.
 Assume that the action is \emph{cobounded}: some bounded $s \subseteq X$ has translates covering
-$X$. Fix $x_0 \in s$ and put $S = \{g \in G \mid \exists a, b \in s,\ d(a, g b) \le r\}$. Then
+$X$. Fix $x_0 \in s$, let $B$ be the closed $r$-thickening of $s$, which is bounded, and put
+$S = \{g \in G \mid g B \cap B \ne \emptyset\}$. Then
 \begin{enumerate}
   \item $S$ generates $G$;
-  \item $d(g x_0, h x_0) \le (r + 2 \diam s)\,|g^{-1}h|_S$ and
+  \item $d(g x_0, h x_0) \le 2 \diam B\,|g^{-1}h|_S$ and
         $|g^{-1}h|_S \le L\,d(g x_0, h x_0) + C + 1$ for all $g, h \in G$;
   \item every point of $X$ is within $\diam s$ of the orbit $G x_0$;
   \item if moreover the action is \emph{metrically proper}, then $S$ is finite, so $G$ is
