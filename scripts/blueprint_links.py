@@ -4,38 +4,41 @@
 leanblueprint links every Lean declaration to Mathlib's documentation. This rewrites the links
 in `blueprint/web/*.html` to declarations of the `Coarse` library into `vscode://file/` links
 that open the source at the declaration; links to other declarations are left as they are.
-Run after `leanblueprint web`, which writes the names to `blueprint/lean_decls`.
+The locations are read from the `.ilean` files of the last `lake build`.
+Run after `leanblueprint web`.
 """
 
+import json
 import re
-import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 WEB = ROOT / "blueprint" / "web"
-DECLS = ROOT / "blueprint" / "lean_decls"
+ILEAN = ROOT / ".lake" / "build" / "lib" / "lean" / "Coarse"
 LINK = re.compile(r'href="https://leanprover-community\.github\.io/mathlib4_docs/find/#doc/([^"]+)"')
 
 
 def locations():
-    """Map each declaration of this library named in `lean_decls` to its file and line."""
-    out = subprocess.run(
-        ["lake", "env", "lean", "--run", "scripts/DeclLocations.lean"],
-        cwd=ROOT, input=DECLS.read_text(), capture_output=True, text=True, check=True).stdout
+    """Map each declaration of this library to the file and line of its name."""
     locs = {}
-    for row in out.splitlines():
-        name, module, line = row.split("\t")
-        path = ROOT.joinpath(*module.split(".")).with_suffix(".lean")
-        if module.split(".")[0] == "Coarse" and path.exists():
-            locs[name] = (path, line)
+    for ilean in ILEAN.rglob("*.ilean"):
+        for key, ref in json.loads(ilean.read_text())["references"].items():
+            const = json.loads(key).get("c")
+            if const is None or not ref.get("definition"):
+                continue
+            path = ROOT.joinpath(*const["m"].split(".")).with_suffix(".lean")
+            if path.exists():
+                locs[const["n"]] = (path, ref["definition"][0] + 1)
     return locs
 
 
 def main():
     locs = locations()
+    linked = set()
     def link(m):
         if m.group(1) not in locs:
             return m.group(0)
+        linked.add(m.group(1))
         path, line = locs[m.group(1)]
         return f'href="vscode://file{path}:{line}"'
     for page in WEB.glob("*.html"):
@@ -43,7 +46,7 @@ def main():
         new = LINK.sub(link, text)
         if new != text:
             page.write_text(new)
-    print(f"Linked {len(locs)} declarations to their source.")
+    print(f"Linked {len(linked)} declarations to their source.")
 
 
 if __name__ == "__main__":
