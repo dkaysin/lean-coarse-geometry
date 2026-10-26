@@ -647,5 +647,10 @@ Blueprint nodes for milestone M8. None is formalized yet.
 
 /-! ## The Gromov boundary
 
-Blueprint nodes for milestone M9. None is planned yet.
+Blueprint nodes for milestone M9. None is formalized yet.
+-/
+
+/-! ## Quasi-isometry invariance of the Gromov boundary
+
+Blueprint nodes for milestone M10. None is formalized yet.
 -/

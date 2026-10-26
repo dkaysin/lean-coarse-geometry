@@ -1,0 +1,247 @@
+\chapter{Quasi-isometry invariance of the Gromov boundary}
+\label{chap:boundary-invariance}
+
+Milestone M10. A quasi-isometric embedding of geodesic hyperbolic spaces induces a uniform embedding
+of their Gromov boundaries (Chapter~\ref{chap:gromov-boundary}), and a quasi-isometry a uniform
+equivalence (Bridson--Haefliger, Theorem III.H.3.9; Dru\c{t}u--Kapovich, Theorem 11.108;
+L\"oh, Proposition 8.3.3). Isometric maps with quasi-dense range induce uniform equivalences without
+any geodesic hypothesis; with the geometric realisation of Cayley graphs
+(Chapter~\ref{chap:stability}) this shows that the boundary of a hyperbolic group does not depend
+on the finite generating family (L\"oh, Definition 8.3.8).
+
+The geodesic hypothesis cannot be dropped for quasi-isometries: Bridson--Haefliger
+(Example III.H.3.14) give a hyperbolic subset of the plane, quasi-isometric to a ray, whose boundary
+has two points while that of the ray has one.
+
+The proof follows Dru\c{t}u--Kapovich's proof of Theorem 11.108: a quasi-isometric embedding of
+geodesic spaces with slim triangles distorts Gromov products at most affinely, in both directions,
+because the Gromov product $(x \cdot y)_p$ is, up to $2\delta$, the distance from $p$ to a geodesic
+from $x$ to $y$, and geodesics are carried to quasi-geodesics close to geodesics (stability,
+Theorem~\ref{Metric.HasSlimTrianglesWith.exists_hausdorffDist_le}). Working with the uniform
+structure of the boundary avoids their use of sequences, properness and compactness.
+
+\paragraph{Differences from the proofs with rays.} L\"oh and Bridson--Haefliger define the boundary
+by rays and prove the invariance there.
+\begin{itemize}
+  \item \emph{L\"oh} (Proposition 8.3.3, boundary of quasi-geodesic rays up to finite Hausdorff
+        distance). The map $[\gamma] \mapsto [f \circ \gamma]$ is well defined, injective, and
+        unchanged when $f$ moves a bounded distance, by the bounds of $f$ alone, with no
+        hyperbolicity; so a quasi-isometry induces a bijection. Continuity is left as an exercise
+        (8.E.14), and it is where the work lies: the topology is uniform convergence of
+        representatives on compact sets, and $f$ is not continuous, so $f \circ \gamma_n$ need not
+        converge to $f \circ \gamma$ when $\gamma_n$ converges to $\gamma$; other representatives,
+        close to geodesic rays, have to be found.
+  \item \emph{Bridson--Haefliger} (Theorem III.H.3.9, geodesic rays in proper geodesic hyperbolic
+        spaces). Each quasi-geodesic ray is first replaced by a geodesic ray at finite Hausdorff
+        distance, starting at any given point (Lemma III.H.3.1: geodesics from the base point to
+        points far along the ray stay close to it by stability, and Arzel\`a--Ascoli, which needs
+        properness, gives a limiting ray). The class of a ray $c$ is sent to that of the geodesic
+        ray straightening $f \circ c$. Continuity uses the neighbourhoods of Lemma III.H.3.6 (rays
+        from the base point within a fixed distance of a given ray at time $n$): rays close up to
+        time $n$ have images close up to time about $n/\lambda$, and stability with thin
+        triangles makes their straightenings fellow-travel up to a time that tends to infinity
+        with $n$.
+\end{itemize}
+Both routes use stability, as the route here does. The proof here does not need the straightening
+of rays, and so neither properness nor Arzel\`a--Ascoli, nor a topology built from convergent
+sequences of rays: the estimate of
+Lemma~\ref{Metric.IsQuasiIsometricEmbedding.exists_gromovProduct_le} gives uniform continuity
+directly. Dru\c{t}u--Kapovich also prove their Theorem 11.108 on the sequential boundary and
+transfer it to rays through the homeomorphism of the two boundaries (their Theorem 11.104).
+
+How boundary maps are defined is an open design decision (D32); the nodes below follow its
+proposal and are not implemented until it is decided.
+
+\section*{Gromov products and geodesics}
+
+In any geodesic space, $(x \cdot y)_p \le d(p, q)$ for every point $q$ of a geodesic from $x$ to
+$y$, by the triangle inequality. With slim triangles there is a converse:
+
+\begin{lemma}[cf.\ Dru\c{t}u--Kapovich Lem.~11.22]
+  \label{Metric.HasSlimTrianglesWith.infDist_le_gromovProduct_add}
+  \uses{Metric.HasSlimTrianglesWith, Metric.IsGeodesic}
+  Let $X$ be a geodesic pseudometric space with $\delta$-slim triangles, $\gamma$ a geodesic from
+  $x$ to $y$ and $p \in X$. Some point of $\gamma$ is within $(x \cdot y)_p + 2\delta$ of $p$.
+\end{lemma}
+\begin{proof}
+  Choose geodesics from $y$ to $p$ and from $p$ to $x$; with $\gamma$ they form a $\delta$-slim
+  triangle. The parameters $t$ for which $\gamma(t)$ is within $\delta$ of the side from $p$ to $x$,
+  respectively from $y$ to $p$, form two closed sets covering the interval of $\gamma$ and
+  containing its left, respectively right, endpoint; since the interval is connected, some $z =
+  \gamma(t)$ is within $\delta$ of a point $a$ of the first side and a point $b$ of the second. Then
+  $d(p, z) \le d(p, a) + \delta = d(p, x) - d(a, x) + \delta \le d(p, x) - d(x, z) + 2\delta$, and
+  likewise $d(p, z) \le d(p, y) - d(y, z) + 2\delta$. Adding, with $d(x, z) + d(z, y) = d(x, y)$,
+  gives $d(p, z) \le (x \cdot y)_p + 2\delta$. This is the step (b) of the proof of
+  Lemma~\ref{Metric.HasSlimTrianglesWith.isHyperbolicWith}.
+\end{proof}
+
+\begin{lemma}[Quasi-isometric embeddings and Gromov products]
+  \label{Metric.IsQuasiIsometricEmbedding.exists_gromovProduct_le}
+  \uses{Metric.IsQuasiIsometricEmbedding, Metric.IsGeodesic, Metric.HasSlimTrianglesWith}
+  Let $X$ and $Y$ be geodesic pseudometric spaces, $Y$ with $\delta$-slim triangles, and $f \colon
+  X \to Y$ a quasi-isometric embedding. There are $A, B \ge 0$ such that for all $p, x, y \in X$
+  \[ (x \cdot y)_p \le A\,(f x \cdot f y)_{f p} + B \quad\text{and}\quad
+     (f x \cdot f y)_{f p} \le A\,(x \cdot y)_p + B. \]
+  \plannedlean{Metric.IsQuasiIsometricEmbedding.exists_gromovProduct_comp_le}
+\end{lemma}
+\begin{proof}
+  \uses{Metric.HasSlimTrianglesWith.infDist_le_gromovProduct_add,
+    Metric.HasSlimTrianglesWith.exists_hausdorffDist_le, Metric.IsQuasiGeodesicWith,
+    Metric.IsQuasiIsometricEmbedding.exists_hasSlimTrianglesWith}
+  Let $f$ be a $(c, b)$-quasi-isometric embedding, so $d(f u, f v) \le c\,d(u, v) + b$ and $d(u, v)
+  \le c\,d(f u, f v) + cb$. For a geodesic $\gamma$ from $x$ to $y$, $f \circ \gamma$ is a $(c,
+  b)$-quasi-geodesic from $f x$ to $f y$; let $R$ be the stability constant of $Y$ for $c, b$
+  (Theorem~\ref{Metric.HasSlimTrianglesWith.exists_hausdorffDist_le}) and $\gamma'$ a geodesic from
+  $f x$ to $f y$. Every point of $\gamma'$ is within $R + 1$ of a point of $f \circ \gamma$, and
+  conversely.
+
+  \emph{First inequality.} Lemma~\ref{Metric.HasSlimTrianglesWith.infDist_le_gromovProduct_add}
+  gives $q'$ on $\gamma'$ with $d(f p, q') \le (f x \cdot f y)_{f p} + 2\delta$; take $q$ on
+  $\gamma$ with $d(f q, q') \le R + 1$. Then $(x \cdot y)_p \le d(p, q) \le c\,d(f p, f q) + cb \le
+  c\,(f x \cdot f y)_{f p} + c(2\delta + R + 1 + b)$.
+
+  \emph{Second inequality.} $X$ has $\delta'$-slim triangles for some $\delta'$
+  (Corollary~\ref{Metric.IsQuasiIsometricEmbedding.exists_hasSlimTrianglesWith}), so there is $q$ on
+  $\gamma$ with $d(p, q) \le (x \cdot y)_p + 2\delta'$; take $q'$ on $\gamma'$ with $d(f q, q') \le
+  R + 1$. Then $(f x \cdot f y)_{f p} \le d(f p, q') \le c\,d(p, q) + b + R + 1 \le c\,(x \cdot y)_p
+  + 2c\delta' + b + R + 1$.
+
+  Take $A = \max\{c, 1\}$ and $B$ the larger additive constant.
+\end{proof}
+
+\section*{Boundary maps}
+
+\begin{definition}[Boundary map]
+  \label{Metric.GromovBoundary.map}
+  \uses{Metric.GromovBoundary, Metric.EquivAtInfinity}
+  Let $X$ and $Y$ be hyperbolic and $f \colon X \to Y$ a map that sends sequences equivalent at
+  infinity to sequences equivalent at infinity. Then $f$ sends sequences converging at infinity to
+  sequences converging at infinity, and $\partial f \colon \partial X \to \partial Y$, $[x_n]
+  \mapsto
+  [f(x_n)]$, is well defined.
+\end{definition}
+
+\begin{lemma}[Functoriality, cf.\ L\"oh Prop.~8.3.3 (2)]
+  \label{Metric.GromovBoundary.map_eq_of_hasFiniteDist}
+  \uses{Metric.GromovBoundary.map, Metric.HasFiniteDist}
+  Maps $f, g \colon X \to Y$ as in Definition~\ref{Metric.GromovBoundary.map} that have finite
+  distance induce the same boundary map. Moreover
+  $\partial(g \circ f) = \partial g \circ \partial f$.
+  \plannedlean{Metric.GromovBoundary.map_comp}
+\end{lemma}
+\begin{proof}
+  Sequences $(u_n)$, $(v_n)$ with $d(u_n, v_n) \le C$ and $(u_n)$ converging at infinity are
+  equivalent at infinity, as $(u_i \cdot v_j)_q \ge (u_i \cdot u_j)_q - C$. Apply this to $u_n =
+  f(x_n)$, $v_n = g(x_n)$. The composition holds by definition.
+\end{proof}
+
+\begin{theorem}[Extension theorem, Bridson--Haefliger Thm.~III.H.3.9, Dru\c{t}u--Kapovich
+  Thm.~11.108, L\"oh Prop.~8.3.3 (1)]
+  \label{Metric.IsQuasiIsometricEmbedding.isUniformEmbedding_gromovBoundaryMap}
+  \uses{Metric.GromovBoundary.map, Metric.GromovBoundary.instUniformSpace,
+    Metric.IsQuasiIsometricEmbedding, Metric.IsGeodesic}
+  Let $X$ and $Y$ be geodesic hyperbolic pseudometric spaces and $f \colon X \to Y$ a
+  quasi-isometric embedding. Then $f$ sends sequences to sequences equivalent at infinity exactly
+  when they are, and $\partial f$ is a uniform embedding.
+  \plannedlean{Metric.IsQuasiIsometricEmbedding.equivAtInfinity_comp_iff}
+\end{theorem}
+\begin{proof}
+  \uses{Metric.IsQuasiIsometricEmbedding.exists_gromovProduct_le,
+    Metric.IsHyperbolicWith.hasSlimTrianglesWith, Metric.GromovBoundary.min_gromovProduct_le}
+  $Y$ has slim triangles (Lemma~\ref{Metric.IsHyperbolicWith.hasSlimTrianglesWith}); let $A, B$ be
+  as in Lemma~\ref{Metric.IsQuasiIsometricEmbedding.exists_gromovProduct_le}, and $\delta$ a
+  four-point constant of $Y$. The two inequalities, at the base points $p$ and $f p$, show that
+  $(x_i \cdot y_j)_p \to \infty$ if and only if $(f x_i \cdot f y_j)_{f p} \to \infty$; so $f$
+  preserves and reflects equivalence at infinity, and $\partial f$ is defined and injective. For
+  representatives $(x_n)$ of $\xi$ and $(y_n)$ of $\eta$, the sequences $(f x_n)$, $(f y_n)$
+  represent $\partial f \xi$, $\partial f \eta$, so
+  \[ (\partial f \xi \cdot \partial f \eta)_{f p} \ge \liminf (f x_i \cdot f y_j)_{f p} \ge
+     \bigl(\liminf (x_i \cdot y_j)_p - B\bigr)/A; \]
+  taking the supremum over representatives, $(\partial f \xi \cdot \partial f \eta)_{f p} \ge ((\xi
+  \cdot \eta)_p - B)/A$. Conversely, by
+  Lemma~\ref{Metric.GromovBoundary.min_gromovProduct_le} (2) in $Y$,
+  $(\partial f \xi \cdot \partial f \eta)_{f p} \le \liminf (f x_i \cdot f y_j)_{f p} + 2\delta \le
+  A\,(\xi \cdot \eta)_p + B + 2\delta$. So $\partial f$ maps $V_{p, AR + B}$ into $V_{f p, R}$, and
+  the preimage of $V_{f p, A R + B + 2\delta}$ lies in $V_{p, R}$; as all base points give the same
+  uniform structure, $\partial f$ is uniformly continuous and induces the uniform structure of
+  $\partial X$.
+\end{proof}
+
+\begin{corollary}[Quasi-isometries, Bridson--Haefliger Thm.~III.H.3.9, L\"oh Prop.~8.3.3]
+  \label{Metric.IsQuasiIsometry.gromovBoundaryEquiv}
+  \uses{Metric.IsQuasiIsometry, Metric.GromovBoundary.map, Metric.GromovBoundary.instUniformSpace,
+    Metric.IsGeodesic}
+  A quasi-isometry $f \colon X \to Y$ of geodesic hyperbolic pseudometric spaces induces a uniform
+  equivalence $\partial f \colon \partial X \to \partial Y$, in particular a homeomorphism.
+\end{corollary}
+\begin{proof}
+  \uses{Metric.IsQuasiIsometricEmbedding.isUniformEmbedding_gromovBoundaryMap,
+    Metric.GromovBoundary.map_eq_of_hasFiniteDist}
+  Let $g$ be a quasi-inverse, also a quasi-isometric embedding. By
+  Lemma~\ref{Metric.GromovBoundary.map_eq_of_hasFiniteDist}, $\partial g \circ \partial f =
+  \partial(g \circ f) = \partial \mathrm{id} = \mathrm{id}$ and likewise $\partial f \circ \partial
+  g = \mathrm{id}$; both maps are uniformly continuous by
+  Theorem~\ref{Metric.IsQuasiIsometricEmbedding.isUniformEmbedding_gromovBoundaryMap}.
+\end{proof}
+
+\begin{corollary}[Isometric maps with quasi-dense range]
+  \label{Isometry.gromovBoundaryEquiv}
+  \uses{Metric.GromovBoundary.map, Metric.GromovBoundary.instUniformSpace, Metric.QuasiDenseRange}
+  Let $X$ and $Y$ be hyperbolic pseudometric spaces and $f \colon X \to Y$ an isometric map with
+  quasi-dense range. Then $\partial f$ is a uniform equivalence.
+\end{corollary}
+\begin{proof}
+  \uses{Metric.GromovBoundary.min_gromovProduct_le}
+  $f$ preserves Gromov products, hence equivalence at infinity in both directions; so $\partial f$
+  is defined and injective, and $(\xi \cdot \eta)_p \le (\partial f \xi \cdot \partial f \eta)_{f p}
+  \le (\xi \cdot \eta)_p + 2\delta$ as in the proof of
+  Theorem~\ref{Metric.IsQuasiIsometricEmbedding.isUniformEmbedding_gromovBoundaryMap}, so it is a
+  uniform embedding. Surjective: let every point of $Y$ be within $C$ of the range and $(y_n)$
+  converge at infinity; choose $x_n$ with $d(f x_n, y_n) \le C$. Then $(f x_n)$ is equivalent to
+  $(y_n)$ (as in the proof of Lemma~\ref{Metric.GromovBoundary.map_eq_of_hasFiniteDist}), so it
+  converges at infinity, and so does $(x_n)$; and $\partial f [x_n] = [y_n]$.
+\end{proof}
+
+\section*{Hyperbolic groups}
+
+L\"oh (Definition 8.3.8) defines the boundary of a finitely generated group as that of its Cayley
+graph for a finite generating set. Here it is the boundary of $(G, d_P)$, the group with the word
+metric of a finite generating family $P$; no new definition is needed. It is the boundary of the
+geometric realisation of the Cayley graph, by Corollary~\ref{Isometry.gromovBoundaryEquiv} applied
+to
+the vertex map.
+
+\begin{theorem}[Independence of the generating family, cf.\ L\"oh Def.~8.3.8]
+  \label{Group.Generators.WithWordMetric.gromovBoundaryEquiv}
+  \uses{Group.Generators.WithWordMetric, Group.Generators.IsHyperbolicWith, Metric.GromovBoundary,
+    Metric.GromovBoundary.instUniformSpace}
+  Let $G$ be a hyperbolic group. For every finite generating family $P$ the word metric of $P$ is
+  hyperbolic, and for finite generating families $P$, $Q$ there is a uniform equivalence
+  $\partial(G, d_P) \to \partial(G, d_Q)$ sending $[x_n]$ to $[x_n]$.
+  \plannedlean{Group.Generators.WithWordMetric.instIsHyperbolic}
+\end{theorem}
+\begin{proof}
+  \uses{Group.Generators.isHyperbolic_iff, SimpleGraph.Realization,
+    SimpleGraph.Realization.dist_vertex, SimpleGraph.Realization.isGeodesicSpace,
+    Group.Generators.dist_cayleySimpleGraph, Metric.IsHyperbolicWith.of_isometry_of_quasiDenseRange,
+    Isometry.gromovBoundaryEquiv, Metric.IsQuasiIsometry.gromovBoundaryEquiv,
+    Group.Generators.WithWordMetric.isQuasiIsometry_congr,
+    Metric.isQuasiIsometry_iff_quasiDenseRange,
+    Metric.IsQuasiIsometry.comp, Metric.GromovBoundary.map_eq_of_hasFiniteDist}
+  The word metric of $P$ is hyperbolic by Theorem~\ref{Group.Generators.isHyperbolic_iff}. Let $|P|$
+  be the geometric realisation of the Cayley graph of $P$ and $\iota_P \colon (G, d_P) \to |P|$ the
+  vertex map: isometric with quasi-dense range
+  (Lemma~\ref{SimpleGraph.Realization.dist_vertex},
+  Theorem~\ref{Group.Generators.dist_cayleySimpleGraph}), so $|P|$ is hyperbolic
+  (Lemma~\ref{Metric.IsHyperbolicWith.of_isometry_of_quasiDenseRange}) and geodesic
+  (Lemma~\ref{SimpleGraph.Realization.isGeodesicSpace}), and $\partial \iota_P$ is a uniform
+  equivalence (Corollary~\ref{Isometry.gromovBoundaryEquiv}). The same holds for $Q$. Let $h_P$ be a
+  quasi-inverse of $\iota_P$ with $h_P \circ \iota_P = \mathrm{id}$. Then $\iota_Q \circ \mathrm{id}
+  \circ h_P \colon |P| \to |Q|$ is a quasi-isometry
+  (Corollary~\ref{Group.Generators.WithWordMetric.isQuasiIsometry_congr},
+  Lemma~\ref{Metric.IsQuasiIsometry.comp}) of geodesic hyperbolic spaces, so it induces a uniform
+  equivalence (Corollary~\ref{Metric.IsQuasiIsometry.gromovBoundaryEquiv}). The composite
+  $(\partial \iota_Q)^{-1} \circ \partial(\iota_Q \circ h_P) \circ \partial \iota_P$ sends $[x_n]$
+  to $[x_n]$, since $h_P \circ \iota_P = \mathrm{id}$ and boundary maps compose
+  (Lemma~\ref{Metric.GromovBoundary.map_eq_of_hasFiniteDist}).
+\end{proof}

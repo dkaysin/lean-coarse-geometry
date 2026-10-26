@@ -1,5 +1,179 @@
 \chapter{The Gromov boundary}
 \label{chap:gromov-boundary}
 
-Milestone M9. The Gromov boundary of a hyperbolic space (Chapter~\ref{chap:hyperbolic}). Its
-definitions and results are not planned yet.
+Milestone M9. The Gromov boundary of a hyperbolic space (Chapter~\ref{chap:hyperbolic}): sequences
+converging at infinity up to equivalence (Bridson--Haefliger, Definition III.H.3.12;
+Dru\c{t}u--Kapovich, Definition 11.97), with the uniform structure given by the Gromov product
+extended to the boundary (Bridson--Haefliger, III.H.3.15--3.18). Bounded spaces have empty
+boundary and $\Z$ has two boundary points (L\"oh, Examples 8.3.5 and 8.3.9). The invariance of
+the boundary under quasi-isometries is the next chapter.
+
+Throughout, $X$ is a pseudometric space and $(x \cdot y)_p$ is the Gromov product
+(\texttt{Metric.gromovProduct p x y}). ``Hyperbolic'' is the four-point condition
+(Definition~\ref{Metric.IsHyperbolicWith}). Sequences are indexed by $\N$, and ``$a_{ij} \to \infty$
+as $i, j \to \infty$'' is the limit along the filter \texttt{atTop} on $\N \times \N$. Since
+$|(x \cdot y)_p - (x \cdot y)_q| \le d(p, q)$, whether such a limit of Gromov products is infinite
+does not depend on the base point; the definitions ask it for every base point, and a helper lemma
+reduces it to one.
+
+How the boundary and its topology are encoded are open design decisions (D30, D31); the nodes
+below follow their proposals and are not implemented until they are decided.
+
+\section*{Sequences converging at infinity}
+
+\begin{definition}[Convergence at infinity, Bridson--Haefliger Def.~III.H.3.12]
+  \label{Metric.ConvergesAtInfinity}
+  A sequence $(x_n)$ in $X$ \emph{converges at infinity} if $(x_i \cdot x_j)_p \to \infty$ as
+  $i, j \to \infty$, for every $p \in X$.
+\end{definition}
+
+\begin{definition}[Equivalence at infinity, Bridson--Haefliger Def.~III.H.3.12]
+  \label{Metric.EquivAtInfinity}
+  Sequences $(x_n)$ and $(y_n)$ in $X$ are \emph{equivalent at infinity} if
+  $(x_i \cdot y_j)_p \to \infty$ as $i, j \to \infty$, for every $p \in X$.
+\end{definition}
+
+A sequence converges at infinity exactly when it is equivalent at infinity to itself, and the
+relation is symmetric, since the Gromov product is. It is not transitive in general (in $\R^2$
+with the Euclidean metric, Bridson--Haefliger after III.H.3.12), but it is in hyperbolic spaces:
+
+\begin{lemma}[Transitivity, Bridson--Haefliger after Def.~III.H.3.12]
+  \label{Metric.EquivAtInfinity.trans}
+  \uses{Metric.EquivAtInfinity, Metric.IsHyperbolicWith}
+  In a hyperbolic space, if $(x_n)$ is equivalent at infinity to $(y_n)$ and $(y_n)$ to $(z_n)$,
+  then $(x_n)$ is equivalent at infinity to $(z_n)$.
+\end{lemma}
+\begin{proof}
+  Let $X$ satisfy the four-point condition with constant $\delta$, and fix $p$ and $R$. There is
+  $N$ with $(x_i \cdot y_j)_p > R + \delta$ and $(y_j \cdot z_k)_p > R + \delta$ for all $i, j, k
+  \ge N$. For $i, k \ge N$, the four-point condition with $j = N$ gives $(x_i \cdot z_k)_p \ge
+  \min\{(x_i \cdot y_N)_p, (y_N \cdot z_k)_p\} - \delta > R$.
+\end{proof}
+
+\section*{The boundary}
+
+\begin{definition}[Gromov boundary, Bridson--Haefliger Def.~III.H.3.12, Dru\c{t}u--Kapovich
+  Def.~11.97]
+  \label{Metric.GromovBoundary}
+  \uses{Metric.ConvergesAtInfinity, Metric.EquivAtInfinity, Metric.EquivAtInfinity.trans}
+  Let $X$ be a hyperbolic pseudometric space. Equivalence at infinity is an equivalence relation on
+  the sequences in $X$ converging at infinity (Lemma~\ref{Metric.EquivAtInfinity.trans}). The
+  \emph{Gromov boundary} $\partial X$ is the set of its classes. The class of a sequence $(x_n)$ is
+  written $[x_n]$.
+  \plannedlean{Metric.gromovBoundarySetoid, Metric.GromovBoundary.mk}
+\end{definition}
+
+\paragraph{Differences from L\"oh's definition.} L\"oh (Definition 8.3.1) defines the boundary of a
+quasi-geodesic space as the set of quasi-geodesic rays $[0, \infty) \to X$ up to finite Hausdorff
+distance, and its topology by uniform convergence of representatives on compact sets. Here it is
+defined by sequences, as in Bridson--Haefliger and Dru\c{t}u--Kapovich, for every space satisfying
+the four-point condition. Reasons: this needs no rays, geodesics or properness, only the four-point
+condition the project uses; L\"oh herself notes that outside proper hyperbolic spaces her boundary
+is too large to be useful; and it is the definition used for general hyperbolic spaces. Nothing is
+lost where L\"oh uses the boundary: for proper geodesic hyperbolic spaces both are in canonical
+bijection with the classes of geodesic rays, by L\"oh's Theorem 8.3.4 and Bridson--Haefliger's
+Lemma III.H.3.13, and the topologies agree (Bridson--Haefliger, Remark III.H.3.17 (6) and
+Exercise III.H.3.18 (4)). That comparison is not formalized. How the invariance under
+quasi-isometries is proved with rays, and why the sequences make it shorter, is explained at the
+start of Chapter~\ref{chap:boundary-invariance}. Bridson--Haefliger's equivalence is the
+one above; Dru\c{t}u--Kapovich take $(x_n \cdot y_n)_p \to \infty$ along the diagonal, which is
+equivalent for sequences converging at infinity.
+
+\begin{lemma}[Bounded spaces, L\"oh Ex.~8.3.5]
+  \label{Metric.GromovBoundary.isEmpty_of_boundedSpace}
+  \uses{Metric.GromovBoundary}
+  A bounded pseudometric space has empty Gromov boundary.
+\end{lemma}
+\begin{proof}
+  $(x \cdot y)_p \le d(p, x)$ is bounded by the diameter, so no sequence converges at infinity.
+  (Bounded spaces are hyperbolic, an instance in the copied pull request.)
+\end{proof}
+
+\begin{lemma}[The boundary of $\Z$, L\"oh Ex.~8.3.9]
+  \label{Int.card_gromovBoundary}
+  \uses{Metric.GromovBoundary}
+  $\Z$, with its usual metric, is hyperbolic, and its Gromov boundary has exactly two points.
+  \plannedlean{Real.isHyperbolicWith_zero, Int.instIsHyperbolic}
+\end{lemma}
+\begin{proof}
+  \emph{$\R$ satisfies the four-point condition with $\delta = 0$.} For $w \in \R$, $(x \cdot y)_w$
+  is $\min\{|x - w|, |y - w|\}$ if $x$ and $y$ lie on the same side of $w$ and $0$ otherwise. If
+  $(x \cdot y)_w$ and $(y \cdot z)_w$ are both positive, then $x, y, z$ lie strictly on one side of
+  $w$, and $(x \cdot z)_w = \min\{|x - w|, |z - w|\}$ is at least their minimum; otherwise the
+  minimum is $0$. $\Z \subseteq \R$ isometrically, so $\Z$ satisfies it too
+  (\texttt{Metric.IsHyperbolicWith.of\_isometry} in the copied pull request).
+
+  \emph{Two points.} With $p = 0$: if $(x_i \cdot x_j)_0 \to \infty$, then $|x_n| \to \infty$ and
+  eventually all $x_n$ have one sign, since $(x_i \cdot x_j)_0 = 0$ for opposite signs; so $x_n \to
+  +\infty$ or $x_n \to -\infty$. Two sequences tending to $+\infty$ are equivalent, as $(x_i \cdot
+  y_j)_0 = \min\{x_i, y_j\}$, and likewise for $-\infty$; the sequences $n$ and $-n$ are not, as
+  $(i \cdot (-j))_0 = 0$. So the boundary is $\{[n], [-n]\}$ with $[n] \ne [-n]$.
+\end{proof}
+
+\section*{The topology of the boundary}
+
+\begin{definition}[Gromov product on the boundary, Bridson--Haefliger Def.~III.H.3.15]
+  \label{Metric.GromovBoundary.gromovProduct}
+  \uses{Metric.GromovBoundary}
+  Let $X$ be hyperbolic, $p \in X$ and $\xi, \eta \in \partial X$. Their Gromov product is
+  \[ (\xi \cdot \eta)_p = \sup \liminf_{i, j \to \infty} (x_i \cdot y_j)_p \in [0, \infty], \]
+  the supremum over all sequences with $[x_n] = \xi$ and $[y_n] = \eta$.
+\end{definition}
+
+Dru\c{t}u--Kapovich take the infimum over representatives instead; by
+Lemma~\ref{Metric.GromovBoundary.min_gromovProduct_le} (the third statement) the two differ by at
+most $2\delta$, which does not change the uniformity below (D31).
+
+\begin{lemma}[Bridson--Haefliger Rem.~III.H.3.17 (2), (4), (5)]
+  \label{Metric.GromovBoundary.min_gromovProduct_le}
+  \uses{Metric.GromovBoundary.gromovProduct, Metric.IsHyperbolicWith}
+  Let $X$ satisfy the four-point condition with constant $\delta$, and $p \in X$.
+  \begin{enumerate}
+    \item $(\xi \cdot \zeta)_p \ge \min\{(\xi \cdot \eta)_p, (\eta \cdot \zeta)_p\} - 2\delta$ for
+          all $\xi, \eta, \zeta \in \partial X$.
+    \item $(\xi \cdot \eta)_p \le \liminf_{i, j} (x_i \cdot y_j)_p + 2\delta$ for all sequences
+          with $[x_n] = \xi$ and $[y_n] = \eta$.
+    \item $(\xi \cdot \eta)_p = \infty$ if and only if $\xi = \eta$.
+  \end{enumerate}
+  \plannedlean{Metric.GromovBoundary.gromovProduct_le_liminf_add,
+    Metric.GromovBoundary.gromovProduct_eq_top_iff}
+\end{lemma}
+\begin{proof}
+  \uses{Metric.EquivAtInfinity.trans}
+  (2) Let $(x'_n)$, $(y'_n)$ be other representatives. The four-point condition, used twice, gives
+  $(x_i \cdot y_j)_p \ge \min\{(x_i \cdot x'_k)_p, (x'_k \cdot y'_l)_p, (y'_l \cdot y_j)_p\} -
+  2\delta$. The first and last terms tend to infinity, as the representatives are equivalent; taking
+  limits inferior, $\liminf (x_i \cdot y_j)_p \ge \liminf (x'_k \cdot y'_l)_p - 2\delta$. Take the
+  supremum over $(x'_n)$, $(y'_n)$.
+
+  (1) For $\varepsilon > 0$ choose representatives $(x_n)$ of $\xi$ and $(y_n)$ of $\eta$ with
+  $\liminf (x_i \cdot y_j)_p \ge (\xi \cdot \eta)_p - \varepsilon$, and $(y'_n)$ of $\eta$ and
+  $(z_n)$ of $\zeta$ with $\liminf (y'_k \cdot z_l)_p \ge (\eta \cdot \zeta)_p - \varepsilon$ (or
+  above any bound, if the product is infinite). As in (2), $(x_i \cdot z_l)_p \ge \min\{(x_i \cdot
+  y_j)_p, (y_j \cdot y'_k)_p, (y'_k \cdot z_l)_p\} - 2\delta$, with the middle term tending to
+  infinity; take limits inferior and use $(\xi \cdot \zeta)_p \ge \liminf (x_i \cdot z_l)_p$.
+
+  (3) If $\xi = [x_n]$, then $\liminf (x_i \cdot x_j)_p = \infty$, as $(x_n)$ converges at
+  infinity. Conversely, if $(\xi \cdot \eta)_p = \infty$, then by (2) $\liminf (x_i \cdot y_j)_p =
+  \infty$ for any representatives, so they are equivalent at infinity: $\xi = \eta$.
+\end{proof}
+
+\begin{definition}[Uniform structure on the boundary, cf.\ Bridson--Haefliger Ex.~III.H.3.18 (4)]
+  \label{Metric.GromovBoundary.instUniformSpace}
+  \uses{Metric.GromovBoundary.gromovProduct, Metric.GromovBoundary.min_gromovProduct_le}
+  The boundary of a hyperbolic space $X$ carries the uniform structure generated by the sets
+  \[ V_{p, R} = \{(\xi, \eta) \mid (\xi \cdot \eta)_p > R\}, \qquad p \in X,\ R \ge 0. \]
+  It is Hausdorff.
+  \plannedlean{Metric.GromovBoundary.instT2Space}
+\end{definition}
+
+The sets $V_{p, R}$ contain the diagonal and are symmetric
+(Lemma~\ref{Metric.GromovBoundary.min_gromovProduct_le} (3)), and
+$V_{p, R + 2\delta} \circ V_{p, R + 2\delta} \subseteq V_{p, R}$ by part (1) of that lemma; so they
+form a basis of a uniform structure for each $p$. The Gromov products of boundary points for two
+base points differ by at most their distance, so all base points give the same uniform structure,
+and the definition chooses none. The intersection of all $V_{p, R}$ is the diagonal (part (3)), so
+the structure is Hausdorff. It is countably generated ($R \in \N$), hence metrizable; a visual
+metric (Bridson--Haefliger, Proposition III.H.3.21) is not planned. Bridson--Haefliger state the
+basis for proper geodesic spaces, where it gives the topology of their Definition III.H.3.5; the
+argument above uses only the four-point condition.
