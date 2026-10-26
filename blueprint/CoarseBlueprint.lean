@@ -73,8 +73,14 @@ attribute [blueprint "Metric.IsQuasiIsometricEmbedding"
 attribute [blueprint "Metric.CoarseAntilipschitzWith.isQuasiIsometricEmbedding"
   (latexEnv := "lemma")
   (statement := /-- A map that is coarse Lipschitz and coarse antilipschitz, with possibly
-    different constants, is a $(c, b)$-quasi-isometric embedding for some $c, b$. -/)]
+    different constants, is a quasi-isometric embedding: if it is $(L_1, C_1)$-coarse Lipschitz
+    and $(L_2, C_2)$-coarse antilipschitz, it is a $(\max\{L_1, L_2, 1\}, \max\{C_1,
+    C_2\})$-quasi-isometric embedding. -/)
+  (proof := /-- Increase the constants of both bounds to $c = \max\{L_1, L_2, 1\}$ and $b =
+    \max\{C_1, C_2\}$; the additive constant $C_2$ of the lower bound is at most $c b$ since $c \ge
+    1$. -/)]
   Metric.CoarseAntilipschitzWith.isQuasiIsometricEmbedding
+  Metric.CoarseAntilipschitzWith.isQuasiIsometricEmbeddingWith
 
 attribute [blueprint "Metric.IsQuasiIsometry"
   (title := /-- Quasi-isometry -/)

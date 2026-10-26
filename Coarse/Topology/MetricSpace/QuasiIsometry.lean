@@ -107,12 +107,11 @@ theorem IsQuasiIsometricEmbeddingWith.mono (hf : IsQuasiIsometricEmbeddingWith c
 def IsQuasiIsometricEmbedding (f : α → β) : Prop :=
   ∃ c b, IsQuasiIsometricEmbeddingWith c b f
 
-/-- A coarse antilipschitz map that is also coarse Lipschitz, for possibly different constants,
-is a quasi-isometric embedding. -/
-theorem CoarseAntilipschitzWith.isQuasiIsometricEmbedding
+/-- An `(L₂, C₂)`-coarse antilipschitz map that is also `(L₁, C₁)`-coarse Lipschitz is a
+`(max (max L₁ L₂) 1, max C₁ C₂)`-quasi-isometric embedding. -/
+theorem CoarseAntilipschitzWith.isQuasiIsometricEmbeddingWith
     (hf : CoarseAntilipschitzWith L₂ C₂ f) (hf' : CoarseLipschitzWith L₁ C₁ f) :
-    IsQuasiIsometricEmbedding f := by
-  refine ⟨max (max L₁ L₂) 1, max C₁ C₂, ?_⟩
+    IsQuasiIsometricEmbeddingWith (max (max L₁ L₂) 1) (max C₁ C₂) f := by
   have hC₂ : C₂ ≤ max (max L₁ L₂) 1 * max C₁ C₂ := by
     have hM : (1 : ℝ≥0) ≤ max (max L₁ L₂) 1 := by simp
     calc C₂ ≤ max C₁ C₂ := by simp
@@ -121,6 +120,13 @@ theorem CoarseAntilipschitzWith.isQuasiIsometricEmbedding
   constructor
   · exact hf'.mono (by simp) (by simp)
   · exact hf.mono (by simp) (hC₂)
+
+/-- A coarse antilipschitz map that is also coarse Lipschitz, for possibly different constants,
+is a quasi-isometric embedding. -/
+theorem CoarseAntilipschitzWith.isQuasiIsometricEmbedding
+    (hf : CoarseAntilipschitzWith L₂ C₂ f) (hf' : CoarseLipschitzWith L₁ C₁ f) :
+    IsQuasiIsometricEmbedding f :=
+  ⟨_, _, hf.isQuasiIsometricEmbeddingWith hf'⟩
 
 /-- The composition of two quasi-isometric embeddings is a quasi-isometric embedding.
 
