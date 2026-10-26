@@ -92,8 +92,13 @@ jobs:
         with:
           name: docs
           path: site/docs
+      # Artifacts of earlier attempts stay in the run, so the name carries the attempt number: a
+      # re-run would otherwise find two artifacts named `github-pages` and fail.
       - uses: actions/upload-pages-artifact@v4
         with:
           path: site
+          name: github-pages-${{ github.run_attempt }}
       - id: deployment
         uses: actions/deploy-pages@v4
+        with:
+          artifact_name: github-pages-${{ github.run_attempt }}
