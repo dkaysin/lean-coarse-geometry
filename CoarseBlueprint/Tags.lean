@@ -489,11 +489,12 @@ attribute [blueprint "Int.quasiIsometric_pi_euclideanSpace" (latexEnv := "coroll
     "NormedSpace.isCoarselyGeodesicWith", "isMetricallyProperSMul_of_properlyDiscontinuousSMul"])]
   Int.quasiIsometric_pi_euclideanSpace
 
-/-! ## Hyperbolic spaces and groups
+/-! ## Definitions of hyperbolicity
 
 Blueprint nodes for `Coarse/Topology/MetricSpace/Hyperbolic.lean` and
 `Coarse/Geometry/Group/Hyperbolic.lean` (copies of open Mathlib pull requests), and for
-`Coarse/Topology/MetricSpace/{Geodesic, SlimTriangles}.lean` (milestone M7).
+`Coarse/Topology/MetricSpace/{Geodesic, SlimTriangles}.lean` and
+`Coarse/Geometry/Group/HyperbolicGenerators.lean` (milestone M7).
 -/
 
 attribute [blueprint "Metric.IsHyperbolicWith"
@@ -567,49 +568,24 @@ attribute [blueprint "Metric.isHyperbolic_iff_exists_hasSlimTrianglesWith"
     "Metric.IsHyperbolicWith.hasSlimTrianglesWith"])]
   Metric.isHyperbolic_iff_exists_hasSlimTrianglesWith
 
-
-/-! ## Hyperbolicity and the choice of generators
-
-Blueprint nodes for `Coarse/Geometry/Group/HyperbolicGenerators.lean` (milestone M9).
--/
-
 attribute [blueprint "Group.Generators.isHyperbolic_iff"
   (title := /-- Independence of the generating family -/)
   (statement := /-- For a finite generating family $P$ of $G$, $G$ is hyperbolic if and only if it
     is $\delta$-hyperbolic for the word metric of $P$ for some $\delta$: whether $G$ is hyperbolic
     does not depend on the family. -/)
-  (proof := /-- ``If'' holds by definition. For ``only if'', let $Q$ be a finite generating family
-    whose word metric satisfies the four-point condition with constant $\delta$. For a finite
-    generating family $F$, the Cayley graph of $F$ is connected, as $F$ generates $G$; write
-    $|F|$ for its geometric realisation (Definition~\ref{SimpleGraph.Realization}) and $\iota_F
-    \colon (G, d_F) \to |F|$ for the vertex map. By
-    Lemma~\ref{SimpleGraph.Realization.dist_vertex} and
-    Theorem~\ref{Group.Generators.dist_cayleySimpleGraph}, $\iota_F$ is isometric and every point of
-    $|F|$ is within $\frac12$ of its image, so it is a quasi-isometry
-    (Theorem~\ref{Metric.isQuasiIsometry_iff_quasiDenseRange}); and $|F|$ is geodesic
-    (Lemma~\ref{SimpleGraph.Realization.isGeodesicSpace}).
-
-    By Lemma~\ref{Metric.IsHyperbolicWith.of_isometry_of_quasiDenseRange}, $|Q|$ satisfies the
-    four-point condition with constant $\delta + 3$, so it has $3(\delta + 3)$-slim triangles
-    (Lemma~\ref{Metric.IsHyperbolicWith.hasSlimTrianglesWith}). The composite of a quasi-inverse of
-    $\iota_P$, the change of generators $(G, d_P) \to (G, d_Q)$
-    (Corollary~\ref{Group.Generators.WithWordMetric.isQuasiIsometry_congr}) and $\iota_Q$ is a
-    quasi-isometry $|P| \to |Q|$ (Lemma~\ref{Metric.IsQuasiIsometry.comp},
-    Theorem~\ref{Metric.QuasiIsometric.refl}), so $|P|$ has slim triangles
-    (Theorem~\ref{Metric.IsQuasiIsometricEmbedding.exists_hasSlimTrianglesWith}) and satisfies the
-    four-point condition (Lemma~\ref{Metric.HasSlimTrianglesWith.isHyperbolicWith}). It passes to
-    the isometric image of $(G, d_P)$ with the same constant (restriction to a subspace, in the
-    copied pull request). -/)
-  (proofUses := ["Group.Generators.IsHyperbolicWith", "SimpleGraph.Realization",
-    "SimpleGraph.Realization.dist_vertex", "SimpleGraph.Realization.isGeodesicSpace",
-    "Group.Generators.dist_cayleySimpleGraph", "Metric.isQuasiIsometry_iff_quasiDenseRange",
-    "Metric.IsHyperbolicWith.of_isometry_of_quasiDenseRange",
-    "Metric.IsHyperbolicWith.hasSlimTrianglesWith",
-    "Group.Generators.WithWordMetric.isQuasiIsometry_congr", "Metric.IsQuasiIsometry.comp",
-    "Metric.QuasiIsometric.refl",
-    "Metric.IsQuasiIsometricEmbedding.exists_hasSlimTrianglesWith",
-    "Metric.HasSlimTrianglesWith.isHyperbolicWith"])]
+  (proof := /-- By Theorem~\ref{Group.Generators.isHyperbolic_iff_isQuasiHyperbolic}, $G$ is
+    hyperbolic if and only if the word metric of $P$ is quasi-hyperbolic, and by
+    Theorem~\ref{Group.Generators.isQuasiHyperbolic_iff} this holds if and only if that word metric
+    satisfies the four-point condition with some constant. -/)
+  (proofUses := ["Group.Generators.isHyperbolic_iff_isQuasiHyperbolic",
+    "Group.Generators.isQuasiHyperbolic_iff"])]
   Group.Generators.isHyperbolic_iff
+
+
+/-! ## Geometric realisation and stability of quasi-geodesics
+
+Blueprint nodes for milestone M9. None is formalized yet.
+-/
 
 /-! ## Coarse spaces
 

@@ -1,15 +1,14 @@
-\chapter{Hyperbolicity and the choice of generators}
-\label{chap:hyperbolic-generators}
+\chapter{Geometric realisation and stability of quasi-geodesics}
+\label{chap:stability}
 
-Milestone M9. A group is hyperbolic if the word metric of \emph{some} finite generating family
-satisfies the four-point condition (Definition~\ref{Group.Generators.IsHyperbolicWith}). This
-chapter shows that then the word metric of \emph{every} finite generating family does. Change of
-generators alone does not give this: the four-point condition is not a quasi-isometry invariant of
-coarsely geodesic spaces (the graph of $|x|$ in $\R^2$ is bilipschitz to $\R$ and not hyperbolic).
-It is invariant among geodesic spaces, through slim triangles and the stability of
-quasi-geodesics (Bridson--Haefliger, Theorems III.H.1.7 and III.H.1.9). So the word metric is first
-replaced by the geometric realisation of the Cayley graph, a geodesic space in which the group sits
-isometrically and $\frac12$-densely (design decision D18).
+Milestone M9. This chapter provides the tools for the equivalences of
+Chapter~\ref{chap:hyperbolic} that pass between exact distances and quasi-isometries: the
+geometric realisation of a graph, a geodesic space in which the vertices sit isometrically and
+$\frac12$-densely; the four-point condition on a space with a quasi-dense isometric copy of a
+space satisfying it; and the stability of quasi-geodesics in spaces with slim triangles
+(Bridson--Haefliger, Theorem III.H.1.7). With them,
+Theorem~\ref{Group.Generators.isQuasiHyperbolic_iff} replaces the word metric of a group by the
+realisation of its Cayley graph (design decisions D18 and D28).
 
 How the realisation is encoded in Lean is an open decision (D26); its nodes are not implemented
 until it is decided. Stability is proved with chains of points instead of rectifiable paths (design
@@ -98,25 +97,10 @@ realisation of the Cayley graph are compared.
   \delta - 3C \ge \min\{(x \cdot y)_w, (y \cdot z)_w\} - \delta - 6C$.
 \end{proof}
 
-\section*{Quasi-geodesics and their stability}
+\section*{Stability of quasi-geodesics}
 
-\begin{definition}[Quasi-geodesic, Bridson--Haefliger Def.~I.8.22, L\"oh Def.~5.3.4]
-  \label{Metric.IsQuasiGeodesicWith}
-  \uses{Metric.IsQuasiIsometricEmbeddingWith}
-  Let $X$ be a pseudometric space, $c, b \ge 0$ and $L \ge 0$. A map $\gamma \colon [0, L] \to X$
-  is a \emph{$(c, b)$-quasi-geodesic} from $x$ to $y$ if it is a $(c, b)$-quasi-isometric embedding
-  (Definition~\ref{Metric.IsQuasiIsometricEmbeddingWith}) with $\gamma(0) = x$ and $\gamma(L) =
-  y$. It need not be continuous.
-\end{definition}
-
-\paragraph{Differences from the references.} Bridson--Haefliger allow any interval of $\R$, or its
-intersection with $\Z$, as the domain; L\"oh any closed interval $[t, t']$, with $c > 0$. Here the
-interval is $[0, L]$, which loses nothing for closed intervals (translate the parameter), and the
-constants may be $0$, as for quasi-isometric embeddings (L\"oh's form of the lower bound is
-recovered for $c \ne 0$). Quasi-geodesics on integers appear only inside the proof of
-Theorem~\ref{Metric.HasSlimTrianglesWith.exists_hausdorffDist_le}, as chains; rays and lines are
-not needed. A geodesic (Definition~\ref{Metric.IsGeodesic}) is a $(1, 0)$-quasi-geodesic, and the
-composition of a $(c, b)$-quasi-isometric embedding with a geodesic is a $(c, b)$-quasi-geodesic.
+Quasi-geodesics are defined in Chapter~\ref{chap:hyperbolic}
+(Definition~\ref{Metric.IsQuasiGeodesicWith}).
 
 \begin{theorem}[Stability of quasi-geodesics, cf.\ Bridson--Haefliger Thm.~III.H.1.7, L\"oh
   Thm.~7.2.11]
@@ -167,32 +151,3 @@ composition of a $(c, b)$-quasi-isometric embedding with a geodesic is a $(c, b)
   $d(x_m, \gamma'(s)) \le D_0 + c(k' - k) + b$. Every point of $\gamma$ is within $r$ of some
   $x_m$, which gives the bound $R$. Both images are bounded, so the Hausdorff distance is finite.
 \end{proof}
-
-\begin{theorem}[Hyperbolicity and quasi-isometric embeddings, Bridson--Haefliger Thm.~III.H.1.9,
-  cf.\ L\"oh Cor.~7.2.13]
-  \label{Metric.IsQuasiIsometricEmbedding.exists_hasSlimTrianglesWith}
-  \uses{Metric.IsQuasiIsometricEmbedding, Metric.HasSlimTrianglesWith, Metric.IsGeodesic}
-  Let $X$ and $Y$ be geodesic pseudometric spaces and $f \colon X \to Y$ a quasi-isometric
-  embedding. If $Y$ has $\delta$-slim triangles for some $\delta$, then $X$ has $\delta'$-slim
-  triangles for some $\delta'$.
-\end{theorem}
-\begin{proof}
-  \uses{Metric.HasSlimTrianglesWith.exists_hausdorffDist_le, Metric.IsQuasiGeodesicWith}
-  Let $f$ be a $(c, b)$-quasi-isometric embedding, and $R$ as in
-  Theorem~\ref{Metric.HasSlimTrianglesWith.exists_hausdorffDist_le} for $Y$, $\delta$, $c$ and $b$.
-  The image of a geodesic of $X$ under $f$ is a $(c, b)$-quasi-geodesic of $Y$. Given a geodesic
-  triangle of $X$, choose geodesics of $Y$ between the images of its vertices; they form a
-  $\delta$-slim triangle. For $p$ on one side of the triangle in $X$, $f(p)$ is within $R$ of a
-  point of the corresponding side in $Y$, which is within $\delta$ of a point of another side,
-  which is within $R$ of $f(p')$ for some $p'$ on another side in $X$. So $d(f(p), f(p')) \le 2R +
-  \delta$, and the lower bound of $f$ gives $d(p, p') \le c(2R + \delta) + cb$. Take $\delta' =
-  c(2R + \delta + b)$.
-\end{proof}
-
-L\"oh states the invariance for quasi-isometries of geodesic spaces (Cor.~7.2.13 (3)), through
-quasi-hyperbolicity (Def.~7.2.6) and its invariance (Prop.~7.2.9); Bridson--Haefliger's form needs
-only a quasi-isometric embedding and no quasi-hyperbolicity.
-
-\section*{Independence of the generating family}
-
-\inputleannode{Group.Generators.isHyperbolic_iff}
