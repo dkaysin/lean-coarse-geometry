@@ -2,6 +2,7 @@ module  -- shake: keep-all --deprecated_module: ignore
 
 public import Coarse.Basic.Rel
 public import Coarse.Combinatorics.SimpleGraph.Cayley
+public import Coarse.Combinatorics.SimpleGraph.Metric
 public import Coarse.Combinatorics.SimpleGraph.Paths
 public import Coarse.Data.List.Chain
 public import Coarse.Geometry.Group.CayleySimpleGraph
@@ -30,5 +31,6 @@ public import Coarse.Topology.MetricSpace.FiniteDistance
 public import Coarse.Topology.MetricSpace.Geodesic
 public import Coarse.Topology.MetricSpace.Hyperbolic
 public import Coarse.Topology.MetricSpace.IsometricSMul
+public import Coarse.Topology.MetricSpace.QuasiGeodesic
 public import Coarse.Topology.MetricSpace.QuasiIsometry
 public import Coarse.Topology.MetricSpace.SlimTriangles

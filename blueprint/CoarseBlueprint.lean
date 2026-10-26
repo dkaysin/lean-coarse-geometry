@@ -16,6 +16,7 @@ import Coarse.Geometry.Group.WordMetricBounds
 import Coarse.Topology.Bornology.MetricallyProperSMul
 import Coarse.Topology.CoarseSpace.CoarseEquiv.Defs
 import Coarse.Topology.CoarseSpace.Metric.SvarcMilnor
+import Coarse.Topology.MetricSpace.QuasiGeodesic
 import Coarse.Topology.MetricSpace.QuasiIsometry
 import Coarse.Topology.MetricSpace.SlimTriangles
 
@@ -241,8 +242,8 @@ attribute [blueprint "Group.Generators.finite_setOf_wordLength_le" (latexEnv := 
 
 /-! ## Coarsely geodesic spaces and quasi-geodesics
 
-Blueprint nodes for `Coarse/Topology/MetricSpace/CoarselyGeodesic.lean` and the word-metric
-instance in `Coarse/Geometry/Group/WordMetricBounds.lean` (milestone M3).
+Blueprint nodes for `Coarse/Topology/MetricSpace/{CoarselyGeodesic, QuasiGeodesic}.lean` and the
+word-metric instance in `Coarse/Geometry/Group/WordMetricBounds.lean` (milestone M3).
 -/
 
 attribute [blueprint "Metric.ripsGraph"
@@ -282,9 +283,20 @@ attribute [blueprint "SimpleGraph.Walk.dist_le_mul_length" (latexEnv := "lemma")
   (title := /-- Maps along walks -/)
   (statement := /-- If a map $\varphi$ from the vertices of a graph to a pseudometric space moves
     adjacent vertices by at most $K$, then $d(\varphi(u), \varphi(v)) \le K n$ for every walk of
-    length $n$ from $u$ to $v$. -/)
-  (proof := /-- Induction on the walk, with the triangle inequality at each step. -/)]
+    length $n$ from $u$ to $v$. More generally, $d(\varphi(x_i), \varphi(x_j)) \le K (j - i)$ for
+    the vertices $x_i, x_j$ at positions $i \le j$ of a walk. -/)
+  (proof := /-- Induction on the walk, with the triangle inequality at each step. For positions
+    $i \le j$, apply this to the subwalk from $x_i$ to $x_j$. -/)]
   SimpleGraph.Walk.dist_le_mul_length
+  SimpleGraph.Walk.dist_getVert_le_mul
+
+attribute [blueprint "SimpleGraph.Walk.dist_getVert_of_length_eq_dist" (latexEnv := "lemma")
+  (title := /-- Shortest walks -/)
+  (statement := /-- Let $x_0, \dots, x_n$ be the vertices of a walk of length $n = d(x_0, x_n)$ in
+    a graph. Then $d(x_i, x_j) = j - i$ for $i \le j \le n$. -/)
+  (proof := /-- The subwalk from $x_i$ to $x_j$ has length $j - i$, and a subwalk of a shortest
+    walk is a shortest walk (Mathlib's \texttt{SimpleGraph.length\_eq\_dist\_of\_subwalk}). -/)]
+  SimpleGraph.Walk.dist_getVert_of_length_eq_dist
 
 attribute [blueprint "Metric.exists_ripsGraph_walk_length_le" (latexEnv := "lemma")
   (title := /-- Chains from sequences -/)
@@ -293,6 +305,17 @@ attribute [blueprint "Metric.exists_ripsGraph_walk_length_le" (latexEnv := "lemm
   (proof := /-- Induction on $n$: append $x_{n+1}$ to the chain, unless it equals $x_n$ (the Rips
     graph has no loops), in which case the chain is kept. -/)]
   Metric.exists_ripsGraph_walk_length_le
+
+attribute [blueprint "Metric.exists_ripsGraph_walk_of_dist_le" (latexEnv := "lemma")
+  (title := /-- Chains from coarse Lipschitz paths -/)
+  (statement := /-- Let $f \colon [0, \ell] \to X$ satisfy $d(f s, f t) \le c\,|s - t| + b$, and let
+    $\delta > 0$ with $c \delta + b \le r$. Then there is an $r$-chain from $f(0)$ to $f(\ell)$ with
+    at most $\ell / \delta + 1$ steps. -/)
+  (proof := /-- Let $m = \max\{\lceil \ell / \delta \rceil, 1\}$, so that $m \le \ell / \delta + 1$.
+    The points $f(k \ell / m)$, $k = 0, \dots, m$, have parameters $\ell / m \le \delta$ apart, so
+    they are consecutively at distance at most $c \delta + b \le r$, and
+    Lemma~\ref{Metric.exists_ripsGraph_walk_length_le} gives the chain. -/)]
+  Metric.exists_ripsGraph_walk_of_dist_le
 
 attribute [blueprint "Metric.IsCoarselyGeodesicWith.coarseLipschitzWith" (latexEnv := "lemma")
   (title := /-- Bounded steps, cf.\ Dru\c{t}u--Kapovich, Lem.~8.8 -/)
@@ -312,6 +335,16 @@ attribute [blueprint "NormedSpace.isCoarselyGeodesicWith" (latexEnv := "lemma")
     an $r$-chain with at most $m$ steps. -/)]
   NormedSpace.isCoarselyGeodesicWith
 
+attribute [blueprint "Metric.IsGeodesicSpace.isCoarselyGeodesicWith" (latexEnv := "lemma")
+  (title := /-- Geodesic spaces are coarsely geodesic -/)
+  (statement := /-- A geodesic pseudometric space is $(r, 1/r, 1)$-coarsely geodesic for every
+    $r > 0$. -/)
+  (proof := /-- A geodesic $\gamma$ from $x$ to $y$, extended to $\R$, satisfies
+    $d(\gamma s, \gamma t) = |s - t|$ on $[0, d(x, y)]$.
+    Lemma~\ref{Metric.exists_ripsGraph_walk_of_dist_le} with $c = 1$, $b = 0$ and $\delta = r$
+    gives an $r$-chain from $x$ to $y$ with at most $d(x, y)/r + 1$ steps. -/)]
+  Metric.IsGeodesicSpace.isCoarselyGeodesicWith
+
 attribute [blueprint "Group.Generators.isCoarselyGeodesicWith" (latexEnv := "lemma")
   (statement := /-- A group with the word metric of a generating family, $(G, d_P)$, is
     $(1, 1, 0)$-coarsely geodesic. -/)
@@ -320,6 +353,68 @@ attribute [blueprint "Group.Generators.isCoarselyGeodesicWith" (latexEnv := "lem
     $1$. A geodesic word for $g^{-1} h$ gives a walk in the Cayley graph from $g$ to $h$ with at
     most $|g^{-1} h|_P = d(g, h)$ steps. -/)]
   Group.Generators.isCoarselyGeodesicWith
+
+attribute [blueprint "Metric.IsQuasiGeodesicWith"
+  (title := /-- Quasi-geodesic, Bridson--Haefliger Def.~I.8.22, L\"oh Def.~5.3.4 -/)
+  (statement := /-- Let $X$ be a pseudometric space, $c, b \ge 0$ and $\ell \ge 0$. A map $\gamma
+    \colon [0, \ell] \to X$ is a \emph{$(c, b)$-quasi-geodesic} from $x$ to $y$ if it is a
+    $(c, b)$-quasi-isometric embedding
+    (Definition~\ref{Metric.IsQuasiIsometricEmbeddingWith}) with $\gamma(0) = x$ and
+    $\gamma(\ell) = y$. It need not be continuous. -/)]
+  Metric.IsQuasiGeodesicWith
+
+attribute [blueprint "Metric.IsQuasiGeodesicSpaceWith"
+  (title := /-- Quasi-geodesic space, L\"oh Def.~5.3.4 -/)
+  (statement := /-- A pseudometric space $X$ is a \emph{$(c, b)$-quasi-geodesic space} if any two
+    of its points are joined by a $(c, b)$-quasi-geodesic. -/)]
+  Metric.IsQuasiGeodesicSpaceWith
+
+attribute [blueprint "Metric.IsQuasiGeodesicSpace"
+  (title := /-- Quasi-geodesic space, without constants -/)
+  (statement := /-- $X$ is a \emph{quasi-geodesic space} if it is a $(c, b)$-quasi-geodesic space
+    for some $c, b$. -/)]
+  Metric.IsQuasiGeodesicSpace
+
+attribute [blueprint "Metric.isQuasiIsometricEmbeddingWith_natFloor" (latexEnv := "lemma")
+  (title := /-- Step functions -/)
+  (statement := /-- For $\ell \ge 0$, the map $t \mapsto \lfloor t \rfloor$ from $[0, \ell]$ to
+    $\{0, \dots, \lfloor \ell \rfloor\}$ is a $(1, 1)$-quasi-isometric embedding. So a
+    quasi-isometric embedding of $\{0, \dots, \lfloor \ell \rfloor\}$ gives one of $[0, \ell]$ by
+    composition, a step function. -/)
+  (proof := /-- $\lfloor s \rfloor - \lfloor t \rfloor$ and $s - t$ differ by less than $1$, so
+    their absolute values do too. -/)]
+  Metric.isQuasiIsometricEmbeddingWith_natFloor
+
+attribute [blueprint "Metric.isCoarselyGeodesic_iff_isQuasiGeodesicSpace"
+  (title := /-- Coarsely geodesic and quasi-geodesic spaces -/)
+  (statement := /-- A pseudometric space is coarsely geodesic if and only if it is a quasi-geodesic
+    space. More precisely:
+    \begin{itemize}
+      \item a $(c, b)$-quasi-geodesic space is $(c + b, c, c b + 1)$-coarsely geodesic;
+      \item an $(r, L, C)$-coarsely geodesic space is a
+            $(\max\{r, L, 1\}, \max\{r, C + 1\})$-quasi-geodesic space.
+    \end{itemize} -/)
+  (proof := /-- \emph{Quasi-geodesics give chains.} Let $\gamma \colon [0, \ell] \to X$ be a
+    $(c, b)$-quasi-geodesic from $x$ to $y$. By
+    Lemma~\ref{Metric.exists_ripsGraph_walk_of_dist_le} with $\delta = 1$, there is a $(c +
+    b)$-chain from $x$ to $y$ with at most $\ell + 1$ steps. The lower bound of $\gamma$ at $0$
+    and $\ell$ gives $\ell \le c\,d(x, y) + c b$.
+
+    \emph{Chains give quasi-geodesics.} Let $d_r$ be the distance of the Rips graph at scale $r$.
+    Take a walk $x = x_0, \dots, x_n = y$ in it of length $n = d_r(x, y)$. For $i \le j$,
+    $d(x_i, x_j) \le r(j - i)$ by Lemma~\ref{SimpleGraph.Walk.dist_le_mul_length}, and $j - i =
+    d_r(x_i, x_j) \le L\,d(x_i, x_j) + C$ by
+    Lemma~\ref{SimpleGraph.Walk.dist_getVert_of_length_eq_dist} and the hypothesis. So $i \mapsto
+    x_i$ is $r$-Lipschitz and $(L, C)$-coarse antilipschitz on $\{0, \dots, n\}$. Its composition
+    $\gamma(t) = x_{\lfloor t \rfloor}$ with the step map of
+    Lemma~\ref{Metric.isQuasiIsometricEmbeddingWith_natFloor} is $(r, r)$-coarse Lipschitz and $(L,
+    C + 1)$-coarse antilipschitz, hence a $(\max\{r, L, 1\}, \max\{r, C + 1\})$-quasi-geodesic
+    by Lemma~\ref{Metric.CoarseAntilipschitzWith.isQuasiIsometricEmbedding}.
+
+    The equivalence follows from the two parts. -/)]
+  Metric.isCoarselyGeodesic_iff_isQuasiGeodesicSpace
+  Metric.IsQuasiGeodesicSpaceWith.isCoarselyGeodesicWith
+  Metric.IsCoarselyGeodesicWith.isQuasiGeodesicSpaceWith
 
 /-! ## The Švarc–Milnor lemma
 
