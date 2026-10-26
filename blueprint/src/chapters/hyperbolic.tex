@@ -142,23 +142,7 @@ every side, which is the same as asking it of the first side of every triangle.
   quasi-geodesic triangle is $(2R + \delta + 2)$-slim.
 \end{proof}
 
-\begin{corollary}[Hyperbolicity and quasi-isometric embeddings, Bridson--Haefliger Thm.~III.H.1.9,
-  L\"oh Cor.~7.2.13]
-  \label{Metric.IsQuasiIsometricEmbedding.exists_hasSlimTrianglesWith}
-  \uses{Metric.IsQuasiIsometricEmbedding, Metric.HasSlimTrianglesWith, Metric.IsGeodesic}
-  Let $X$ and $Y$ be geodesic pseudometric spaces and $f \colon X \to Y$ a quasi-isometric
-  embedding. If $Y$ has $\delta$-slim triangles for some $\delta$, then $X$ has $\delta'$-slim
-  triangles for some $\delta'$.
-\end{corollary}
-\begin{proof}
-  \uses{Metric.isQuasiHyperbolic_iff_exists_hasSlimTrianglesWith,
-    Metric.IsQuasiIsometricEmbedding.isQuasiHyperbolic,
-    Metric.IsGeodesicSpace.isCoarselyGeodesicSpaceWith}
-  $Y$ is quasi-hyperbolic (Theorem~\ref{Metric.isQuasiHyperbolic_iff_exists_hasSlimTrianglesWith}),
-  $X$ is coarsely geodesic (Lemma~\ref{Metric.IsGeodesicSpace.isCoarselyGeodesicSpaceWith}), so
-  $X$ is quasi-hyperbolic (Lemma~\ref{Metric.IsQuasiIsometricEmbedding.isQuasiHyperbolic}) and has
-  slim triangles (Theorem~\ref{Metric.isQuasiHyperbolic_iff_exists_hasSlimTrianglesWith} again).
-\end{proof}
+\inputleannode{Metric.IsQuasiIsometricEmbedding.exists_hasSlimTrianglesWith}
 
 This is L\"oh's proof. Bridson--Haefliger prove the corollary directly from the stability of
 quasi-geodesics, without quasi-hyperbolicity.

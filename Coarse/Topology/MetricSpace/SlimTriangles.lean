@@ -7,6 +7,7 @@ module
 
 public import Coarse.Topology.MetricSpace.Geodesic
 public import Coarse.Topology.MetricSpace.Hyperbolic
+public import Mathlib.Topology.MetricSpace.HausdorffDistance
 
 /-!
 # Slim triangles
@@ -22,6 +23,9 @@ equivalent to the four-point condition `Metric.IsHyperbolic`.
 
 ## Main statements
 
+* `Metric.HasSlimTrianglesWith.infDist_le_gromovProduct_add`: in a geodesic space with `δ`-slim
+  triangles, the distance from `p` to a geodesic segment from `x` to `y` is at most
+  `gromovProduct p x y + 2 * δ`.
 * `Metric.HasSlimTrianglesWith.isHyperbolicWith`: a geodesic space with `δ`-slim triangles is
   `3 * δ`-hyperbolic.
 * `Metric.IsHyperbolicWith.hasSlimTrianglesWith`: a `δ`-hyperbolic space has `3 * δ`-slim
@@ -40,6 +44,7 @@ other sides are the first sides of the rotated triangles.
   Exercise 7.E.10
 * [M. Bridson, A. Haefliger, *Metric Spaces of Non-Positive Curvature*][bridson1999],
   Definition III.H.1.1 and Proposition III.H.1.22
+* [C. Druțu, M. Kapovich, *Geometric Group Theory*][drutu2018], Lemma 11.22
 
 ## Tags
 
@@ -60,6 +65,15 @@ def HasSlimTrianglesWith (X : Type*) [PseudoMetricSpace X] (δ : ℝ) : Prop :=
   ∀ ⦃x y z : X⦄ ⦃a b c : Set X⦄,
     IsGeodesicSegment a x y → IsGeodesicSegment b y z → IsGeodesicSegment c z x →
     ∀ p ∈ a, ∃ q ∈ b ∪ c, dist p q ≤ δ
+
+/-- In a geodesic space with `δ`-slim triangles, every point `p` is within
+`gromovProduct p x y + 2 * δ` of a geodesic segment from `x` to `y`.
+
+[C. Druțu, M. Kapovich, *Geometric Group Theory*][drutu2018], Lemma 11.22. -/
+theorem HasSlimTrianglesWith.infDist_le_gromovProduct_add (hX : IsGeodesicSpace X)
+    (h : HasSlimTrianglesWith X δ) {s : Set X} {x y : X} (hs : IsGeodesicSegment s x y) (p : X) :
+    infDist p s ≤ gromovProduct p x y + 2 * δ := by
+  sorry
 
 /-- A geodesic space with `δ`-slim triangles satisfies the four-point condition with constant
 `3 * δ`. -/

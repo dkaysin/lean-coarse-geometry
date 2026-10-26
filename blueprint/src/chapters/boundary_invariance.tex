@@ -57,23 +57,7 @@ proposal and are not implemented until it is decided.
 In any geodesic space, $(x \cdot y)_p \le d(p, q)$ for every point $q$ of a geodesic from $x$ to
 $y$, by the triangle inequality. With slim triangles there is a converse:
 
-\begin{lemma}[cf.\ Dru\c{t}u--Kapovich Lem.~11.22]
-  \label{Metric.HasSlimTrianglesWith.infDist_le_gromovProduct_add}
-  \uses{Metric.HasSlimTrianglesWith, Metric.IsGeodesic}
-  Let $X$ be a geodesic pseudometric space with $\delta$-slim triangles, $\gamma$ a geodesic from
-  $x$ to $y$ and $p \in X$. Some point of $\gamma$ is within $(x \cdot y)_p + 2\delta$ of $p$.
-\end{lemma}
-\begin{proof}
-  Choose geodesics from $y$ to $p$ and from $p$ to $x$; with $\gamma$ they form a $\delta$-slim
-  triangle. The parameters $t$ for which $\gamma(t)$ is within $\delta$ of the side from $p$ to $x$,
-  respectively from $y$ to $p$, form two closed sets covering the interval of $\gamma$ and
-  containing its left, respectively right, endpoint; since the interval is connected, some $z =
-  \gamma(t)$ is within $\delta$ of a point $a$ of the first side and a point $b$ of the second. Then
-  $d(p, z) \le d(p, a) + \delta = d(p, x) - d(a, x) + \delta \le d(p, x) - d(x, z) + 2\delta$, and
-  likewise $d(p, z) \le d(p, y) - d(y, z) + 2\delta$. Adding, with $d(x, z) + d(z, y) = d(x, y)$,
-  gives $d(p, z) \le (x \cdot y)_p + 2\delta$. This is the step (b) of the proof of
-  Lemma~\ref{Metric.HasSlimTrianglesWith.isHyperbolicWith}.
-\end{proof}
+\inputleannode{Metric.HasSlimTrianglesWith.infDist_le_gromovProduct_add}
 
 \begin{lemma}[Quasi-isometric embeddings and Gromov products]
   \label{Metric.IsQuasiIsometricEmbedding.exists_gromovProduct_le}

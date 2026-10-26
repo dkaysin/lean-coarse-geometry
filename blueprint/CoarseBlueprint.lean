@@ -17,6 +17,7 @@ import Coarse.Topology.Bornology.MetricallyProperSMul
 import Coarse.Topology.CoarseSpace.CoarseEquiv.Defs
 import Coarse.Topology.CoarseSpace.Metric.SvarcMilnor
 import Coarse.Topology.MetricSpace.QuasiGeodesic
+import Coarse.Topology.MetricSpace.QuasiGeodesicStability
 import Coarse.Topology.MetricSpace.QuasiIsometry
 import Coarse.Topology.MetricSpace.SlimTriangles
 
@@ -725,7 +726,8 @@ Blueprint nodes for milestone M6. None is formalized yet.
 Blueprint nodes for `Coarse/Topology/MetricSpace/Hyperbolic.lean` and
 `Coarse/Geometry/Group/Hyperbolic.lean` (copies of open Mathlib pull requests), and for
 `Coarse/Topology/MetricSpace/{Geodesic, SlimTriangles}.lean` and
-`Coarse/Geometry/Group/HyperbolicGenerators.lean` (milestone M7).
+`Coarse/Geometry/Group/HyperbolicGenerators.lean` (milestone M7), and the corollary of stability
+in `Coarse/Topology/MetricSpace/QuasiGeodesicStability.lean`.
 -/
 
 attribute [blueprint "Metric.IsHyperbolicWith"
@@ -800,6 +802,23 @@ attribute [blueprint "Metric.isHyperbolic_iff_exists_hasSlimTrianglesWith"
     "Metric.IsHyperbolicWith.hasSlimTrianglesWith"])]
   Metric.isHyperbolic_iff_exists_hasSlimTrianglesWith
 
+attribute [blueprint "Metric.IsQuasiIsometricEmbedding.exists_hasSlimTrianglesWith"
+  (latexEnv := "corollary")
+  (title := /-- Hyperbolicity and quasi-isometric embeddings, Bridson--Haefliger Thm.~III.H.1.9,
+    L\"oh Cor.~7.2.13 -/)
+  (statement := /-- Let $X$ and $Y$ be geodesic pseudometric spaces and $f \colon X \to Y$ a
+    quasi-isometric embedding. If $Y$ has $\delta$-slim triangles for some $\delta$, then $X$ has
+    $\delta'$-slim triangles for some $\delta'$. -/)
+  (proof := /-- $Y$ is quasi-hyperbolic
+    (Theorem~\ref{Metric.isQuasiHyperbolic_iff_exists_hasSlimTrianglesWith}), $X$ is coarsely
+    geodesic (Lemma~\ref{Metric.IsGeodesicSpace.isCoarselyGeodesicSpaceWith}), so $X$ is
+    quasi-hyperbolic (Lemma~\ref{Metric.IsQuasiIsometricEmbedding.isQuasiHyperbolic}) and has slim
+    triangles (Theorem~\ref{Metric.isQuasiHyperbolic_iff_exists_hasSlimTrianglesWith} again). -/)
+  (proofUses := ["Metric.isQuasiHyperbolic_iff_exists_hasSlimTrianglesWith",
+    "Metric.IsQuasiIsometricEmbedding.isQuasiHyperbolic",
+    "Metric.IsGeodesicSpace.isCoarselyGeodesicSpaceWith"])]
+  Metric.IsQuasiIsometricEmbedding.exists_hasSlimTrianglesWith
+
 attribute [blueprint "Group.Generators.isHyperbolic_iff"
   (title := /-- Independence of the generating family -/)
   (statement := /-- For a finite generating family $P$ of $G$, $G$ is hyperbolic if and only if it
@@ -815,8 +834,56 @@ attribute [blueprint "Group.Generators.isHyperbolic_iff"
 
 /-! ## Geometric realisation and stability of quasi-geodesics
 
-Blueprint nodes for milestone M8. None is formalized yet.
+Blueprint nodes for `Coarse/Topology/MetricSpace/QuasiGeodesicStability.lean` (milestone M8).
 -/
+
+attribute [blueprint "Metric.HasSlimTrianglesWith.exists_hausdorffDist_le"
+  (title := /-- Stability of quasi-geodesics, cf.\ Bridson--Haefliger Thm.~III.H.1.7, L\"oh
+    Thm.~7.2.11 -/)
+  (statement := /-- Let $X$ be a geodesic pseudometric space with $\delta$-slim triangles, and
+    $c, b \ge 0$. There is $R$ such that for every $(c, b)$-quasi-geodesic $\gamma$ and every
+    geodesic segment $S$ from $x$ to $y$ in $X$, the Hausdorff distance between the image of
+    $\gamma$ and $S$ is at most $R$. -/)
+  (proof := /-- Increasing $c$ keeps $\gamma$ a quasi-geodesic, so assume $c \ge 1$, and put $r = c
+    + b$.
+
+    \emph{Chains.} If $x_0, \dots, x_n$ ($n \ge 1$) satisfy $d(x_i, x_{i+1}) \le r$ and $n \le 2^k$,
+    then every point of a geodesic from $x_0$ to $x_n$ is within $k\delta + r$ of some $x_i$.
+    Induction on $k$: for $n = 1$ every point $p$ of the geodesic has $d(p, x_0) \le d(x_0, x_1) \le
+    r$. For $n \ge 2$ let $m = \lceil n/2 \rceil$, so $1 \le m < n$ and both halves of the chain
+    have at most $2^{k-1}$ steps. Geodesics from $x_0$ to $x_m$, from $x_m$ to $x_n$ and the given
+    one reversed form a geodesic triangle, so every point of the given geodesic is within $\delta$
+    of a point of one of the other two sides, which by induction is within $(k-1)\delta + r$ of a
+    point of the corresponding half.
+
+    \emph{Sampling.} If $\gamma$ is defined on $[t, t']$, let $n = \lceil t' - t \rceil$, $x_i =
+    \gamma(t + i)$ for $i < n$ and $x_n = \gamma(t')$. Consecutive points are within $r$, every
+    point $\gamma(s)$ is within $r$ of some $x_i$, and $d(x_i, x_j) \le c|i - j| + b$ and $|i - j|
+    \le c\,d(x_i, x_j) + cb + 1$.
+
+    \emph{The geodesic is near $\gamma$.} Let $\gamma'$ be a geodesic on $[u, u']$ with image $S$.
+    The distance from $\gamma'(s)$ to the finite set $\{x_i\}$ is continuous in $s$; let $D$ be its
+    maximum, attained at $p = \gamma'(s_0)$. Let $y = \gamma'(\max\{s_0 - 2D, u\})$ and $z =
+    \gamma'(\min\{s_0 + 2D, u'\})$, and choose chain points $x_i, x_j$ within $D$ of $y, z$, with
+    $x_i = x_0$ if $y = \gamma'(u)$ and $x_j = x_n$ if $z = \gamma'(u')$. Then $d(x_i, x_j) \le 6D$,
+    so $|i - j| \le 6cD + cb + 1$. Join $y$ to $x_i$ by a geodesic sampled at steps of length at
+    most $r$ (at most $D + 1$ steps, as $r \ge 1$), follow the chain from $x_i$ to $x_j$, and join
+    $x_j$ to $z$ likewise: a chain from $y$ to $z$ with at most $(6c + 2)D + cb + 3$ steps of length
+    at most $r$. The part of $\gamma'$ from $y$ to $z$ is a geodesic, so by the chain lemma $p$ is
+    within $\delta \lceil \log_2((6c + 2)D + cb + 3) \rceil + r$ of a point of this chain. Every
+    such point is at distance at least $D$ from $p$: the points $x_k$ by the choice of $D$, and the
+    points sampled between $y$ and $x_i$ because they are within $D$ of $y$ while $d(p, y) = 2D$
+    (similarly for $z$). Hence $D \le \delta \lceil \log_2((6c + 2)D + cb + 3) \rceil + r$, which
+    bounds $D$ by a constant $D_0$ depending only on $\delta$, $c$ and $b$. So the image of
+    $\gamma'$ lies within $D_0$ of the points $x_k$, which lie on $\gamma$.
+
+    \emph{$\gamma$ is near the geodesic.} Fix $m$. The sets of $s \in [u, u']$ with $\gamma'(s)$
+    within $D_0$ of some $x_k$ with $k \le m$, respectively $k \ge m$, are closed, cover $[u, u']$,
+    and contain $u$, respectively $u'$. As $[u, u']$ is connected, some $\gamma'(s)$ is within $D_0$
+    of $x_k$ and of $x_{k'}$ with $k \le m \le k'$. Then $k' - k \le 2cD_0 + cb + 1$, so $d(x_m,
+    \gamma'(s)) \le D_0 + c(k' - k) + b$. Every point of $\gamma$ is within $r$ of some $x_m$, which
+    gives the bound $R$. Both images are bounded, so the Hausdorff distance is finite. -/)]
+  Metric.HasSlimTrianglesWith.exists_hausdorffDist_le
 
 /-! ## The Gromov boundary
 
@@ -825,5 +892,24 @@ Blueprint nodes for milestone M9. None is formalized yet.
 
 /-! ## Quasi-isometry invariance of the Gromov boundary
 
-Blueprint nodes for milestone M10. None is formalized yet.
+Blueprint nodes for milestone M10, and the lemma on Gromov products and geodesics in
+`Coarse/Topology/MetricSpace/SlimTriangles.lean`.
 -/
+
+attribute [blueprint "Metric.HasSlimTrianglesWith.infDist_le_gromovProduct_add"
+  (latexEnv := "lemma")
+  (title := /-- cf.\ Dru\c{t}u--Kapovich Lem.~11.22 -/)
+  (statement := /-- Let $X$ be a geodesic pseudometric space with $\delta$-slim triangles, $S$ a
+    geodesic segment from $x$ to $y$ and $p \in X$. The distance from $p$ to $S$ is at most
+    $(x \cdot y)_p + 2\delta$. -/)
+  (proof := /-- Let $\gamma$ be a geodesic with image $S$. Choose geodesics from $y$ to $p$ and from
+    $p$ to $x$; with $\gamma$ they form a $\delta$-slim triangle. The parameters $t$ for which
+    $\gamma(t)$ is within $\delta$ of the side from $p$ to $x$, respectively from $y$ to $p$, form
+    two closed sets covering the interval of $\gamma$ and containing its left, respectively right,
+    endpoint; since the interval is connected, some $z = \gamma(t)$ is within $\delta$ of a point
+    $a$ of the first side and a point $b$ of the second. Then $d(p, z) \le d(p, a) + \delta = d(p,
+    x) - d(a, x) + \delta \le d(p, x) - d(x, z) + 2\delta$, and likewise $d(p, z) \le d(p, y) - d(y,
+    z) + 2\delta$. Adding, with $d(x, z) + d(z, y) = d(x, y)$, gives $d(p, z) \le (x \cdot y)_p +
+    2\delta$, which bounds the distance from $p$ to $S$. This is the step (b) of the proof of
+    Lemma~\ref{Metric.HasSlimTrianglesWith.isHyperbolicWith}. -/)]
+  Metric.HasSlimTrianglesWith.infDist_le_gromovProduct_add
