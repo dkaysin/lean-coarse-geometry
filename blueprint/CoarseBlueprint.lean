@@ -325,13 +325,13 @@ attribute [blueprint "Metric.IsQuasiGeodesicWith.exists_isCoarseGeodesicWith" (l
   (statement := /-- Let $\gamma$ be a $(c, b)$-quasi-geodesic from $x$ to $x'$, and let
     $\delta > 0$ with $c \delta + b \le r$. Then there is an $r$-chain from $x$ to $x'$ that is a
     $(c / \delta, c b / \delta + 1)$-coarse geodesic. -/)
-  (proof := /-- Let $\gamma$ be defined on $[t, t']$ and
-    $m = \max\{\lceil (t' - t) / \delta \rceil, 1\}$, so that $m \le (t' - t) / \delta + 1$. The
-    points $\gamma(t + k (t' - t) / m)$, $k = 0, \dots, m$, have parameters
-    $(t' - t) / m \le \delta$ apart, so by the upper bound of $\gamma$ they are consecutively at
-    distance at most $c \delta + b \le r$, and Lemma~\ref{Metric.exists_ripsGraph_walk_length_le}
-    gives an $r$-chain with at most $m$ steps. The lower bound of $\gamma$ at $t$ and $t'$ gives
-    $t' - t \le c\,d(x, x') + c b$, so $m \le (c / \delta)\,d(x, x') + c b / \delta + 1$. -/)]
+  (proof := /-- Let $\gamma$ be defined on $[t, t']$ and $n = \lceil (t' - t) / \delta \rceil$, so
+    that $n < (t' - t) / \delta + 1$. The points $\gamma(\min\{t + k \delta, t'\})$,
+    $k = 0, \dots, n$, run from $\gamma(t) = x$ to $\gamma(t') = x'$ with parameters at most
+    $\delta$ apart, so by the upper bound of $\gamma$ they are consecutively at distance at most
+    $c \delta + b \le r$, and Lemma~\ref{Metric.exists_ripsGraph_walk_length_le} gives an
+    $r$-chain with at most $n$ steps. The lower bound of $\gamma$ at $t$ and $t'$ gives
+    $t' - t \le c\,d(x, x') + c b$, so $n \le (c / \delta)\,d(x, x') + c b / \delta + 1$. -/)]
   Metric.IsQuasiGeodesicWith.exists_isCoarseGeodesicWith
 
 attribute [blueprint "Metric.IsCoarselyGeodesicSpaceWith.coarseLipschitzWith" (latexEnv := "lemma")

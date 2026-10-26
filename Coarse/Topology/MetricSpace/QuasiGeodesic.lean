@@ -114,39 +114,31 @@ theorem IsQuasiGeodesicWith.exists_isCoarseGeodesicWith {c b r δ : ℝ≥0} {γ
   -- The lower bound of `γ` at the endpoints gives `t' - t ≤ c * dist x x' + c * b`.
   have hlower := hγ.le_dist t (Set.left_mem_Icc.2 hγ.le) t' (Set.right_mem_Icc.2 hγ.le)
   rw [hγ.apply_left, hγ.apply_right, abs_sub_comm, abs_of_nonneg (sub_nonneg.2 hγ.le)] at hlower
-  -- Cut `[t, t']` into `m ≥ (t' - t) / δ` steps of equal length.
-  set m := max ⌈(t' - t) / δ⌉₊ 1
-  have hm : (0 : ℝ) < m := Nat.cast_pos.2 (by omega)
-  have hsub : 0 ≤ t' - t := sub_nonneg.2 hγ.le
-  have hmem (k : ℕ) (hk : k ≤ m) : t + (k : ℝ) / m * (t' - t) ∈ Set.Icc t t' := by
-    have : (k : ℝ) / m * (t' - t) ≤ t' - t :=
-      mul_le_of_le_one_left hsub ((div_le_one hm).2 (by exact_mod_cast hk))
-    exact ⟨le_add_of_nonneg_right (by positivity), by linarith⟩
-  have hstep (k : ℕ) (hk : k < m) :
-      dist (γ (t + (k : ℝ) / m * (t' - t))) (γ (t + ((k + 1 : ℕ) : ℝ) / m * (t' - t))) ≤ r := by
-    have hlen : (t' - t) / m ≤ δ := by
-      rw [div_le_iff₀ hm, ← div_le_iff₀' hδ']
-      exact (Nat.le_ceil _).trans (by exact_mod_cast le_max_left _ _)
-    have habs : |t + (k : ℝ) / m * (t' - t) - (t + ((k + 1 : ℕ) : ℝ) / m * (t' - t))| =
-        (t' - t) / m := by
-      rw [add_sub_add_left_eq_sub, ← sub_mul, Nat.cast_succ, ← sub_div, sub_add_cancel_left,
-        abs_mul, abs_div, abs_neg, abs_one, abs_of_pos hm, abs_of_nonneg hsub, one_div_mul_eq_div]
-    calc dist _ _ ≤ c * |t + (k : ℝ) / m * (t' - t) - (t + ((k + 1 : ℕ) : ℝ) / m * (t' - t))| + b :=
-          hγ.dist_le _ (hmem k hk.le) _ (hmem (k + 1) hk)
-      _ = c * ((t' - t) / m) + b := by rw [habs]
-      _ ≤ c * δ + b := by gcongr
+  -- Sample `γ` at `t, t + δ, t + 2 * δ, …`, capped at `t'`: `n = ⌈(t' - t) / δ⌉₊` steps.
+  set n := ⌈(t' - t) / δ⌉₊
+  have hmem (k : ℕ) : min (t + k * δ) t' ∈ Set.Icc t t' :=
+    ⟨le_min (le_add_of_nonneg_right (by positivity)) hγ.le, min_le_right _ _⟩
+  have hstep (k : ℕ) (_ : k < n) :
+      dist (γ (min (t + k * δ) t')) (γ (min (t + ((k + 1 : ℕ) : ℝ) * δ) t')) ≤ r := by
+    -- Consecutive parameters are at most `δ` apart.
+    have h := abs_min_sub_min_le_max (t + k * δ) t' (t + ((k + 1 : ℕ) : ℝ) * δ) t'
+    rw [sub_self, abs_zero, add_sub_add_left_eq_sub, ← sub_mul, Nat.cast_succ, sub_add_cancel_left,
+      neg_one_mul, abs_neg, abs_of_pos hδ', max_eq_left hδ'.le] at h
+    calc dist _ _ ≤ c * |min (t + k * δ) t' - min (t + ((k + 1 : ℕ) : ℝ) * δ) t'| + b :=
+          hγ.dist_le _ (hmem k) _ (hmem (k + 1))
+      _ ≤ c * δ + b := by gcongr; exact_mod_cast h
       _ ≤ r := by exact_mod_cast hr
-  obtain ⟨p, hp⟩ := exists_ripsGraph_walk_length_le _ m hstep
-  refine ⟨p.copy (by simpa using hγ.apply_left) (by simpa [hm.ne'] using hγ.apply_right), ⟨?_⟩⟩
-  -- The number of steps is `m ≤ (t' - t) / δ + 1 ≤ (c * dist x x' + c * b) / δ + 1`.
-  have hm' : (m : ℝ) ≤ (t' - t) / δ + 1 := by
-    rcases max_choice ⌈(t' - t) / δ⌉₊ 1 with h | h <;> rw [show m = _ from h]
-    · exact (Nat.ceil_lt_add_one (by positivity)).le
-    · simp only [Nat.cast_one, le_add_iff_nonneg_left]
-      positivity
+  obtain ⟨p, hp⟩ := exists_ripsGraph_walk_length_le _ n hstep
+  have hn : t' ≤ t + n * δ := by
+    have := Nat.le_ceil ((t' - t) / δ)
+    rw [div_le_iff₀ hδ'] at this
+    linarith
+  refine ⟨p.copy (by simpa [min_eq_left hγ.le] using hγ.apply_left)
+    (by simpa [min_eq_right hn] using hγ.apply_right), ⟨?_⟩⟩
+  -- The number of steps is `n < (t' - t) / δ + 1 ≤ (c * dist x x' + c * b) / δ + 1`.
   rw [SimpleGraph.Walk.length_copy]
-  calc (p.length : ℝ) ≤ m := Nat.cast_le.2 hp
-    _ ≤ (t' - t) / δ + 1 := hm'
+  calc (p.length : ℝ) ≤ n := Nat.cast_le.2 hp
+    _ ≤ (t' - t) / δ + 1 := (Nat.ceil_lt_add_one (div_nonneg (sub_nonneg.2 hγ.le) hδ'.le)).le
     _ ≤ (c * dist x x' + c * b) / δ + 1 := by gcongr
     _ = ↑(c / δ) * dist x x' + ↑(c * b / δ + 1) := by push_cast; ring
 
