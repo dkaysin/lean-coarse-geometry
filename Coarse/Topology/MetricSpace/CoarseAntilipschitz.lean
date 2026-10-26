@@ -35,8 +35,7 @@ The name is formed after `AntilipschitzWith`; it is not standard in the literatu
 
 ## References
 
-* C. Druțu, M. Kapovich, *Geometric group theory*, AMS Colloquium Publications 63, 2018,
-  Definition 8.5
+* [C. Druțu, M. Kapovich, *Geometric Group Theory*][drutu2018], Definition 8.5
 
 ## Tags
 
