@@ -315,11 +315,15 @@ attribute [blueprint "Group.Generators.isCoarselyGeodesicWith" (latexEnv := "lem
     most $|g^{-1} h|_P = d(g, h)$ steps. -/)]
   Group.Generators.isCoarselyGeodesicWith
 
-/-! ## Hypotheses on the action
+/-! ## The Švarc–Milnor lemma
 
-Blueprint nodes for `Coarse/Topology/Bornology/MetricallyProperSMul.lean` and the action of a
-group on itself with a word metric in `Coarse/Geometry/Group/{WithWordMetric,WordMetricBounds}.lean`
-(milestone M4).
+Blueprint nodes for milestone M4: the hypotheses on the action, the lemma and its corollaries.
+-/
+
+/-! ### Hypotheses on the action
+
+Nodes in `Coarse/Topology/Bornology/MetricallyProperSMul.lean`, and the action of a group on
+itself with a word metric in `Coarse/Geometry/Group/{WithWordMetric,WordMetricBounds}.lean`.
 -/
 
 attribute [blueprint "IsMetricallyProperSMul"
@@ -371,9 +375,9 @@ attribute [blueprint "Group.Generators.WithWordMetric.isMetricallyProperSMul" (l
   Group.Generators.WithWordMetric.instIsIsometricSMul
   Group.Generators.WithWordMetric.isCoboundedSMul
 
-/-! ## The Švarc–Milnor lemma
+/-! ### The lemma
 
-Blueprint nodes for `Coarse/Geometry/Group/SvarcMilnor.lean` (milestone M5).
+Nodes in `Coarse/Geometry/Group/SvarcMilnor.lean`.
 -/
 
 attribute [blueprint "Group.fg_of_isCoboundedSMul"
@@ -437,10 +441,9 @@ attribute [blueprint "Group.Generators.isQuasiIsometry_smul_const"
     change of generators. -/)]
   Group.Generators.isQuasiIsometry_smul_const
 
-/-! ## Corollaries
+/-! ### Corollaries
 
-Blueprint nodes for the corollaries in `Coarse/Geometry/Group/{WordMetricBounds,
-SvarcMilnor}.lean` (milestone M6).
+Nodes in `Coarse/Geometry/Group/{WordMetricBounds, SvarcMilnor}.lean`.
 -/
 
 attribute [blueprint "Group.Generators.WithWordMetric.exists_lipschitzWith_congr"
@@ -491,7 +494,7 @@ attribute [blueprint "Int.quasiIsometric_pi_euclideanSpace" (latexEnv := "coroll
 
 /-! ## Coarse spaces
 
-Blueprint nodes for `Coarse/Topology/CoarseSpace/` (milestone M7; a copy of S. Ghobash's
+Blueprint nodes for `Coarse/Topology/CoarseSpace/` (milestone M5; a copy of S. Ghobash's
 coarse-space library).
 -/
 
@@ -542,7 +545,7 @@ attribute [blueprint "mulOrbitMetricCoarseEquiv"
 
 /-! ## Uniformly discrete spaces and bounded geometry
 
-Blueprint nodes for milestone M8. None is formalized yet.
+Blueprint nodes for milestone M6. None is formalized yet.
 -/
 
 /-! ## Definitions of hyperbolicity
@@ -550,7 +553,7 @@ Blueprint nodes for milestone M8. None is formalized yet.
 Blueprint nodes for `Coarse/Topology/MetricSpace/Hyperbolic.lean` and
 `Coarse/Geometry/Group/Hyperbolic.lean` (copies of open Mathlib pull requests), and for
 `Coarse/Topology/MetricSpace/{Geodesic, SlimTriangles}.lean` and
-`Coarse/Geometry/Group/HyperbolicGenerators.lean` (milestone M9).
+`Coarse/Geometry/Group/HyperbolicGenerators.lean` (milestone M7).
 -/
 
 attribute [blueprint "Metric.IsHyperbolicWith"
@@ -639,10 +642,10 @@ attribute [blueprint "Group.Generators.isHyperbolic_iff"
 
 /-! ## Geometric realisation and stability of quasi-geodesics
 
-Blueprint nodes for milestone M10. None is formalized yet.
+Blueprint nodes for milestone M8. None is formalized yet.
 -/
 
 /-! ## The Gromov boundary
 
-Blueprint nodes for milestone M11. None is planned yet.
+Blueprint nodes for milestone M9. None is planned yet.
 -/

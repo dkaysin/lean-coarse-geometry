@@ -1,7 +1,46 @@
 \chapter{The \v{S}varc--Milnor lemma}
 \label{chap:svarc-milnor}
 
-Milestone M5. Let a group $G$ act by isometries on a pseudometric space $X$. Assume that $X$ is
+Milestone M4. A group acting isometrically, metrically properly and coboundedly on a coarsely
+geodesic space is finitely generated, and its orbit maps are quasi-isometries for the word metric
+of any finite generating family (L\"oh, Prop.~5.4.1). The chapter has the hypotheses on the
+action, the lemma, its topological form (Corollary 5.4.2), and corollaries for groups acting on
+groups and on $\R^n$.
+
+\section{Hypotheses on the action}
+
+$G$ acts on a space $X$ with a bornology, for instance the bounded sets of a pseudometric space;
+the definitions use only bounded sets (design decision D14).
+
+\inputleannode{IsCoboundedSMul}
+
+\inputleannode{IsMetricallyProperSMul}
+
+\inputleannode{isMetricallyProperSMul_of_properlyDiscontinuousSMul}
+
+\inputleannode{isMetricallyProperSMul_of_finite}
+
+\inputleannode{IsCoboundedSMul.of_finiteIndex}
+
+\begin{lemma}[Cocompact actions are cobounded]
+  \label{isCoboundedSMul_of_compactSpace_quotient}
+  \uses{IsCoboundedSMul}
+  If $G$ acts isometrically on a pseudometric space $X$ and the orbit space $X/G$, with the
+  quotient topology, is compact, then the action is cobounded.
+\end{lemma}
+\begin{proof}
+  If $X$ is empty, the empty set is bounded and covers $X$. Otherwise fix $x_0 \in X$. The
+  distance to the orbit $G x_0$ is a continuous function on $X$, constant on orbits, so it
+  induces a continuous function on the compact space $X/G$, which is bounded, say by $\rho$. So
+  every point is within $\rho + 1$ of a point $g x_0$, that is, lies in $g\,\bar B(x_0, \rho + 1)$.
+  (This is \texttt{exists\_smul\_closedBall\_eq\_univ} in the copied coarse-space library.)
+\end{proof}
+
+\inputleannode{Group.Generators.WithWordMetric.isMetricallyProperSMul}
+
+\section{The lemma}
+
+Let a group $G$ act by isometries on a pseudometric space $X$. Assume that $X$ is
 \emph{coarsely geodesic} (Chapter~\ref{chap:coarsely-geodesic}): there are constants $r, L, C$
 such that any two points $x, y$ are joined by a chain $x = x_0, x_1, \dots, x_n = y$ with
 $d(x_i, x_{i+1}) \le r$ and $n \le L\,d(x, y) + C$. Assume that the action is \emph{cobounded}:
@@ -36,7 +75,7 @@ map, and $r$-close points have values of $\psi$ that differ by an element of $S$
 
 \inputleannode{Group.Generators.isQuasiIsometry_smul_const}
 
-\section*{Topological form}
+\section{Topological form}
 
 L\"oh states the lemma also with topological hypotheses (Corollary 5.4.2): a proper geodesic
 space, and an action that is proper (for every compact $K$, only finitely many $g$ have $g K \cap
@@ -77,3 +116,37 @@ compact). These imply the hypotheses above
   Theorem~\ref{Group.Generators.isQuasiIsometry_smul_const} in place of
   Theorem~\ref{Group.fg_of_isCoboundedSMul}.
 \end{proof}
+
+\section{Corollaries}
+
+Each corollary is a separate pull request and a test of the API.
+
+\inputleannode{Group.Generators.WithWordMetric.exists_lipschitzWith_congr}
+
+\inputleannode{Group.Generators.WithWordMetric.isQuasiIsometry_congr}
+
+\inputleannode{Subgroup.isQuasiIsometry_subtype}
+
+\begin{corollary}[Quotients by finite normal subgroups, L\"oh Cor.~5.4.7]
+  \label{QuotientGroup.isQuasiIsometry_mk}
+  \uses{Group.Generators.WithWordMetric, Metric.IsQuasiIsometry}
+  Let $N$ be a finite normal subgroup of $G$, and $P$, $Q$ finite generating families of $G$ and
+  $G/N$. Then the quotient map $(G, d_P) \to (G/N, d_Q)$ is a quasi-isometry.
+\end{corollary}
+\begin{proof}
+  \uses{Group.Generators.isQuasiIsometry_smul_const,
+    Group.Generators.WithWordMetric.isMetricallyProperSMul, Group.Generators.isCoarselyGeodesicWith,
+    IsMetricallyProperSMul, IsCoboundedSMul}
+  $G$ acts on $(G/N, d_Q)$ through the quotient map, $g \cdot x = (gN)x$, isometrically
+  (Lemma~\ref{Group.Generators.WithWordMetric.isMetricallyProperSMul}, for $G/N$ acting on itself).
+  The action is metrically proper: for a bounded $B$, the elements $g$ with $g B \cap B \ne
+  \emptyset$ are the preimage under the quotient map of the finite set of $h \in G/N$ with $h B \cap
+  B \ne \emptyset$ (by the same lemma), and this preimage is finite since $N$ is. The action is
+  cobounded, with the set $\{1\}$, since the quotient map is surjective. The word metric of $Q$ is
+  coarsely geodesic (Lemma~\ref{Group.Generators.isCoarselyGeodesicWith}). Apply
+  Theorem~\ref{Group.Generators.isQuasiIsometry_smul_const} with $x_0 = 1$, whose orbit map is the
+  quotient map. L\"oh's statement also says that $G/N$ is finitely generated if and only if $G$ is;
+  that part is not stated here.
+\end{proof}
+
+\inputleannode{Int.quasiIsometric_pi_euclideanSpace}
