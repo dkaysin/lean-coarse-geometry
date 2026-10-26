@@ -28,7 +28,7 @@ the group on itself.
   the word length for `P` if every generator of `P` has `Q`-length at most `K`.
 * `Group.Generators.finite_setOf_wordLength_le`: balls of the word metric of a finite generating
   family are finite.
-* `Group.Generators.isCoarselyGeodesicWith`: a group with the word metric is
+* `Group.Generators.isCoarselyGeodesicSpaceWith`: a group with the word metric is
   `(1, 1, 0)`-coarsely geodesic.
 * `Group.Generators.WithWordMetric.isMetricallyProperSMul`,
   `Group.Generators.WithWordMetric.isCoboundedSMul`: for a finite generating family, `G` acts on
@@ -111,7 +111,8 @@ theorem finite_setOf_wordLength_le [Finite ι] (n : ℕ) : {g | P.wordLength g �
     exact ⟨l, hl, rfl⟩
 
 /-- A group with the word metric of a generating family is `(1, 1, 0)`-coarsely geodesic. -/
-theorem isCoarselyGeodesicWith : Metric.IsCoarselyGeodesicWith P.WithWordMetric 1 1 0 := by
+theorem isCoarselyGeodesicSpaceWith :
+    Metric.IsCoarselyGeodesicSpaceWith P.WithWordMetric 1 1 0 := by
   -- Adjacent vertices of the Cayley graph differ by a letter, so they are at distance at most
   -- `1`: walks in the Cayley graph are `1`-chains.
   let φ : P.cayleySimpleGraph →g Metric.ripsGraph P.WithWordMetric 1 :=

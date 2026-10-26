@@ -7,7 +7,7 @@ scale $r$, so that $n$ is the length of the walk (design decisions D6, D13). The
 Cornulier--de la Harpe, Def.~3.B.1 (a), (c) and Def.~3.B.5; their name for our coarsely geodesic
 spaces is \emph{large-scale geodesic}. The last section defines quasi-geodesics and L\"oh's quasi-geodesic
 spaces, and shows that they are exactly the coarsely geodesic spaces
-(Theorem~\ref{Metric.isCoarselyGeodesic_iff_isQuasiGeodesicSpace}).
+(Theorem~\ref{Metric.isCoarselyGeodesicSpace_iff_isQuasiGeodesicSpace}).
 
 \paragraph{Why chains.} The chain hypothesis replaces quasi-geodesic paths in the \v{S}varc--Milnor
 lemma (Chapter~\ref{chap:svarc-milnor}). It makes the proof a finite counting argument, needs no
@@ -15,19 +15,19 @@ theory of geodesic spaces, and holds for word metrics themselves ($r = L = 1$, $
 corollaries follow by letting a group act on itself. No generality is lost: in every pseudometric
 space the chain condition is equivalent, with other constants, to L\"oh's (non-continuous)
 quasi-geodesic condition (Definition 5.3.4,
-Theorem~\ref{Metric.isCoarselyGeodesic_iff_isQuasiGeodesicSpace}).
+Theorem~\ref{Metric.isCoarselyGeodesicSpace_iff_isQuasiGeodesicSpace}).
 
 \section*{Coarsely geodesic spaces}
 
 \inputleannode{Metric.ripsGraph}
 
-\inputleannode{Metric.IsCoarselyConnectedWith}
+\inputleannode{Metric.IsCoarselyConnectedSpaceWith}
 
-\inputleannode{Metric.IsCoarselyGeodesicWith}
+\inputleannode{Metric.IsCoarselyGeodesicSpaceWith}
 
-\inputleannode{Metric.IsCoarselyConnected}
+\inputleannode{Metric.IsCoarselyConnectedSpace}
 
-\inputleannode{Metric.IsCoarselyGeodesic}
+\inputleannode{Metric.IsCoarselyGeodesicSpace}
 
 \inputleannode{SimpleGraph.Walk.dist_le_mul_length}
 
@@ -35,11 +35,11 @@ Theorem~\ref{Metric.isCoarselyGeodesic_iff_isQuasiGeodesicSpace}).
 
 \inputleannode{Metric.exists_ripsGraph_walk_length_le}
 
-\inputleannode{Metric.IsCoarselyGeodesicWith.coarseLipschitzWith}
+\inputleannode{Metric.IsCoarselyGeodesicSpaceWith.coarseLipschitzWith}
 
-\inputleannode{NormedSpace.isCoarselyGeodesicWith}
+\inputleannode{NormedSpace.isCoarselyGeodesicSpaceWith}
 
-\inputleannode{Group.Generators.isCoarselyGeodesicWith}
+\inputleannode{Group.Generators.isCoarselyGeodesicSpaceWith}
 
 \section*{Quasi-geodesics}
 
@@ -62,10 +62,10 @@ $(c', b')$-quasi-geodesic is a quasi-geodesic with constants depending only on $
 
 \inputleannode{Metric.IsQuasiGeodesicWith.exists_ripsGraph_walk}
 
-\inputleannode{Metric.IsGeodesicSpace.isCoarselyGeodesicWith}
+\inputleannode{Metric.IsGeodesicSpace.isCoarselyGeodesicSpaceWith}
 
 \inputleannode{Metric.isQuasiIsometricEmbeddingWith_natFloor}
 
 Up to the constants, quasi-geodesic spaces are the coarsely geodesic spaces:
 
-\inputleannode{Metric.isCoarselyGeodesic_iff_isQuasiGeodesicSpace}
+\inputleannode{Metric.isCoarselyGeodesicSpace_iff_isQuasiGeodesicSpace}

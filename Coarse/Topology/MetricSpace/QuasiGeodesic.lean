@@ -32,15 +32,15 @@ be continuous. A *`(c, b)`-quasi-geodesic space* is a space in which any two poi
 * `Metric.IsQuasiGeodesicWith.exists_ripsGraph_walk`: a `(c, b)`-quasi-geodesic on `[t, t']` from
   `x` to `x'` gives an `r`-chain from `x` to `x'` with at most `(t' - t) / δ + 1` steps if
   `c * δ + b ≤ r`.
-* `Metric.IsGeodesicSpace.isCoarselyGeodesicWith`: a geodesic space is `(r, r⁻¹, 1)`-coarsely
+* `Metric.IsGeodesicSpace.isCoarselyGeodesicSpaceWith`: a geodesic space is `(r, r⁻¹, 1)`-coarsely
   geodesic for every `r > 0`.
 * `Metric.isQuasiIsometricEmbeddingWith_natFloor`: `t ↦ ⌊t⌋₊` from `[0, ℓ]` to `{0, …, ⌊ℓ⌋₊}` is a
   `(1, 1)`-quasi-isometric embedding.
-* `Metric.IsQuasiGeodesicSpaceWith.isCoarselyGeodesicWith`: a `(c, b)`-quasi-geodesic space is
+* `Metric.IsQuasiGeodesicSpaceWith.isCoarselyGeodesicSpaceWith`: a `(c, b)`-quasi-geodesic space is
   `(c + b, c, c * b + 1)`-coarsely geodesic.
-* `Metric.IsCoarselyGeodesicWith.isQuasiGeodesicSpaceWith`: an `(r, L, C)`-coarsely geodesic space
-  is a `(max (max r L) 1, max r (C + 1))`-quasi-geodesic space.
-* `Metric.isCoarselyGeodesic_iff_isQuasiGeodesicSpace`: the coarsely geodesic spaces are the
+* `Metric.IsCoarselyGeodesicSpaceWith.isQuasiGeodesicSpaceWith`: an `(r, L, C)`-coarsely geodesic
+  space is a `(max (max r L) 1, max r (C + 1))`-quasi-geodesic space.
+* `Metric.isCoarselyGeodesicSpace_iff_isQuasiGeodesicSpace`: the coarsely geodesic spaces are the
   quasi-geodesic spaces.
 
 ## Implementation notes
@@ -148,8 +148,8 @@ theorem IsQuasiGeodesicWith.exists_ripsGraph_walk {c b r : ℝ≥0} {t t' δ : �
   exact (Nat.cast_le.2 hp).trans hm'
 
 /-- A `(c, b)`-quasi-geodesic space is `(c + b, c, c * b + 1)`-coarsely geodesic. -/
-theorem IsQuasiGeodesicSpaceWith.isCoarselyGeodesicWith {c b : ℝ≥0}
-    (h : IsQuasiGeodesicSpaceWith X c b) : IsCoarselyGeodesicWith X (c + b) c (c * b + 1) := by
+theorem IsQuasiGeodesicSpaceWith.isCoarselyGeodesicSpaceWith {c b : ℝ≥0}
+    (h : IsQuasiGeodesicSpaceWith X c b) : IsCoarselyGeodesicSpaceWith X (c + b) c (c * b + 1) := by
   intro x x'
   obtain ⟨t, t', γ, hγ⟩ := h x x'
   -- Sample `γ` at parameters at most `1` apart.
@@ -165,8 +165,8 @@ theorem IsQuasiGeodesicSpaceWith.isCoarselyGeodesicWith {c b : ℝ≥0}
   linarith
 
 /-- A geodesic space is `(r, r⁻¹, 1)`-coarsely geodesic for every `r > 0`. -/
-theorem IsGeodesicSpace.isCoarselyGeodesicWith (hX : IsGeodesicSpace X) {r : ℝ≥0}
-    (hr : 0 < r) : IsCoarselyGeodesicWith X r r⁻¹ 1 := by
+theorem IsGeodesicSpace.isCoarselyGeodesicSpaceWith (hX : IsGeodesicSpace X) {r : ℝ≥0}
+    (hr : 0 < r) : IsCoarselyGeodesicSpaceWith X r r⁻¹ 1 := by
   intro x x'
   obtain ⟨t, t', γ, hγ⟩ := hX x x'
   -- Sample the geodesic at parameters at most `r` apart.
@@ -198,8 +198,8 @@ theorem isQuasiIsometricEmbeddingWith_natFloor (ℓ : ℝ≥0) :
 
 /-- An `(r, L, C)`-coarsely geodesic space is a `(max (max r L) 1, max r (C + 1))`-quasi-geodesic
 space. -/
-theorem IsCoarselyGeodesicWith.isQuasiGeodesicSpaceWith {r L C : ℝ≥0}
-    (h : IsCoarselyGeodesicWith X r L C) :
+theorem IsCoarselyGeodesicSpaceWith.isQuasiGeodesicSpaceWith {r L C : ℝ≥0}
+    (h : IsCoarselyGeodesicSpaceWith X r L C) :
     IsQuasiGeodesicSpaceWith X (max (max r L) 1) (max r (C + 1)) := by
   intro x x'
   -- A shortest chain from `x` to `x'`, indexed by `{0, …, n}`, is `r`-Lipschitz and
@@ -236,9 +236,9 @@ theorem IsCoarselyGeodesicWith.isQuasiGeodesicSpaceWith {r L C : ℝ≥0}
 /-- A pseudometric space is coarsely geodesic if and only if it is a quasi-geodesic space.
 
 [C. Löh, *Geometric Group Theory*][loeh2017], Definition 5.3.4. -/
-theorem isCoarselyGeodesic_iff_isQuasiGeodesicSpace :
-    IsCoarselyGeodesic X ↔ IsQuasiGeodesicSpace X :=
+theorem isCoarselyGeodesicSpace_iff_isQuasiGeodesicSpace :
+    IsCoarselyGeodesicSpace X ↔ IsQuasiGeodesicSpace X :=
   ⟨fun ⟨_, _, _, h⟩ ↦ ⟨_, _, h.isQuasiGeodesicSpaceWith⟩,
-   fun ⟨_, _, h⟩ ↦ ⟨_, _, _, h.isCoarselyGeodesicWith⟩⟩
+   fun ⟨_, _, h⟩ ↦ ⟨_, _, _, h.isCoarselyGeodesicSpaceWith⟩⟩
 
 end Metric

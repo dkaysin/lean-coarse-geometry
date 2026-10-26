@@ -22,11 +22,12 @@ if any two points `x` and `y` are joined by an `r`-chain with at most `L * dist 
 
 * `Metric.ripsGraph X r`: the simple graph on `X` in which distinct points at distance at most `r`
   are adjacent.
-* `Metric.IsCoarselyConnectedWith X r`: `X` is nonempty and any two of its points are joined by an
-  `r`-chain.
-* `Metric.IsCoarselyGeodesicWith X r L C`: any two points `x`, `y` of `X` are joined by an
+* `Metric.IsCoarselyConnectedSpaceWith X r`: `X` is nonempty and any two of its points are joined
+  by an `r`-chain.
+* `Metric.IsCoarselyGeodesicSpaceWith X r L C`: any two points `x`, `y` of `X` are joined by an
   `r`-chain with at most `L * dist x y + C` steps.
-* `Metric.IsCoarselyConnected X`, `Metric.IsCoarselyGeodesic X`: the same for some constants.
+* `Metric.IsCoarselyConnectedSpace X`, `Metric.IsCoarselyGeodesicSpace X`: the same for some
+  constants.
 
 ## Main statements
 
@@ -37,11 +38,11 @@ if any two points `x` and `y` are joined by an `r`-chain with at most `L * dist 
   with `j - i` in place of the length.
 * `Metric.exists_ripsGraph_walk_length_le`: a sequence of points whose first `n` steps have length
   at most `r` gives an `r`-chain with at most `n` steps.
-* `Metric.IsCoarselyGeodesicWith.coarseLipschitzWith`: on an `(r, L, C)`-coarsely geodesic space, a
-  map that moves points at distance at most `r` by at most `A` is `(A * L, A * C)`-coarse
-  Lipschitz.
-* `NormedSpace.isCoarselyGeodesicWith`: a real normed space is `(r, r⁻¹, 1)`-coarsely geodesic for
-  every `r > 0`.
+* `Metric.IsCoarselyGeodesicSpaceWith.coarseLipschitzWith`: on an `(r, L, C)`-coarsely geodesic
+  space, a map that moves points at distance at most `r` by at most `A` is
+  `(A * L, A * C)`-coarse Lipschitz.
+* `NormedSpace.isCoarselyGeodesicSpaceWith`: a real normed space is `(r, r⁻¹, 1)`-coarsely
+  geodesic for every `r > 0`.
 
 ## Implementation notes
 
@@ -110,29 +111,29 @@ theorem exists_ripsGraph_walk_length_le {X : Type*} [PseudoMetricSpace X] {r : �
 
 /-- A pseudometric space is **`r`-coarsely connected** if it is nonempty and any two points are
 joined by a chain of points in which consecutive points are at distance at most `r`. -/
-def IsCoarselyConnectedWith (X : Type*) [PseudoMetricSpace X] (r : ℝ≥0) : Prop :=
+def IsCoarselyConnectedSpaceWith (X : Type*) [PseudoMetricSpace X] (r : ℝ≥0) : Prop :=
   (ripsGraph X r).Connected
 
 /-- A pseudometric space is **`(r, L, C)`-coarsely geodesic** if any two points `x` and `y` are
 joined by a chain with consecutive points at distance at most `r` and with at most
 `L * dist x y + C` steps. -/
-def IsCoarselyGeodesicWith (X : Type*) [PseudoMetricSpace X] (r L C : ℝ≥0) : Prop :=
+def IsCoarselyGeodesicSpaceWith (X : Type*) [PseudoMetricSpace X] (r L C : ℝ≥0) : Prop :=
   ∀ x y : X, ∃ p : (ripsGraph X r).Walk x y, (p.length : ℝ) ≤ L * dist x y + C
 
 /-- A pseudometric space is **coarsely connected** if it is `r`-coarsely connected for some
 `r`. -/
-def IsCoarselyConnected (X : Type*) [PseudoMetricSpace X] : Prop :=
-  ∃ r, IsCoarselyConnectedWith X r
+def IsCoarselyConnectedSpace (X : Type*) [PseudoMetricSpace X] : Prop :=
+  ∃ r, IsCoarselyConnectedSpaceWith X r
 
 /-- A pseudometric space is **coarsely geodesic** if it is `(r, L, C)`-coarsely geodesic for some
 constants `r`, `L` and `C`. -/
-def IsCoarselyGeodesic (X : Type*) [PseudoMetricSpace X] : Prop :=
-  ∃ r L C, IsCoarselyGeodesicWith X r L C
+def IsCoarselyGeodesicSpace (X : Type*) [PseudoMetricSpace X] : Prop :=
+  ∃ r L C, IsCoarselyGeodesicSpaceWith X r L C
 
 /-- A nonempty `(r, L, C)`-coarsely geodesic space is `r`-coarsely connected. -/
-theorem IsCoarselyGeodesicWith.isCoarselyConnectedWith {X : Type*} [PseudoMetricSpace X]
-    [Nonempty X] {r L C : ℝ≥0} (h : IsCoarselyGeodesicWith X r L C) :
-    IsCoarselyConnectedWith X r :=
+theorem IsCoarselyGeodesicSpaceWith.isCoarselyConnectedSpaceWith {X : Type*} [PseudoMetricSpace X]
+    [Nonempty X] {r L C : ℝ≥0} (h : IsCoarselyGeodesicSpaceWith X r L C) :
+    IsCoarselyConnectedSpaceWith X r :=
   .mk fun x y ↦ ⟨(h x y).choose⟩
 
 /-- On an `(r, L, C)`-coarsely geodesic space, a map that moves points at distance at most `r` by
@@ -140,8 +141,8 @@ at most `A` is `(A * L, A * C)`-coarse Lipschitz.
 
 [C. Druțu, M. Kapovich, *Geometric Group Theory*][drutu2018], Lemma 8.8,
 for geodesic spaces. -/
-theorem IsCoarselyGeodesicWith.coarseLipschitzWith {X Y : Type*} [PseudoMetricSpace X]
-    [PseudoMetricSpace Y] {r L C A : ℝ≥0} (hX : IsCoarselyGeodesicWith X r L C) {f : X → Y}
+theorem IsCoarselyGeodesicSpaceWith.coarseLipschitzWith {X Y : Type*} [PseudoMetricSpace X]
+    [PseudoMetricSpace Y] {r L C A : ℝ≥0} (hX : IsCoarselyGeodesicSpaceWith X r L C) {f : X → Y}
     (hf : ∀ x y, dist x y ≤ r → dist (f x) (f y) ≤ A) : CoarseLipschitzWith (A * L) (A * C) f := by
   intro x y
   -- Follow a chain from `x` to `y` with at most `L * dist x y + C` steps.
@@ -154,8 +155,8 @@ theorem IsCoarselyGeodesicWith.coarseLipschitzWith {X Y : Type*} [PseudoMetricSp
 end Metric
 
 /-- A real normed space is `(r, r⁻¹, 1)`-coarsely geodesic for every `r > 0`. -/
-theorem NormedSpace.isCoarselyGeodesicWith {E : Type*} [SeminormedAddCommGroup E]
-    [NormedSpace ℝ E] {r : ℝ≥0} (hr : 0 < r) : Metric.IsCoarselyGeodesicWith E r r⁻¹ 1 := by
+theorem NormedSpace.isCoarselyGeodesicSpaceWith {E : Type*} [SeminormedAddCommGroup E]
+    [NormedSpace ℝ E] {r : ℝ≥0} (hr : 0 < r) : Metric.IsCoarselyGeodesicSpaceWith E r r⁻¹ 1 := by
   intro x y
   -- Cut the segment from `x` to `y` into `m ≥ ‖x - y‖ / r` steps of equal length.
   set m := max ⌈‖x - y‖ / r⌉₊ 1

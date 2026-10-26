@@ -82,13 +82,13 @@ Quasi-geodesics are defined in Chapter~\ref{chap:coarsely-geodesic}
 
 \begin{definition}[Quasi-hyperbolic space, cf.\ L\"oh Def.~7.2.6]
   \label{Metric.IsQuasiHyperbolic}
-  \uses{Metric.IsCoarselyGeodesic, Metric.IsQuasiGeodesicWith}
+  \uses{Metric.IsCoarselyGeodesicSpace, Metric.IsQuasiGeodesicWith}
   A \emph{$(c, b)$-quasi-geodesic triangle} with vertices $x, y, z$ in a pseudometric space $X$
   consists of $(c, b)$-quasi-geodesics from $x$ to $y$, from $y$ to $z$ and from $z$ to $x$, its
   sides. It is \emph{$\delta$-slim} if every point of the image of each side is within distance
   $\delta$ of a point of the image of one of the other two sides. The space $X$ is
   \emph{quasi-hyperbolic} if it is coarsely geodesic
-  (Definition~\ref{Metric.IsCoarselyGeodesic}) and for all $c, b \ge 0$ there is $\delta$ such
+  (Definition~\ref{Metric.IsCoarselyGeodesicSpace}) and for all $c, b \ge 0$ there is $\delta$ such
   that every $(c, b)$-quasi-geodesic triangle in $X$ is $\delta$-slim.
 \end{definition}
 
@@ -96,7 +96,7 @@ Quasi-geodesics are defined in Chapter~\ref{chap:coarsely-geodesic}
 for some $c, b > 0$, and that for all $c' \ge c$, $b' \ge b$ there be $\delta$ such that the
 $(c', b')$-quasi-geodesic triangles are $\delta$-slim. Here $X$ is coarsely geodesic instead, a
 chain condition equivalent to L\"oh's with other constants
-(Theorem~\ref{Metric.isCoarselyGeodesic_iff_isQuasiGeodesicSpace}), and the triangles are
+(Theorem~\ref{Metric.isCoarselyGeodesicSpace_iff_isQuasiGeodesicSpace}), and the triangles are
 slim for all $c, b \ge 0$. Nothing is lost: a $(c, b)$-quasi-geodesic is a
 $(c', b')$-quasi-geodesic whenever $c \le c'$ and $b \le b'$, so the
 triangles for small constants are among those for large ones. Without a hypothesis on $X$ the
@@ -106,7 +106,7 @@ every side, which is the same as asking it of the first side of every triangle.
 
 \begin{lemma}[Invariance of quasi-hyperbolicity, L\"oh Prop.~7.2.9]
   \label{Metric.IsQuasiIsometricEmbedding.isQuasiHyperbolic}
-  \uses{Metric.IsQuasiHyperbolic, Metric.IsQuasiIsometricEmbedding, Metric.IsCoarselyGeodesic}
+  \uses{Metric.IsQuasiHyperbolic, Metric.IsQuasiIsometricEmbedding, Metric.IsCoarselyGeodesicSpace}
   Let $f \colon X \to Y$ be a quasi-isometric embedding of pseudometric spaces. If $X$ is coarsely
   geodesic and $Y$ is quasi-hyperbolic, then $X$ is quasi-hyperbolic.
 \end{lemma}
@@ -129,10 +129,10 @@ every side, which is the same as asking it of the first side of every triangle.
 \end{theorem}
 \begin{proof}
   \uses{Metric.HasSlimTrianglesWith.exists_hausdorffDist_le,
-    Metric.IsGeodesicSpace.isCoarselyGeodesicWith, Metric.IsQuasiGeodesicWith}
+    Metric.IsGeodesicSpace.isCoarselyGeodesicSpaceWith, Metric.IsQuasiGeodesicWith}
   ``Only if'': a geodesic triangle is a $(1, 0)$-quasi-geodesic triangle, so take $\delta$ for $c =
   1$, $b = 0$. ``If'': a geodesic space is coarsely geodesic
-  (Lemma~\ref{Metric.IsGeodesicSpace.isCoarselyGeodesicWith}). Let the triangles be
+  (Lemma~\ref{Metric.IsGeodesicSpace.isCoarselyGeodesicSpaceWith}). Let the triangles be
   $\delta$-slim, $c, b \ge 0$, and $R$ as in
   Theorem~\ref{Metric.HasSlimTrianglesWith.exists_hausdorffDist_le}. Given a $(c,
   b)$-quasi-geodesic triangle, choose geodesics between its vertices; they form a $\delta$-slim
@@ -153,11 +153,11 @@ every side, which is the same as asking it of the first side of every triangle.
 \begin{proof}
   \uses{Metric.isQuasiHyperbolic_iff_exists_hasSlimTrianglesWith,
     Metric.IsQuasiIsometricEmbedding.isQuasiHyperbolic,
-    Metric.IsGeodesicSpace.isCoarselyGeodesicWith}
+    Metric.IsGeodesicSpace.isCoarselyGeodesicSpaceWith}
   $Y$ is quasi-hyperbolic (Theorem~\ref{Metric.isQuasiHyperbolic_iff_exists_hasSlimTrianglesWith}),
-  $X$ is coarsely geodesic (Lemma~\ref{Metric.IsGeodesicSpace.isCoarselyGeodesicWith}), so $X$ is
-  quasi-hyperbolic (Lemma~\ref{Metric.IsQuasiIsometricEmbedding.isQuasiHyperbolic}) and has slim
-  triangles (Theorem~\ref{Metric.isQuasiHyperbolic_iff_exists_hasSlimTrianglesWith} again).
+  $X$ is coarsely geodesic (Lemma~\ref{Metric.IsGeodesicSpace.isCoarselyGeodesicSpaceWith}), so
+  $X$ is quasi-hyperbolic (Lemma~\ref{Metric.IsQuasiIsometricEmbedding.isQuasiHyperbolic}) and has
+  slim triangles (Theorem~\ref{Metric.isQuasiHyperbolic_iff_exists_hasSlimTrianglesWith} again).
 \end{proof}
 
 This is L\"oh's proof. Bridson--Haefliger prove the corollary directly from the stability of
@@ -188,7 +188,7 @@ theorem, which needs the stability of quasi-geodesics.
 \begin{proof}
   \uses{SimpleGraph.Realization, SimpleGraph.Realization.dist_vertex,
     SimpleGraph.Realization.isGeodesicSpace, Group.Generators.dist_cayleySimpleGraph,
-    Metric.isQuasiIsometry_iff_quasiDenseRange, Group.Generators.isCoarselyGeodesicWith,
+    Metric.isQuasiIsometry_iff_quasiDenseRange, Group.Generators.isCoarselyGeodesicSpaceWith,
     Metric.IsHyperbolicWith.of_isometry_of_quasiDenseRange,
     Metric.IsHyperbolicWith.hasSlimTrianglesWith, Metric.HasSlimTrianglesWith.isHyperbolicWith,
     Metric.isQuasiHyperbolic_iff_exists_hasSlimTrianglesWith,
@@ -200,7 +200,7 @@ theorem, which needs the stability of quasi-geodesics.
   $|P|$ is within $\frac12$ of its image, so it is a quasi-isometry
   (Theorem~\ref{Metric.isQuasiIsometry_iff_quasiDenseRange}); $|P|$ is geodesic
   (Lemma~\ref{SimpleGraph.Realization.isGeodesicSpace}) and $(G, d_P)$ is coarsely geodesic
-  (Lemma~\ref{Group.Generators.isCoarselyGeodesicWith}).
+  (Lemma~\ref{Group.Generators.isCoarselyGeodesicSpaceWith}).
 
   ``If'': by Lemma~\ref{Metric.IsHyperbolicWith.of_isometry_of_quasiDenseRange}, $|P|$ satisfies
   the four-point condition with constant $\delta + 3$, so it has slim triangles
@@ -227,16 +227,17 @@ theorem, which needs the stability of quasi-geodesics.
 \begin{proof}
   \uses{Group.Generators.isQuasiHyperbolic_iff,
     Group.Generators.WithWordMetric.isQuasiIsometry_congr,
-    Metric.IsQuasiIsometricEmbedding.isQuasiHyperbolic, Group.Generators.isCoarselyGeodesicWith}
+    Metric.IsQuasiIsometricEmbedding.isQuasiHyperbolic,
+    Group.Generators.isCoarselyGeodesicSpaceWith}
   ``Only if'': some finite generating family $Q$ has a word metric satisfying the four-point
   condition, which is then quasi-hyperbolic
   (Theorem~\ref{Group.Generators.isQuasiHyperbolic_iff}). The identity $(G, d_P) \to (G, d_Q)$ is a
-  quasi-isometry (Corollary~\ref{Group.Generators.WithWordMetric.isQuasiIsometry_congr}) and $(G,
-  d_P)$ is coarsely geodesic (Lemma~\ref{Group.Generators.isCoarselyGeodesicWith}), so $(G, d_P)$
-  is quasi-hyperbolic (Lemma~\ref{Metric.IsQuasiIsometricEmbedding.isQuasiHyperbolic}). ``If'': by
-  Theorem~\ref{Group.Generators.isQuasiHyperbolic_iff} the word metric of $P$ satisfies the
-  four-point condition. Reindexing $P$ along a bijection from $\{0, \dots, n - 1\}$ to its index
-  set does not change the word metric, so $G$ is hyperbolic.
+  quasi-isometry (Corollary~\ref{Group.Generators.WithWordMetric.isQuasiIsometry_congr}) and
+  $(G, d_P)$ is coarsely geodesic (Lemma~\ref{Group.Generators.isCoarselyGeodesicSpaceWith}), so
+  $(G, d_P)$ is quasi-hyperbolic (Lemma~\ref{Metric.IsQuasiIsometricEmbedding.isQuasiHyperbolic}).
+  ``If'': by Theorem~\ref{Group.Generators.isQuasiHyperbolic_iff} the word metric of $P$ satisfies
+  the four-point condition. Reindexing $P$ along a bijection from $\{0, \dots, n - 1\}$ to its
+  index set does not change the word metric, so $G$ is hyperbolic.
 \end{proof}
 
 \inputleannode{Group.Generators.isHyperbolic_iff}

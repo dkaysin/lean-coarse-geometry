@@ -254,30 +254,30 @@ attribute [blueprint "Metric.ripsGraph"
     steps. -/)]
   Metric.ripsGraph
 
-attribute [blueprint "Metric.IsCoarselyConnectedWith"
+attribute [blueprint "Metric.IsCoarselyConnectedSpaceWith"
   (title := /-- Coarsely connected space -/)
   (statement := /-- A pseudometric space $X$ is \emph{$r$-coarsely connected} if it is nonempty and
     any two points are joined by an $r$-chain, i.e.\ its Rips graph at scale $r$ is connected. -/)]
-  Metric.IsCoarselyConnectedWith
+  Metric.IsCoarselyConnectedSpaceWith
 
-attribute [blueprint "Metric.IsCoarselyGeodesicWith"
+attribute [blueprint "Metric.IsCoarselyGeodesicSpaceWith"
   (title := /-- Coarsely geodesic space -/)
   (statement := /-- A pseudometric space $X$ is \emph{$(r, L, C)$-coarsely geodesic} if any two
     points $x, y$ are joined by an $r$-chain with at most $L\,d(x, y) + C$ steps (Cornulier--de la
     Harpe, Def.~3.B.1 (c), ``large-scale geodesic''). -/)]
-  Metric.IsCoarselyGeodesicWith
+  Metric.IsCoarselyGeodesicSpaceWith
 
-attribute [blueprint "Metric.IsCoarselyConnected"
+attribute [blueprint "Metric.IsCoarselyConnectedSpace"
   (title := /-- Coarsely connected space, without constants -/)
   (statement := /-- $X$ is \emph{coarsely connected} if it is $r$-coarsely connected for some
     $r$. -/)]
-  Metric.IsCoarselyConnected
+  Metric.IsCoarselyConnectedSpace
 
-attribute [blueprint "Metric.IsCoarselyGeodesic"
+attribute [blueprint "Metric.IsCoarselyGeodesicSpace"
   (title := /-- Coarsely geodesic space, without constants -/)
   (statement := /-- $X$ is \emph{coarsely geodesic} if it is $(r, L, C)$-coarsely geodesic for some
     $r, L, C$. -/)]
-  Metric.IsCoarselyGeodesic
+  Metric.IsCoarselyGeodesicSpace
 
 attribute [blueprint "SimpleGraph.Walk.dist_le_mul_length" (latexEnv := "lemma")
   (title := /-- Maps along walks -/)
@@ -325,7 +325,7 @@ attribute [blueprint "Metric.IsQuasiGeodesicWith.exists_ripsGraph_walk" (latexEn
     Lemma~\ref{Metric.exists_ripsGraph_walk_length_le} gives the chain. -/)]
   Metric.IsQuasiGeodesicWith.exists_ripsGraph_walk
 
-attribute [blueprint "Metric.IsCoarselyGeodesicWith.coarseLipschitzWith" (latexEnv := "lemma")
+attribute [blueprint "Metric.IsCoarselyGeodesicSpaceWith.coarseLipschitzWith" (latexEnv := "lemma")
   (title := /-- Bounded steps, cf.\ Dru\c{t}u--Kapovich, Lem.~8.8 -/)
   (statement := /-- On an $(r, L, C)$-coarsely geodesic space, a map that moves points at distance
     at most $r$ by at most $A$ is $(A L, A C)$-coarse Lipschitz. -/)
@@ -333,17 +333,17 @@ attribute [blueprint "Metric.IsCoarselyGeodesicWith.coarseLipschitzWith" (latexE
     by at most $A$, so $d(f x, f y) \le A n \le A L\,d(x, y) + A C$ by
     Lemma~\ref{SimpleGraph.Walk.dist_le_mul_length}. Dru\c{t}u--Kapovich prove it
     for geodesic spaces, cutting a geodesic into steps of length $r$. -/)]
-  Metric.IsCoarselyGeodesicWith.coarseLipschitzWith
+  Metric.IsCoarselyGeodesicSpaceWith.coarseLipschitzWith
 
-attribute [blueprint "NormedSpace.isCoarselyGeodesicWith" (latexEnv := "lemma")
+attribute [blueprint "NormedSpace.isCoarselyGeodesicSpaceWith" (latexEnv := "lemma")
   (statement := /-- A real normed space is $(r, 1/r, 1)$-coarsely geodesic for every $r > 0$. -/)
   (proof := /-- Take the points $x + \frac{k}{m}(y - x)$ for $k = 0, \dots, m$ and $m = \max(\lceil
     \|x - y\| / r \rceil, 1)$: consecutive points are at distance $\|x - y\| / m \le r$, and
     $m \le \|x - y\| / r + 1$. Lemma~\ref{Metric.exists_ripsGraph_walk_length_le} turns them into
     an $r$-chain with at most $m$ steps. -/)]
-  NormedSpace.isCoarselyGeodesicWith
+  NormedSpace.isCoarselyGeodesicSpaceWith
 
-attribute [blueprint "Metric.IsGeodesicSpace.isCoarselyGeodesicWith" (latexEnv := "lemma")
+attribute [blueprint "Metric.IsGeodesicSpace.isCoarselyGeodesicSpaceWith" (latexEnv := "lemma")
   (title := /-- Geodesic spaces are coarsely geodesic -/)
   (statement := /-- A geodesic pseudometric space is $(r, 1/r, 1)$-coarsely geodesic for every
     $r > 0$. -/)
@@ -352,16 +352,16 @@ attribute [blueprint "Metric.IsGeodesicSpace.isCoarselyGeodesicWith" (latexEnv :
     $t' - t = d(x, x')$.
     Lemma~\ref{Metric.IsQuasiGeodesicWith.exists_ripsGraph_walk} with $\delta = r$ gives an
     $r$-chain from $x$ to $x'$ with at most $d(x, x')/r + 1$ steps. -/)]
-  Metric.IsGeodesicSpace.isCoarselyGeodesicWith
+  Metric.IsGeodesicSpace.isCoarselyGeodesicSpaceWith
 
-attribute [blueprint "Group.Generators.isCoarselyGeodesicWith" (latexEnv := "lemma")
+attribute [blueprint "Group.Generators.isCoarselyGeodesicSpaceWith" (latexEnv := "lemma")
   (statement := /-- A group with the word metric of a generating family, $(G, d_P)$, is
     $(1, 1, 0)$-coarsely geodesic. -/)
   (proof := /-- Adjacent vertices of the Cayley graph differ by a generator or its inverse, so they
     are at distance at most $1$: the Cayley graph maps into the Rips graph of $(G, d_P)$ at scale
     $1$. A geodesic word for $g^{-1} h$ gives a walk in the Cayley graph from $g$ to $h$ with at
     most $|g^{-1} h|_P = d(g, h)$ steps. -/)]
-  Group.Generators.isCoarselyGeodesicWith
+  Group.Generators.isCoarselyGeodesicSpaceWith
 
 attribute [blueprint "Metric.IsQuasiGeodesicWith"
   (title := /-- Quasi-geodesic, Bridson--Haefliger Def.~I.8.22, L\"oh Def.~5.3.4 -/)
@@ -394,7 +394,7 @@ attribute [blueprint "Metric.isQuasiIsometricEmbeddingWith_natFloor" (latexEnv :
     their absolute values do too. -/)]
   Metric.isQuasiIsometricEmbeddingWith_natFloor
 
-attribute [blueprint "Metric.isCoarselyGeodesic_iff_isQuasiGeodesicSpace"
+attribute [blueprint "Metric.isCoarselyGeodesicSpace_iff_isQuasiGeodesicSpace"
   (title := /-- Coarsely geodesic and quasi-geodesic spaces -/)
   (statement := /-- A pseudometric space is coarsely geodesic if and only if it is a quasi-geodesic
     space. More precisely:
@@ -422,9 +422,9 @@ attribute [blueprint "Metric.isCoarselyGeodesic_iff_isQuasiGeodesicSpace"
     Lemma~\ref{Metric.CoarseAntilipschitzWith.isQuasiIsometricEmbedding}.
 
     The equivalence follows from the two parts. -/)]
-  Metric.isCoarselyGeodesic_iff_isQuasiGeodesicSpace
-  Metric.IsQuasiGeodesicSpaceWith.isCoarselyGeodesicWith
-  Metric.IsCoarselyGeodesicWith.isQuasiGeodesicSpaceWith
+  Metric.isCoarselyGeodesicSpace_iff_isQuasiGeodesicSpace
+  Metric.IsQuasiGeodesicSpaceWith.isCoarselyGeodesicSpaceWith
+  Metric.IsCoarselyGeodesicSpaceWith.isQuasiGeodesicSpaceWith
 
 /-! ## The Švarc–Milnor lemma
 
@@ -548,7 +548,7 @@ attribute [blueprint "Group.Generators.isQuasiIsometry_smul_const"
     \emph{$\psi$ is coarse Lipschitz} into $(G, d_P)$: by the first step of the proof of
     Theorem~\ref{Group.fg_of_isCoboundedSMul}, $|\psi(y)^{-1} \psi(y')|_P \le K$ when $d(y, y') \le
     r$, so $\psi$ is $(K L, K C)$-coarse Lipschitz by
-    Lemma~\ref{Metric.IsCoarselyGeodesicWith.coarseLipschitzWith}.
+    Lemma~\ref{Metric.IsCoarselyGeodesicSpaceWith.coarseLipschitzWith}.
 
     \emph{$\psi$ is a quasi-inverse of $f$.} $\psi(g x_0)^{-1} g \in S$, so $d(\psi(f(g)), g) \le
     K$; and $y$ and $\psi(y) x_0$ both lie in $\psi(y) s$, so $d(f(\psi(y)), y) \le \diam s$.
@@ -570,8 +570,8 @@ attribute [blueprint "Group.fg_of_properlyDiscontinuousSMul" (latexEnv := "corol
   (proof := /-- The action is metrically proper
     (Lemma~\ref{isMetricallyProperSMul_of_properlyDiscontinuousSMul}) and cobounded
     (Lemma~\ref{isCoboundedSMul_of_compactSpace_quotient}), and the space is coarsely geodesic
-    (Lemma~\ref{Metric.IsGeodesicSpace.isCoarselyGeodesicWith}), hence coarsely connected, as it
-    is nonempty. Apply Theorem~\ref{Group.fg_of_isCoboundedSMul}. -/)]
+    (Lemma~\ref{Metric.IsGeodesicSpace.isCoarselyGeodesicSpaceWith}), hence coarsely connected,
+    as it is nonempty. Apply Theorem~\ref{Group.fg_of_isCoboundedSMul}. -/)]
   Group.fg_of_properlyDiscontinuousSMul
 
 attribute [blueprint "Group.Generators.isQuasiIsometry_smul_const_of_properlyDiscontinuousSMul"
@@ -634,7 +634,7 @@ attribute [blueprint "QuotientGroup.isQuasiIsometry_mk" (latexEnv := "corollary"
     G/N$ with $h B \cap B \ne \emptyset$ (by the same lemma), and this preimage is finite since
     the fibres of the quotient map are cosets of the finite group $N$. The action is cobounded, with
     the set $\{1\}$, since the quotient map is surjective. The word metric of $Q$ is coarsely
-    geodesic (Lemma~\ref{Group.Generators.isCoarselyGeodesicWith}). Apply
+    geodesic (Lemma~\ref{Group.Generators.isCoarselyGeodesicSpaceWith}). Apply
     Theorem~\ref{Group.Generators.isQuasiIsometry_smul_const} with $x_0 = 1$, whose orbit map is
     the quotient map. L\"oh's statement also says that $G/N$ is finitely generated if and only if
     $G$ is; that part is not stated here. -/)]
@@ -649,7 +649,7 @@ attribute [blueprint "Int.quasiIsometric_pi_euclideanSpace" (latexEnv := "coroll
     $\|v\| = d(a, b) \le \diam B$ in absolute value, which leaves finitely many $v$. It is
     cobounded: the translates of the unit cube $[0, 1]^n$, which is compact, hence bounded, cover
     $\R^n$, since $x = \lfloor x \rfloor + \{x\}$ coordinatewise. $\R^n$ is coarsely geodesic
-    (Lemma~\ref{NormedSpace.isCoarselyGeodesicWith}).
+    (Lemma~\ref{NormedSpace.isCoarselyGeodesicSpaceWith}).
     Theorem~\ref{Group.Generators.isQuasiIsometry_smul_const}, in its form for additive groups,
     makes the orbit map of $0$ a quasi-isometry. L\"oh argues directly instead: the inclusion
     $\Z^n \to \R^n$ is a quasi-isometric embedding with quasi-dense image, hence a quasi-isometry
