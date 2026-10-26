@@ -19,7 +19,6 @@ import Coarse.Topology.CoarseSpace.Metric.SvarcMilnor
 import Coarse.Topology.MetricSpace.QuasiGeodesic
 import Coarse.Topology.MetricSpace.QuasiGeodesicStability
 import Coarse.Topology.MetricSpace.QuasiIsometry
-import Coarse.Topology.MetricSpace.SlimTriangles
 
 /-!
 # Blueprint tags
@@ -724,8 +723,8 @@ Blueprint nodes for milestone M6. None is formalized yet.
 /-! ## Definitions of hyperbolicity
 
 Blueprint nodes for `Coarse/Topology/MetricSpace/Hyperbolic.lean` and
-`Coarse/Geometry/Group/Hyperbolic.lean` (copies of open Mathlib pull requests), and for
-`Coarse/Topology/MetricSpace/{Geodesic, SlimTriangles}.lean` and
+`Coarse/Geometry/Group/Hyperbolic.lean` (copies of open Mathlib pull requests, the first with our
+section on slim triangles), and for `Coarse/Topology/MetricSpace/Geodesic.lean` and
 `Coarse/Geometry/Group/HyperbolicGenerators.lean` (milestone M7), and the corollary of stability
 in `Coarse/Topology/MetricSpace/QuasiGeodesicStability.lean`.
 -/
@@ -893,7 +892,7 @@ Blueprint nodes for milestone M9. None is formalized yet.
 /-! ## Quasi-isometry invariance of the Gromov boundary
 
 Blueprint nodes for milestone M10, and the lemma on Gromov products and geodesics in
-`Coarse/Topology/MetricSpace/SlimTriangles.lean`.
+`Coarse/Topology/MetricSpace/Hyperbolic.lean`.
 -/
 
 attribute [blueprint "Metric.HasSlimTrianglesWith.infDist_le_gromovProduct_add"

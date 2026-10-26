@@ -5,8 +5,8 @@ Authors: Dmitry Kaysin
 -/
 module
 
+public import Coarse.Topology.MetricSpace.Hyperbolic
 public import Coarse.Topology.MetricSpace.QuasiGeodesic
-public import Coarse.Topology.MetricSpace.SlimTriangles
 
 /-!
 # Stability of quasi-geodesics

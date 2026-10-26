@@ -70,7 +70,7 @@ reading it, is not listed.
 - **Original authors**: Hang Lu Su, Katerina Hristova
 - **Copied**: `Mathlib/Topology/MetricSpace/Hyperbolic.lean`, to the same path under `Coarse/`
 - **Changes**: a local `attribute [grind =] Bornology.isBounded_univ` replaces the PR's edit to
-  `Mathlib/Topology/Bornology/Basic.lean`
+  `Mathlib/Topology/Bornology/Basic.lean`; our section "Slim triangles" is added at the end
 
 ### mathlib4 #44339
 

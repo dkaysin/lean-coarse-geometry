@@ -35,4 +35,3 @@ public import Coarse.Topology.MetricSpace.QuasiGeodesic
 public import Coarse.Topology.MetricSpace.QuasiGeodesicStability
 public import Coarse.Topology.MetricSpace.QuasiIsometry
 public import Coarse.Topology.MetricSpace.QuasiIsometry.Examples
-public import Coarse.Topology.MetricSpace.SlimTriangles
