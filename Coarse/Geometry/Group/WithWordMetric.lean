@@ -8,6 +8,7 @@ module
 public import Coarse.Geometry.Group.WordMetric
 public import Mathlib.Algebra.Group.TransferInstance
 public import Mathlib.Analysis.Normed.Group.Basic
+public import Mathlib.Topology.MetricSpace.IsometricSMul
 
 /-!
 # A group with the word metric of a generating family
@@ -23,6 +24,7 @@ on different types, so that maps between them are stated without passing instanc
 * `Group.Generators.WithWordMetric.mulEquiv P`: the group isomorphism `P.WithWordMetric ≃* G`.
 * `Group.Generators.WithWordMetric.congr P Q`: the identity of `G`, from the word metric of `P` to
   the word metric of `Q`.
+* The action of `G` on `P.WithWordMetric` by left multiplication, which is isometric.
 * `AddGroup.Generators.WithWordMetric P`, `AddGroup.Generators.WithWordMetric.addEquiv P`,
   `AddGroup.Generators.WithWordMetric.congr P Q`: the additive versions of the above.
 
@@ -97,6 +99,25 @@ noncomputable instance : NormedGroup P.WithWordMetric :=
 lemma dist_eq (x y : P.WithWordMetric) :
     dist x y = P.wordLength ((ofWordMetric x)⁻¹ * ofWordMetric y) :=
   rfl
+
+/-- `G` acts on `P.WithWordMetric` by left multiplication. -/
+@[to_additive /-- `G` acts on `P.WithWordMetric` by left addition. -/]
+instance : MulAction G P.WithWordMetric where
+  smul g x := toWordMetric P (g * ofWordMetric x)
+  one_smul x := congrArg (toWordMetric P) (one_mul (ofWordMetric x))
+  mul_smul g h x := congrArg (toWordMetric P) (mul_assoc g h (ofWordMetric x))
+
+@[to_additive (attr := simp)]
+lemma ofWordMetric_smul (g : G) (x : P.WithWordMetric) :
+    ofWordMetric (g • x) = g * ofWordMetric x :=
+  rfl
+
+/-- The word metric is invariant under left multiplication. -/
+@[to_additive /-- The word metric is invariant under left addition. -/]
+instance : IsIsometricSMul G P.WithWordMetric :=
+  ⟨fun g ↦ Isometry.of_dist_eq fun x y ↦ by
+    rw [dist_eq, dist_eq, ofWordMetric_smul, ofWordMetric_smul, mul_inv_rev, mul_assoc,
+      inv_mul_cancel_left]⟩
 
 /-- The identity of `G`, from the word metric of `P` to the word metric of `Q`. -/
 @[to_additive

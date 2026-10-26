@@ -7,6 +7,7 @@ module
 
 public import Coarse.Geometry.Group.CayleySimpleGraph
 public import Coarse.Geometry.Group.WithWordMetric
+public import Coarse.Topology.Bornology.MetricallyProperSMul
 public import Coarse.Topology.MetricSpace.CoarselyGeodesic
 public import Coarse.Topology.MetricSpace.QuasiIsometry
 
@@ -16,7 +17,8 @@ import Mathlib.Data.Set.Finite.List
 # Bounds for the word metric
 
 Bounds relating the word length of a generating family to distances and to other generating
-families, and the consequences for the word metric up to quasi-isometry.
+families, and the consequences for the word metric: up to quasi-isometry, and for the action of
+the group on itself.
 
 ## Main statements
 
@@ -28,6 +30,9 @@ families, and the consequences for the word metric up to quasi-isometry.
   family are finite.
 * `Group.Generators.isCoarselyGeodesicWith`: a group with the word metric is
   `(1, 1, 0)`-coarsely geodesic.
+* `Group.Generators.WithWordMetric.isMetricallyProperSMul`,
+  `Group.Generators.WithWordMetric.isCoboundedSMul`: for a finite generating family, `G` acts on
+  itself with the word metric metrically properly and coboundedly.
 * `Group.Generators.WithWordMetric.exists_lipschitzWith_congr`: for a finite generating family
   `P`, the identity of the group is Lipschitz from the word metric of `P` to any other word metric.
 * `Group.Generators.WithWordMetric.isQuasiIsometry_congr`: for two finite generating families,
@@ -123,6 +128,28 @@ theorem isCoarselyGeodesicWith : Metric.IsCoarselyGeodesicWith P.WithWordMetric 
   simpa using hp
 
 namespace WithWordMetric
+
+/-- For a finite generating family, bounded sets of the word metric are finite. -/
+theorem finite_of_isBounded [Finite ι] {s : Set P.WithWordMetric} (hs : Bornology.IsBounded s) :
+    s.Finite := by
+  obtain ⟨R, hR⟩ := hs.subset_closedBall 1
+  refine ((P.finite_setOf_wordLength_le ⌊R⌋₊).image (toWordMetric P)).subset fun x hx ↦
+    ⟨ofWordMetric x, Nat.le_floor ?_, rfl⟩
+  have := Metric.mem_closedBall'.1 (hR hx)
+  rwa [dist_eq, show ofWordMetric (1 : P.WithWordMetric) = 1 from rfl, inv_one, one_mul] at this
+
+/-- For a finite generating family, `G` acts metrically properly on `P.WithWordMetric`. -/
+theorem isMetricallyProperSMul [Finite ι] : IsMetricallyProperSMul G P.WithWordMetric := by
+  -- If `g • a = b` with `a, b ∈ s`, then `g = b * a⁻¹`.
+  refine fun s hs ↦ (((finite_of_isBounded P hs).prod (finite_of_isBounded P hs)).image
+    fun p ↦ ofWordMetric p.2 * (ofWordMetric p.1)⁻¹).subset fun g ⟨_, ⟨a, ha, rfl⟩, hb⟩ ↦
+      ⟨(a, g • a), ⟨ha, hb⟩, ?_⟩
+  simp
+
+/-- `G` acts coboundedly on `P.WithWordMetric`: the translates of `{1}` cover it. -/
+theorem isCoboundedSMul : IsCoboundedSMul G P.WithWordMetric :=
+  ⟨{1}, Bornology.isBounded_singleton, Set.eq_univ_of_forall fun x ↦ Set.mem_iUnion.2
+    ⟨ofWordMetric x, Set.mem_smul_set.2 ⟨1, rfl, congrArg (toWordMetric P) (mul_one _)⟩⟩⟩
 
 variable (Q : Generators G κ)
 
