@@ -22,19 +22,7 @@ the definitions use only bounded sets (design decision D14).
 
 \inputleannode{IsCoboundedSMul.of_finiteIndex}
 
-\begin{lemma}[Cocompact actions are cobounded]
-  \label{isCoboundedSMul_of_compactSpace_quotient}
-  \uses{IsCoboundedSMul}
-  If $G$ acts isometrically on a pseudometric space $X$ and the orbit space $X/G$, with the
-  quotient topology, is compact, then the action is cobounded.
-\end{lemma}
-\begin{proof}
-  If $X$ is empty, the empty set is bounded and covers $X$. Otherwise fix $x_0 \in X$. The
-  distance to the orbit $G x_0$ is a continuous function on $X$, constant on orbits, so it
-  induces a continuous function on the compact space $X/G$, which is bounded, say by $\rho$. So
-  every point is within $\rho + 1$ of a point $g x_0$, that is, lies in $g\,\bar B(x_0, \rho + 1)$.
-  (This is \texttt{exists\_smul\_closedBall\_eq\_univ} in the copied coarse-space library.)
-\end{proof}
+\inputleannode{isCoboundedSMul_of_compactSpace_quotient}
 
 \inputleannode{Group.Generators.WithWordMetric.isMetricallyProperSMul}
 
@@ -85,37 +73,9 @@ compact). These imply the hypotheses above
 \ref{isCoboundedSMul_of_compactSpace_quotient} and
 \ref{Metric.IsGeodesicSpace.isCoarselyGeodesicWith}).
 
-\begin{corollary}[\v{S}varc--Milnor lemma, topological form, finite generation, L\"oh
-  Cor.~5.4.2]
-  \label{Group.fg_of_properlyDiscontinuousSMul}
-  \uses{Metric.IsGeodesic}
-  A group acting isometrically, properly discontinuously and cocompactly on a nonempty proper
-  geodesic pseudometric space is finitely generated.
-\end{corollary}
-\begin{proof}
-  \uses{Group.fg_of_isCoboundedSMul, isMetricallyProperSMul_of_properlyDiscontinuousSMul,
-    isCoboundedSMul_of_compactSpace_quotient, Metric.IsGeodesicSpace.isCoarselyGeodesicWith}
-  The action is metrically proper
-  (Lemma~\ref{isMetricallyProperSMul_of_properlyDiscontinuousSMul}) and cobounded
-  (Lemma~\ref{isCoboundedSMul_of_compactSpace_quotient}), and the space is coarsely geodesic
-  (Lemma~\ref{Metric.IsGeodesicSpace.isCoarselyGeodesicWith}), hence coarsely connected, as it is
-  nonempty. Apply Theorem~\ref{Group.fg_of_isCoboundedSMul}.
-\end{proof}
+\inputleannode{Group.fg_of_properlyDiscontinuousSMul}
 
-\begin{corollary}[\v{S}varc--Milnor lemma, topological form, quasi-isometry, L\"oh Cor.~5.4.2]
-  \label{Group.Generators.isQuasiIsometry_smul_const_of_properlyDiscontinuousSMul}
-  \uses{Metric.IsGeodesic, Metric.IsQuasiIsometry, Group.Generators.WithWordMetric}
-  Under the same hypotheses, every orbit map $g \mapsto g x_0$ is a quasi-isometry from $G$ with
-  the word metric of any finite generating family.
-\end{corollary}
-\begin{proof}
-  \uses{Group.Generators.isQuasiIsometry_smul_const,
-    isMetricallyProperSMul_of_properlyDiscontinuousSMul, isCoboundedSMul_of_compactSpace_quotient,
-    Metric.IsGeodesicSpace.isCoarselyGeodesicWith}
-  As for Corollary~\ref{Group.fg_of_properlyDiscontinuousSMul}, with
-  Theorem~\ref{Group.Generators.isQuasiIsometry_smul_const} in place of
-  Theorem~\ref{Group.fg_of_isCoboundedSMul}.
-\end{proof}
+\inputleannode{Group.Generators.isQuasiIsometry_smul_const_of_properlyDiscontinuousSMul}
 
 \section{Corollaries}
 
@@ -127,26 +87,6 @@ Each corollary is a separate pull request and a test of the API.
 
 \inputleannode{Subgroup.isQuasiIsometry_subtype}
 
-\begin{corollary}[Quotients by finite normal subgroups, L\"oh Cor.~5.4.7]
-  \label{QuotientGroup.isQuasiIsometry_mk}
-  \uses{Group.Generators.WithWordMetric, Metric.IsQuasiIsometry}
-  Let $N$ be a finite normal subgroup of $G$, and $P$, $Q$ finite generating families of $G$ and
-  $G/N$. Then the quotient map $(G, d_P) \to (G/N, d_Q)$ is a quasi-isometry.
-\end{corollary}
-\begin{proof}
-  \uses{Group.Generators.isQuasiIsometry_smul_const,
-    Group.Generators.WithWordMetric.isMetricallyProperSMul, Group.Generators.isCoarselyGeodesicWith,
-    IsMetricallyProperSMul, IsCoboundedSMul}
-  $G$ acts on $(G/N, d_Q)$ through the quotient map, $g \cdot x = (gN)x$, isometrically
-  (Lemma~\ref{Group.Generators.WithWordMetric.isMetricallyProperSMul}, for $G/N$ acting on itself).
-  The action is metrically proper: for a bounded $B$, the elements $g$ with $g B \cap B \ne
-  \emptyset$ are the preimage under the quotient map of the finite set of $h \in G/N$ with $h B \cap
-  B \ne \emptyset$ (by the same lemma), and this preimage is finite since $N$ is. The action is
-  cobounded, with the set $\{1\}$, since the quotient map is surjective. The word metric of $Q$ is
-  coarsely geodesic (Lemma~\ref{Group.Generators.isCoarselyGeodesicWith}). Apply
-  Theorem~\ref{Group.Generators.isQuasiIsometry_smul_const} with $x_0 = 1$, whose orbit map is the
-  quotient map. L\"oh's statement also says that $G/N$ is finitely generated if and only if $G$ is;
-  that part is not stated here.
-\end{proof}
+\inputleannode{QuotientGroup.isQuasiIsometry_mk}
 
 \inputleannode{Int.quasiIsometric_pi_euclideanSpace}

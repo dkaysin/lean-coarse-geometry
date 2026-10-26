@@ -5,6 +5,7 @@ Authors: Dmitry Kaysin
 -/
 module
 
+public import Coarse.Topology.MetricSpace.IsometricSMul
 public import Mathlib.Algebra.Group.Pointwise.Set.Scalar
 public import Mathlib.Algebra.Group.Subgroup.Actions
 public import Mathlib.Basic.Finite.Defs
@@ -35,6 +36,8 @@ sets.
   proper metric space is metrically proper.
 * `isMetricallyProperSMul_of_finite`, `IsMetricallyProperSMul.subgroup`: actions of finite groups,
   and restrictions of metrically proper actions to subgroups, are metrically proper.
+* `isCoboundedSMul_of_compactSpace_quotient`: an isometric action with compact orbit space is
+  cobounded.
 * `IsCoboundedSMul.of_finiteIndex`: a subgroup of finite index of a group acting isometrically and
   coboundedly acts coboundedly.
 
@@ -94,6 +97,19 @@ theorem IsMetricallyProperSMul.subgroup {G X : Type*} [Group G] [MulAction G X] 
 instance Subgroup.isIsometricSMul {G X : Type*} [Group G] [PseudoEMetricSpace X] [MulAction G X]
     [IsIsometricSMul G X] (H : Subgroup G) : IsIsometricSMul H X :=
   ⟨fun h ↦ isometry_smul X (h : G)⟩
+
+/-- An isometric action on a pseudometric space with compact orbit space is cobounded. -/
+@[to_additive /-- An isometric additive action on a pseudometric space with compact orbit space
+is cobounded. -/]
+theorem isCoboundedSMul_of_compactSpace_quotient {G X : Type*} [Group G] [PseudoMetricSpace X]
+    [MulAction G X] [IsIsometricSMul G X] [CompactSpace (MulAction.orbitRel.Quotient G X)] :
+    IsCoboundedSMul G X := by
+  rcases isEmpty_or_nonempty X with _ | ⟨⟨x₀⟩⟩
+  · exact ⟨∅, Bornology.isBounded_empty, Set.eq_univ_of_forall isEmptyElim⟩
+  -- Some closed ball around `x₀` has translates covering `X`.
+  obtain ⟨ε, hε⟩ := exists_smul_closedBall_eq_univ G x₀
+  exact ⟨Metric.closedBall x₀ ε, Metric.isBounded_closedBall, by
+    simpa [← Set.iUnion_smul_set] using hε⟩
 
 /-- If `G` acts isometrically and coboundedly, then so does every subgroup of finite index. -/
 @[to_additive /-- If `G` acts isometrically and coboundedly by translations, then so does every

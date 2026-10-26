@@ -461,8 +461,19 @@ attribute [blueprint "IsCoboundedSMul.of_finiteIndex" (latexEnv := "lemma")
     $x \in g s$, write $g^{-1} = g_j h$ with $h \in H$; then $h^{-1} x \in g_j^{-1} s$. -/)]
   IsCoboundedSMul.of_finiteIndex
 
+attribute [blueprint "isCoboundedSMul_of_compactSpace_quotient" (latexEnv := "lemma")
+  (title := /-- Cocompact actions are cobounded -/)
+  (statement := /-- If $G$ acts isometrically on a pseudometric space $X$ and the orbit space $X/G$,
+    with the quotient topology, is compact, then the action is cobounded. -/)
+  (proof := /-- If $X$ is empty, the empty set is bounded and covers $X$. Otherwise fix $x_0 \in X$.
+    The distance to the orbit $G x_0$ is a continuous function on $X$, constant on orbits, so it
+    induces a continuous function on the compact space $X/G$, which is bounded, say by $\rho$. So
+    every point is within $\rho + 1$ of a point $g x_0$, that is, lies in $g\,\bar B(x_0, \rho +
+    1)$. (This is \texttt{exists\_smul\_closedBall\_eq\_univ} in the copied coarse-space
+    library.) -/)]
+  isCoboundedSMul_of_compactSpace_quotient
+
 attribute [blueprint "Group.Generators.WithWordMetric.isMetricallyProperSMul" (latexEnv := "lemma")
-  (notReady := true)
   (title := /-- A group acts on itself with a word metric -/)
   (statement := /-- $G$ acts isometrically on $(G, d_P)$ by left multiplication, and coboundedly.
     If $P$ is finite, the action is metrically proper. -/)
@@ -542,6 +553,27 @@ attribute [blueprint "Group.Generators.isQuasiIsometry_smul_const"
     change of generators. -/)]
   Group.Generators.isQuasiIsometry_smul_const
 
+attribute [blueprint "Group.fg_of_properlyDiscontinuousSMul" (latexEnv := "corollary")
+  (title := /-- \v{S}varc--Milnor lemma, topological form, finite generation, L\"oh Cor.~5.4.2 -/)
+  (statement := /-- A group acting isometrically, properly discontinuously and cocompactly on a
+    nonempty proper geodesic pseudometric space is finitely generated. -/)
+  (proof := /-- The action is metrically proper
+    (Lemma~\ref{isMetricallyProperSMul_of_properlyDiscontinuousSMul}) and cobounded
+    (Lemma~\ref{isCoboundedSMul_of_compactSpace_quotient}), and the space is coarsely geodesic
+    (Lemma~\ref{Metric.IsGeodesicSpace.isCoarselyGeodesicWith}), hence coarsely connected, as it
+    is nonempty. Apply Theorem~\ref{Group.fg_of_isCoboundedSMul}. -/)]
+  Group.fg_of_properlyDiscontinuousSMul
+
+attribute [blueprint "Group.Generators.isQuasiIsometry_smul_const_of_properlyDiscontinuousSMul"
+  (latexEnv := "corollary")
+  (title := /-- \v{S}varc--Milnor lemma, topological form, quasi-isometry, L\"oh Cor.~5.4.2 -/)
+  (statement := /-- Under the same hypotheses, every orbit map $g \mapsto g x_0$ is a
+    quasi-isometry from $G$ with the word metric of any finite generating family. -/)
+  (proof := /-- As for Corollary~\ref{Group.fg_of_properlyDiscontinuousSMul}, with
+    Theorem~\ref{Group.Generators.isQuasiIsometry_smul_const} in place of
+    Theorem~\ref{Group.fg_of_isCoboundedSMul}. -/)]
+  Group.Generators.isQuasiIsometry_smul_const_of_properlyDiscontinuousSMul
+
 /-! ### Corollaries
 
 Nodes in `Coarse/Geometry/Group/{WordMetricBounds, SvarcMilnor}.lean`.
@@ -580,17 +612,39 @@ attribute [blueprint "Subgroup.isQuasiIsometry_subtype" (latexEnv := "corollary"
     the inclusion. -/)]
   Subgroup.isQuasiIsometry_subtype
 
+attribute [blueprint "QuotientGroup.isQuasiIsometry_mk" (latexEnv := "corollary")
+  (title := /-- Quotients by finite normal subgroups, L\"oh Cor.~5.4.7 -/)
+  (statement := /-- Let $N$ be a finite normal subgroup of $G$, and $P$, $Q$ finite generating
+    families of $G$ and $G/N$. Then the quotient map $(G, d_P) \to (G/N, d_Q)$ is a
+    quasi-isometry. -/)
+  (proof := /-- $G$ acts on $(G/N, d_Q)$ through the quotient map, $g \cdot x = (gN)x$,
+    isometrically (Lemma~\ref{Group.Generators.WithWordMetric.isMetricallyProperSMul}, for $G/N$
+    acting on itself). The action is metrically proper: for a bounded $B$, the elements $g$ with $g
+    B \cap B \ne \emptyset$ are the preimage under the quotient map of the finite set of $h \in
+    G/N$ with $h B \cap B \ne \emptyset$ (by the same lemma), and this preimage is finite since
+    the fibres of the quotient map are cosets of the finite group $N$. The action is cobounded, with
+    the set $\{1\}$, since the quotient map is surjective. The word metric of $Q$ is coarsely
+    geodesic (Lemma~\ref{Group.Generators.isCoarselyGeodesicWith}). Apply
+    Theorem~\ref{Group.Generators.isQuasiIsometry_smul_const} with $x_0 = 1$, whose orbit map is
+    the quotient map. L\"oh's statement also says that $G/N$ is finitely generated if and only if
+    $G$ is; that part is not stated here. -/)]
+  QuotientGroup.isQuasiIsometry_mk
+
 attribute [blueprint "Int.quasiIsometric_pi_euclideanSpace" (latexEnv := "corollary")
   (title := /-- $\Z^n$ and $\R^n$, L\"oh Ex.~5.2.8 -/)
   (statement := /-- $\Z^n$ with the word metric of any finite generating family (for instance the
     standard basis) is quasi-isometric to $\R^n$. -/)
-  (proof := /-- $\Z^n$ acts on $\R^n$ by translations, properly discontinuously and with
-    the unit cube as a bounded fundamental set. L\"oh argues directly instead: the inclusion $\Z^n
-    \to \R^n$ is a quasi-isometric embedding with quasi-dense image, hence a quasi-isometry
+  (proof := /-- $\Z^n$ acts on $\R^n$ by translations, isometrically. The action is metrically
+    proper: if $v + a = b$ with $a, b$ in a bounded set $B$, then every coordinate of $v$ is at most
+    $\|v\| = d(a, b) \le \diam B$ in absolute value, which leaves finitely many $v$. It is
+    cobounded: the translates of the unit cube $[0, 1]^n$, which is compact, hence bounded, cover
+    $\R^n$, since $x = \lfloor x \rfloor + \{x\}$ coordinatewise. $\R^n$ is coarsely geodesic
+    (Lemma~\ref{NormedSpace.isCoarselyGeodesicWith}).
+    Theorem~\ref{Group.Generators.isQuasiIsometry_smul_const}, in its form for additive groups,
+    makes the orbit map of $0$ a quasi-isometry. L\"oh argues directly instead: the inclusion
+    $\Z^n \to \R^n$ is a quasi-isometric embedding with quasi-dense image, hence a quasi-isometry
     (Theorem~\ref{Metric.isQuasiIsometry_iff_quasiDenseRange}). Going through
-    Theorem~\ref{Group.Generators.isQuasiIsometry_smul_const} tests the main theorem. -/)
-  (proofUses := ["Group.Generators.isQuasiIsometry_smul_const",
-    "NormedSpace.isCoarselyGeodesicWith", "isMetricallyProperSMul_of_properlyDiscontinuousSMul"])]
+    Theorem~\ref{Group.Generators.isQuasiIsometry_smul_const} tests the main theorem. -/)]
   Int.quasiIsometric_pi_euclideanSpace
 
 /-! ## Coarse spaces

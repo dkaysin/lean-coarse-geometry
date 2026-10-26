@@ -68,6 +68,9 @@ metric of `P`.
 
 [M. Bridson, A. Haefliger, *Metric Spaces of Non-Positive Curvature*][bridson1999],
 Lemma I.8.18, for orbit maps of isometric actions. -/
+@[to_additive /-- If addition of a generator moves the values of `φ : G → X` by at most `K`, then
+`dist (φ g) (φ h) ≤ K * |-g + h|` for the word length of `P`: `φ` is `K`-Lipschitz for the word
+metric of `P`. -/]
 theorem dist_le_mul_wordLength {X : Type*} [PseudoMetricSpace X] {φ : G → X} {K : ℝ≥0}
     (hφ : ∀ g i, dist (φ g) (φ (g * P.val i)) ≤ K) (g h : G) :
     dist (φ g) (φ h) ≤ K * P.wordLength (g⁻¹ * h) := by

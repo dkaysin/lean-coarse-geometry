@@ -21,8 +21,13 @@ every orbit map is a quasi-isometry for the word metric of any finite generating
 
 * `Group.fg_of_isCoboundedSMul`: the Švarc–Milnor lemma, finite generation.
 * `Group.Generators.isQuasiIsometry_smul_const`: the Švarc–Milnor lemma, quasi-isometry.
+* `Group.fg_of_properlyDiscontinuousSMul`,
+  `Group.Generators.isQuasiIsometry_smul_const_of_properlyDiscontinuousSMul`: the topological
+  form, for proper geodesic spaces and properly discontinuous cocompact actions.
 * `Subgroup.isQuasiIsometry_subtype`: a subgroup of finite index of a finitely generated group is
   quasi-isometric to the group, by the inclusion.
+* `QuotientGroup.isQuasiIsometry_mk`: the quotient of a finitely generated group by a finite normal
+  subgroup is quasi-isometric to the group, by the quotient map.
 * `Int.quasiIsometric_pi_euclideanSpace`: `ℤⁿ` with a word metric is quasi-isometric to `ℝⁿ`.
 
 ## Implementation notes
@@ -46,7 +51,7 @@ additive generating family of `Fin n → ℤ`, whose own metric is the sup metri
 ## References
 
 * [C. Löh, *Geometric Group Theory: An Introduction*][loeh2017], Proposition 5.4.1,
-  Corollary 5.4.7 and Example 5.2.8
+  Corollaries 5.4.2 and 5.4.7, and Example 5.2.8
 * [C. Druțu, M. Kapovich, *Geometric Group Theory*][drutu2018], Theorem 8.37
 
 ## Tags
@@ -63,6 +68,7 @@ variable {G X : Type*} [Group G] [PseudoMetricSpace X] [MulAction G X] [IsIsomet
 omit [IsIsometricSMul G X] in
 /-- If `a` and `t • a` both lie in `s`, then `t` lies in `{t | (t • B ∩ B).Nonempty}`, where `B` is
 the closed `r`-thickening of `s`. -/
+@[to_additive]
 private theorem mem_of_smul_mem {s : Set X} {r : ℝ≥0} {t : G} {a : X} (ha : a ∈ s)
     (hta : t • a ∈ s) :
     t ∈ {t : G | (t • Metric.cthickening r s ∩ Metric.cthickening r s).Nonempty} :=
@@ -71,6 +77,7 @@ private theorem mem_of_smul_mem {s : Set X} {r : ℝ≥0} {t : G} {a : X} (ha : 
 
 /-- If `y ∈ g • s`, `y' ∈ g' • s` and `dist y y' ≤ r`, then `g⁻¹ * g'` lies in
 `{t | (t • B ∩ B).Nonempty}`, where `B` is the closed `r`-thickening of `s`. -/
+@[to_additive]
 private theorem inv_mul_mem_of_dist_le {s : Set X} {r : ℝ≥0} {g g' : G} {y y' : X}
     (hy : y ∈ g • s) (hy' : y' ∈ g' • s) (hyy' : dist y y' ≤ r) :
     g⁻¹ * g' ∈ {t : G | (t • Metric.cthickening r s ∩ Metric.cthickening r s).Nonempty} := by
@@ -122,6 +129,8 @@ theorem Group.fg_of_isCoboundedSMul
 coboundedly on a nonempty coarsely geodesic pseudometric space is quasi-isometric to the space:
 every orbit map `g ↦ g • x₀` is a quasi-isometry for the word metric of any finite generating
 family. -/
+@[to_additive /-- **Švarc–Milnor lemma**, quasi-isometry, for additive groups: every orbit map
+`g ↦ g +ᵥ x₀` is a quasi-isometry for the word metric of any finite generating family. -/]
 theorem Group.Generators.isQuasiIsometry_smul_const {ι : Type*} [Finite ι] (P : Generators G ι)
     (hX : Metric.IsCoarselyGeodesic X)
     (hprop : IsMetricallyProperSMul G X) (hcob : IsCoboundedSMul G X) (x₀ : X) :
@@ -165,6 +174,29 @@ theorem Group.Generators.isQuasiIsometry_smul_const {ι : Type*} [Finite ι] (P 
       _ ≤ _ := (Metric.dist_le_diam_of_mem hs (s.mem_insert x₀) hz).trans
         (Real.le_coe_toNNReal _)
 
+/-- **Švarc–Milnor lemma**, topological form, finite generation: a group acting isometrically,
+properly discontinuously and cocompactly on a nonempty proper geodesic pseudometric space is
+finitely generated.
+
+[C. Löh, *Geometric Group Theory*][loeh2017], Corollary 5.4.2. -/
+theorem Group.fg_of_properlyDiscontinuousSMul [Nonempty X] [ProperSpace X]
+    [ProperlyDiscontinuousSMul G X] [CompactSpace (MulAction.orbitRel.Quotient G X)]
+    (hX : Metric.IsGeodesicSpace X) : Group.FG G :=
+  Group.fg_of_isCoboundedSMul ⟨1, (hX.isCoarselyGeodesicWith one_pos).isCoarselyConnectedWith⟩
+    isMetricallyProperSMul_of_properlyDiscontinuousSMul isCoboundedSMul_of_compactSpace_quotient
+
+/-- **Švarc–Milnor lemma**, topological form, quasi-isometry: for a group acting isometrically,
+properly discontinuously and cocompactly on a proper geodesic pseudometric space, every orbit map
+`g ↦ g • x₀` is a quasi-isometry for the word metric of any finite generating family.
+
+[C. Löh, *Geometric Group Theory*][loeh2017], Corollary 5.4.2. -/
+theorem Group.Generators.isQuasiIsometry_smul_const_of_properlyDiscontinuousSMul {ι : Type*}
+    [Finite ι] (P : Generators G ι) [ProperSpace X] [ProperlyDiscontinuousSMul G X]
+    [CompactSpace (MulAction.orbitRel.Quotient G X)] (hX : Metric.IsGeodesicSpace X) (x₀ : X) :
+    Metric.IsQuasiIsometry fun g : P.WithWordMetric ↦ g.ofWordMetric • x₀ :=
+  P.isQuasiIsometry_smul_const ⟨_, _, _, hX.isCoarselyGeodesicWith one_pos⟩
+    isMetricallyProperSMul_of_properlyDiscontinuousSMul isCoboundedSMul_of_compactSpace_quotient x₀
+
 /-- A subgroup of finite index of a group with a finite generating family is quasi-isometric to
 the group: the inclusion is a quasi-isometry for the word metrics of any finite generating
 families. -/
@@ -178,10 +210,74 @@ theorem Subgroup.isQuasiIsometry_subtype (H : Subgroup G) [H.FiniteIndex] {ι κ
     ((Group.Generators.WithWordMetric.isCoboundedSMul P).of_finiteIndex H) 1 using 2
   exact congrArg (Group.Generators.WithWordMetric.toWordMetric P) (mul_one _).symm
 
+/-- The quotient of a group by a finite normal subgroup is quasi-isometric to the group: the
+quotient map is a quasi-isometry for the word metrics of any finite generating families.
+
+[C. Löh, *Geometric Group Theory*][loeh2017], Corollary 5.4.7. -/
+theorem QuotientGroup.isQuasiIsometry_mk (N : Subgroup G) [N.Normal] [Finite N] {ι κ : Type*}
+    [Finite ι] [Finite κ] (P : Group.Generators G ι) (Q : Group.Generators (G ⧸ N) κ) :
+    Metric.IsQuasiIsometry fun g : P.WithWordMetric ↦
+      Group.Generators.WithWordMetric.toWordMetric Q (g.ofWordMetric : G ⧸ N) := by
+  -- `G` acts on `Q.WithWordMetric` through the quotient map; the orbit map of `1` is the quotient
+  -- map.
+  let _ : MulAction G Q.WithWordMetric := MulAction.compHom _ (QuotientGroup.mk' N)
+  have : IsIsometricSMul G Q.WithWordMetric :=
+    ⟨fun g ↦ isometry_smul Q.WithWordMetric (g : G ⧸ N)⟩
+  -- The action is metrically proper: `{g | (g • s ∩ s).Nonempty}` is the preimage under the
+  -- quotient map of a finite set, and the fibres of the quotient map are cosets of `N`.
+  have hprop : IsMetricallyProperSMul G Q.WithWordMetric := fun s hs ↦
+    (Group.Generators.WithWordMetric.isMetricallyProperSMul Q s hs).preimage' fun b _ ↦ by
+      obtain ⟨g, rfl⟩ := QuotientGroup.mk_surjective b
+      refine (Set.finite_range fun h : N ↦ g * h).subset fun x hx ↦
+        ⟨⟨g⁻¹ * x, QuotientGroup.eq.1 (Set.mem_singleton_iff.1 hx).symm⟩, mul_inv_cancel_left g x⟩
+  -- The action is cobounded, with the set `{1}`, as the quotient map is surjective.
+  have hcob : IsCoboundedSMul G Q.WithWordMetric :=
+    ⟨{1}, Bornology.isBounded_singleton, Set.eq_univ_of_forall fun x ↦ by
+      obtain ⟨g, hg⟩ := QuotientGroup.mk_surjective x.ofWordMetric
+      refine Set.mem_iUnion.2 ⟨g, Set.mem_smul_set.2 ⟨1, rfl, ?_⟩⟩
+      change Group.Generators.WithWordMetric.toWordMetric Q ((g : G ⧸ N) * 1) = x
+      rw [mul_one, hg, Group.Generators.WithWordMetric.toWordMetric_ofWordMetric]⟩
+  convert P.isQuasiIsometry_smul_const ⟨1, 1, 0, Q.isCoarselyGeodesicWith⟩ hprop hcob 1 using 2
+  exact congrArg (Group.Generators.WithWordMetric.toWordMetric Q) (mul_one _).symm
+
 /-- `ℤⁿ` with the word metric of a finite generating family is quasi-isometric to `ℝⁿ`.
 
 [C. Löh, *Geometric Group Theory*][loeh2017], Example 5.2.8. -/
 theorem Int.quasiIsometric_pi_euclideanSpace {n : ℕ} {ι : Type*} [Finite ι]
     (P : AddGroup.Generators (Fin n → ℤ) ι) :
     Metric.QuasiIsometric P.WithWordMetric (EuclideanSpace ℝ (Fin n)) := by
-  sorry
+  -- `ℤⁿ` acts on `ℝⁿ` by translations.
+  let e : (Fin n → ℤ) →+ EuclideanSpace ℝ (Fin n) :=
+    AddMonoidHom.mk' (fun v ↦ WithLp.toLp 2 fun i ↦ (v i : ℝ)) fun v w ↦ by ext; simp
+  let _ : AddAction (Fin n → ℤ) (EuclideanSpace ℝ (Fin n)) := AddAction.compHom _ e
+  have : IsIsometricVAdd (Fin n → ℤ) (EuclideanSpace ℝ (Fin n)) :=
+    ⟨fun v ↦ isometry_vadd (EuclideanSpace ℝ (Fin n)) (e v)⟩
+  -- Metrically proper: if `e v + a = b` with `a, b ∈ s`, the coordinates of `v` are at most
+  -- `diam s` in absolute value.
+  have hprop : IsMetricallyProperVAdd (Fin n → ℤ) (EuclideanSpace ℝ (Fin n)) := by
+    intro s hs
+    set D := Metric.diam s
+    refine (Set.Finite.pi (t := fun _ ↦ Set.Icc (-⌈D⌉) ⌈D⌉) fun _ ↦ Set.finite_Icc _ _).subset ?_
+    rintro v ⟨_, ⟨a, ha, rfl⟩, hb⟩ i -
+    have hv : |(v i : ℝ)| ≤ D := by
+      have h₁ := Metric.dist_le_diam_of_mem hs hb ha
+      change dist (e v + a) a ≤ D at h₁
+      rw [dist_add_self_left] at h₁
+      simpa [e] using (PiLp.norm_apply_le (e v) i).trans h₁
+    obtain ⟨hv₁, hv₂⟩ := abs_le.1 hv
+    have hD := Int.le_ceil D
+    have h₁ : (-⌈D⌉ : ℝ) ≤ v i := by linarith
+    have h₂ : (v i : ℝ) ≤ ⌈D⌉ := by linarith
+    exact ⟨by exact_mod_cast h₁, by exact_mod_cast h₂⟩
+  -- Cobounded: the translates of the unit cube cover `ℝⁿ`.
+  have hcob : IsCoboundedVAdd (Fin n → ℤ) (EuclideanSpace ℝ (Fin n)) := by
+    refine ⟨WithLp.toLp 2 '' Set.univ.pi fun _ ↦ Set.Icc (0 : ℝ) 1,
+      ((isCompact_univ_pi fun _ ↦ isCompact_Icc).image (PiLp.continuous_toLp 2 _)).isBounded,
+      Set.eq_univ_of_forall fun x ↦ Set.mem_iUnion.2 ⟨fun i ↦ ⌊x.ofLp i⌋, ?_⟩⟩
+    refine Set.mem_vadd_set.2 ⟨WithLp.toLp 2 fun i ↦ Int.fract (x.ofLp i),
+      ⟨_, fun i _ ↦ ⟨Int.fract_nonneg _, (Int.fract_lt_one _).le⟩, rfl⟩, ?_⟩
+    change e _ + _ = x
+    ext i
+    simp [e, Int.floor_add_fract]
+  exact ⟨_, P.isQuasiIsometry_vadd_const ⟨_, _, _, NormedSpace.isCoarselyGeodesicWith one_pos⟩
+    hprop hcob 0⟩
