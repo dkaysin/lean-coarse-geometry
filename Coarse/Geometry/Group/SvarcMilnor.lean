@@ -13,8 +13,8 @@ public import Mathlib.GroupTheory.Finiteness
 /-!
 # The Švarc–Milnor lemma
 
-A group acting isometrically, metrically properly and coboundedly on a nonempty coarsely
-connected pseudometric space is finitely generated; if the space is moreover coarsely geodesic,
+A group acting isometrically, metrically properly and coboundedly on a coarsely connected
+pseudometric space is finitely generated; if the space is moreover coarsely geodesic,
 every orbit map is a quasi-isometry for the word metric of any finite generating family.
 
 ## Main statements
@@ -83,16 +83,14 @@ private theorem inv_mul_mem_of_dist_le {s : Set X} {r : ℝ≥0} {g g' : G} {y y
   · rw [dist_smul, dist_comm]
     exact hyy'
 
-variable [Nonempty X]
-
 /-- **Švarc–Milnor lemma**, finite generation: a group acting isometrically, metrically properly
-and coboundedly on a nonempty coarsely connected pseudometric space is finitely generated. -/
+and coboundedly on a coarsely connected pseudometric space is finitely generated. -/
 theorem Group.fg_of_isCoboundedSMul
     (hX : Metric.IsCoarselyConnected X) (hprop : IsMetricallyProperSMul G X)
     (hcob : IsCoboundedSMul G X) : Group.FG G := by
   obtain ⟨r, hr⟩ := hX
   obtain ⟨s, hs, hcov⟩ := hcob
-  obtain ⟨x₀⟩ := ‹Nonempty X›
+  obtain ⟨x₀⟩ := hr.nonempty
   -- Add `x₀` to `s`, and choose for each `y` a translate `ψ y • insert x₀ s` containing it.
   replace hcov : ⋃ g : G, g • insert x₀ s = Set.univ := Set.eq_univ_of_univ_subset
     (hcov ▸ Set.iUnion_mono fun g ↦ Set.smul_set_mono (Set.subset_insert x₀ s))
@@ -109,7 +107,7 @@ theorem Group.fg_of_isCoboundedSMul
     | cons h p ih =>
       exact (QuotientGroup.eq.2 <| Subgroup.subset_closure <|
         inv_mul_mem_of_dist_le (hψ _) (hψ _) h.2).trans ih
-  obtain ⟨p⟩ := hr x₀ (g • x₀)
+  obtain ⟨p⟩ := hr.preconnected x₀ (g • x₀)
   -- `g = ψ x₀ * ((ψ x₀)⁻¹ * ψ (g • x₀)) * ((ψ (g • x₀))⁻¹ * g)`, and the outer factors lie in `S`
   -- since they map points of `insert x₀ s` into it.
   have h₁ : ψ x₀ ∈ Subgroup.closure S := Subgroup.subset_closure <|
@@ -120,7 +118,6 @@ theorem Group.fg_of_isCoboundedSMul
       (by rw [mul_smul]; exact Set.mem_smul_set_iff_inv_smul_mem.1 (hψ _))
   simpa using mul_mem (mul_mem h₁ (QuotientGroup.eq.1 (hchain p))) h₃
 
-omit [Nonempty X] in
 /-- **Švarc–Milnor lemma**, quasi-isometry: a group acting isometrically, metrically properly and
 coboundedly on a nonempty coarsely geodesic pseudometric space is quasi-isometric to the space:
 every orbit map `g ↦ g • x₀` is a quasi-isometry for the word metric of any finite generating

@@ -15,14 +15,15 @@ public import Mathlib.Topology.MetricSpace.Pseudo.Defs
 
 An *`r`-chain* from `x` to `y` in a pseudometric space is a finite sequence of points from `x` to
 `y` in which consecutive points are at distance at most `r`. A space is *`r`-coarsely connected* if
-any two points are joined by an `r`-chain, and *`(r, L, C)`-coarsely geodesic* if any two points
-`x` and `y` are joined by an `r`-chain with at most `L * dist x y + C` steps.
+it is nonempty and any two points are joined by an `r`-chain, and *`(r, L, C)`-coarsely geodesic*
+if any two points `x` and `y` are joined by an `r`-chain with at most `L * dist x y + C` steps.
 
 ## Main definitions
 
 * `Metric.ripsGraph X r`: the simple graph on `X` in which distinct points at distance at most `r`
   are adjacent.
-* `Metric.IsCoarselyConnectedWith X r`: any two points of `X` are joined by an `r`-chain.
+* `Metric.IsCoarselyConnectedWith X r`: `X` is nonempty and any two of its points are joined by an
+  `r`-chain.
 * `Metric.IsCoarselyGeodesicWith X r L C`: any two points `x`, `y` of `X` are joined by an
   `r`-chain with at most `L * dist x y + C` steps.
 * `Metric.IsCoarselyConnected X`, `Metric.IsCoarselyGeodesic X`: the same for some constants.
@@ -94,10 +95,10 @@ theorem exists_ripsGraph_walk_length_le {X : Type*} [PseudoMetricSpace X] {r : �
     · have hadj : (ripsGraph X r).Adj (f n) (f (n + 1)) := ⟨h, hf n n.lt_succ_self⟩
       exact ⟨p.concat hadj, by simp; omega⟩
 
-/-- A pseudometric space is **`r`-coarsely connected** if any two points are joined by a chain
-of points in which consecutive points are at distance at most `r`. -/
+/-- A pseudometric space is **`r`-coarsely connected** if it is nonempty and any two points are
+joined by a chain of points in which consecutive points are at distance at most `r`. -/
 def IsCoarselyConnectedWith (X : Type*) [PseudoMetricSpace X] (r : ℝ≥0) : Prop :=
-  (ripsGraph X r).Preconnected
+  (ripsGraph X r).Connected
 
 /-- A pseudometric space is **`(r, L, C)`-coarsely geodesic** if any two points `x` and `y` are
 joined by a chain with consecutive points at distance at most `r` and with at most

@@ -14,8 +14,8 @@ Blueprint nodes for `Coarse/Geometry/Group/SvarcMilnor.lean` (milestone M5).
 
 attribute [blueprint "Group.fg_of_isCoboundedSMul"
   (title := /-- \v{S}varc--Milnor lemma, finite generation -/)
-  (statement := /-- A group acting isometrically, metrically properly and coboundedly on a nonempty
-    coarsely connected pseudometric space is finitely generated. -/)
+  (statement := /-- A group acting isometrically, metrically properly and coboundedly on a coarsely
+    connected pseudometric space is finitely generated. -/)
   (proof := /-- Let $X$ be $r$-coarsely connected, and choose for each $y \in X$ some $\psi(y) \in
     G$ with $y \in \psi(y) s$.
 

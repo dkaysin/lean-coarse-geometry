@@ -23,8 +23,8 @@ attribute [blueprint "Metric.ripsGraph"
 
 attribute [blueprint "Metric.IsCoarselyConnectedWith"
   (title := /-- Coarsely connected space -/)
-  (statement := /-- A pseudometric space $X$ is \emph{$r$-coarsely connected} if any two points are
-    joined by an $r$-chain, i.e.\ its Rips graph at scale $r$ is preconnected. -/)]
+  (statement := /-- A pseudometric space $X$ is \emph{$r$-coarsely connected} if it is nonempty and
+    any two points are joined by an $r$-chain, i.e.\ its Rips graph at scale $r$ is connected. -/)]
   Metric.IsCoarselyConnectedWith
 
 attribute [blueprint "Metric.IsCoarselyGeodesicWith"
