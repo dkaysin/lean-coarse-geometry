@@ -4,10 +4,12 @@
 leanblueprint links every Lean declaration to Mathlib's documentation. This rewrites the links
 in `blueprint/web/*.html` to declarations of the `Coarse` library into `vscode://file/` links
 that open the source at the declaration; links to other declarations are left as they are.
+With `--source URL`, the links point at `URL/<path>#L<line>` instead, for the published blueprint.
 The locations are read from the `.ilean` files of the last `lake build`.
 Run after `leanblueprint web`.
 """
 
+import argparse
 import json
 import re
 from pathlib import Path
@@ -33,6 +35,10 @@ def locations():
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--source", help="URL of the repository tree, such as "
+                        "https://github.com/OWNER/REPO/blob/COMMIT")
+    source = parser.parse_args().source
     locs = locations()
     linked = set()
     def link(m):
@@ -40,6 +46,8 @@ def main():
             return m.group(0)
         linked.add(m.group(1))
         path, line = locs[m.group(1)]
+        if source:
+            return f'href="{source}/{path.relative_to(ROOT).as_posix()}#L{line}"'
         return f'href="vscode://file{path}:{line}"'
     for page in WEB.glob("*.html"):
         text = page.read_text()

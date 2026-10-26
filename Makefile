@@ -14,9 +14,10 @@ cache: ## Download Mathlib's compiled files
 build: ## Build the library
 	lake build
 
-check: ## What CI checks: build with warnings as errors, root import file up to date
-	lake build --wfail
+check: ## What CI checks: build with warnings other than sorry as errors, root import files, web
+	python3 scripts/build_check.py
 	lake exe mk_all --check
+	$(MAKE) web
 
 mk_all: ## Regenerate Coarse.lean and CoarseBlueprint.lean
 	lake exe mk_all
@@ -26,9 +27,10 @@ blueprint: ## Build the tags and extract the blueprint to .lake/build/blueprint
 	lake build CoarseBlueprint:blueprint
 	touch .lake/build/blueprint/stamp
 
+# Links to declarations open the source in VS Code, or at SOURCE (a repository tree URL) if set.
 web: blueprint ## Render the blueprint web page to blueprint/web
 	leanblueprint web
-	python3 scripts/blueprint_links.py
+	python3 scripts/blueprint_links.py $(if $(SOURCE),--source $(SOURCE))
 
 pdf: blueprint ## Render the blueprint pdf to blueprint/print/print.pdf
 	leanblueprint pdf
