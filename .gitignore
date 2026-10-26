@@ -8,3 +8,5 @@
 /blueprint/web/
 /blueprint/lean_decls
 /blueprint/src/*.paux
+# Python
+__pycache__
