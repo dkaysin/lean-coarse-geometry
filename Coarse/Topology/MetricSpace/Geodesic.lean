@@ -13,11 +13,12 @@ public import Mathlib.Topology.MetricSpace.Pseudo.Lemmas
 
 A *geodesic* from `x` to `x'` in a pseudometric space is an isometric map from an interval
 `[t, t']` sending `t` to `x` and `t'` to `x'`. A space is *geodesic* if any two points are joined
-by a geodesic.
+by a geodesic. A *geodesic segment* from `x` to `x'` is the image of a geodesic from `x` to `x'`.
 
 ## Main definitions
 
 * `Metric.IsGeodesic γ t t' x x'`: the map `γ : ℝ → X` is a geodesic on `[t, t']` from `x` to `x'`.
+* `Metric.IsGeodesicSegment s x x'`: the set `s` is the image of a geodesic from `x` to `x'`.
 * `Metric.IsGeodesicSpace X`: any two points of `X` are joined by a geodesic.
 
 ## Implementation notes
@@ -25,7 +26,8 @@ by a geodesic.
 A geodesic is a map `γ : ℝ → X` of which only the values on `[t, t']` matter, as for Mathlib's
 `Manifold.pathELength`: this avoids subtypes of `ℝ`. The isometry on `[t, t']` forces
 `t' - t = dist x x'`. Geodesics are not required to be injective, which matters only in
-pseudometric spaces.
+pseudometric spaces. Where only the points of a geodesic matter, as for the sides of a triangle,
+statements use `Metric.IsGeodesicSegment` and leave out the parametrisation.
 
 ## References
 
@@ -51,6 +53,11 @@ structure IsGeodesic (γ : ℝ → X) (t t' : ℝ) (x x' : X) : Prop where
   apply_left : γ t = x
   apply_right : γ t' = x'
   dist_eq : ∀ s ∈ Set.Icc t t', ∀ s' ∈ Set.Icc t t', dist (γ s) (γ s') = |s - s'|
+
+/-- A set `s` is a **geodesic segment** from `x` to `x'` if it is the image of a geodesic from `x`
+to `x'`. -/
+def IsGeodesicSegment (s : Set X) (x x' : X) : Prop :=
+  ∃ (γ : ℝ → X) (t t' : ℝ), IsGeodesic γ t t' x x' ∧ γ '' Set.Icc t t' = s
 
 /-- A pseudometric space is **geodesic** if any two points are joined by a geodesic. -/
 def IsGeodesicSpace (X : Type*) [PseudoMetricSpace X] : Prop :=

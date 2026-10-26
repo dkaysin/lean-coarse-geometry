@@ -746,17 +746,17 @@ attribute [blueprint "Metric.IsGeodesic"
   (title := /-- Geodesic space, L\"oh Def.~5.3.1, Bridson--Haefliger Def.~I.1.3 -/)
   (statement := /-- Let $X$ be a pseudometric space. A \emph{geodesic} from $x$ to $x'$ is an
     isometric map $\gamma \colon [t, t'] \to X$, for some $t \le t'$, with $\gamma(t) = x$ and
-    $\gamma(t') = x'$ (then $t' - t = d(x, x')$). The space $X$ is \emph{geodesic} if any two points
-    are joined by a geodesic. In Lean, $\gamma$ is a map $\R \to X$ of which only the values on
-    $[t, t']$ matter. -/)]
-  Metric.IsGeodesic Metric.IsGeodesicSpace
+    $\gamma(t') = x'$ (then $t' - t = d(x, x')$); its image is a \emph{geodesic segment} from $x$
+    to $x'$. The space $X$ is \emph{geodesic} if any two points are joined by a geodesic. In Lean,
+    $\gamma$ is a map $\R \to X$ of which only the values on $[t, t']$ matter. -/)]
+  Metric.IsGeodesic Metric.IsGeodesicSegment Metric.IsGeodesicSpace
 
 attribute [blueprint "Metric.HasSlimTrianglesWith"
   (title := /-- Slim triangles, L\"oh Def.~7.2.1, Bridson--Haefliger Def.~III.H.1.1 -/)
   (statement := /-- A \emph{geodesic triangle} with vertices $x, y, z$ in a pseudometric space $X$
-    consists of geodesics from $x$ to $y$, from $y$ to $z$ and from $z$ to $x$, its sides. It is
-    \emph{$\delta$-slim} if every point of each side is within distance $\delta$ of a point of one
-    of the other two sides. The space $X$ has \emph{$\delta$-slim triangles} if every geodesic
+    consists of geodesic segments from $x$ to $y$, from $y$ to $z$ and from $z$ to $x$, its sides.
+    It is \emph{$\delta$-slim} if every point of each side is within distance $\delta$ of a point of
+    one of the other two sides. The space $X$ has \emph{$\delta$-slim triangles} if every geodesic
     triangle in $X$ is $\delta$-slim. -/)]
   Metric.HasSlimTrianglesWith
 
