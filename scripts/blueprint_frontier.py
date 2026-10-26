@@ -24,7 +24,7 @@ ROOT = Path(__file__).resolve().parent.parent
 CHAPTERS = ROOT / "blueprint" / "src" / "chapters"
 EXTRACTED = ROOT / ".lake" / "build" / "blueprint" / "module"
 STAMP = ROOT / ".lake" / "build" / "blueprint" / "stamp"
-SOURCES = ["Coarse", "CoarseBlueprint", "Coarse.lean", "CoarseBlueprint.lean", "lakefile.toml",
+SOURCES = ["Coarse", "Coarse.lean", "blueprint/CoarseBlueprint.lean", "lakefile.toml",
            "lake-manifest.json", "lean-toolchain"]
 ENVS = "definition|lemma|theorem|corollary|proposition"
 NODE = re.compile(

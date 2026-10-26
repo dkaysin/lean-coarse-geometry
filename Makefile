@@ -16,11 +16,11 @@ build: ## Build the library
 
 check: ## What CI checks: build with warnings other than sorry as errors, root import files, web
 	python3 scripts/build_check.py
-	lake exe mk_all --check
+	lake exe mk_all --check --lib Coarse
 	$(MAKE) web
 
-mk_all: ## Regenerate Coarse.lean and CoarseBlueprint.lean
-	lake exe mk_all
+mk_all: ## Regenerate Coarse.lean
+	lake exe mk_all --lib Coarse
 
 # The stamp records when the blueprint was extracted, for `make frontier`.
 blueprint: ## Build the tags and extract the blueprint to .lake/build/blueprint
@@ -50,8 +50,8 @@ status: blueprint ## List the state of every blueprint node
 sorries: ## List every sorry in the library
 	@grep -rn --include='*.lean' -w sorry Coarse || echo "No sorry."
 
-lines: ## List lines over 100 characters in Coarse/ and CoarseBlueprint/ (no build)
-	@python3 -c "import glob,sys; bad=[f'{f}:{i}: {len(l)} characters' for f in sorted(glob.glob('Coarse*/**/*.lean',recursive=True)) for i,l in enumerate(open(f,encoding='utf-8').read().split(chr(10)),1) if len(l)>100]; print(chr(10).join(bad) or 'No line over 100 characters.'); sys.exit(1 if bad else 0)"
+lines: ## List lines over 100 characters in the library and the tags (no build)
+	@python3 -c "import glob,sys; bad=[f'{f}:{i}: {len(l)} characters' for f in sorted([*glob.glob('Coarse/**/*.lean',recursive=True),'Coarse.lean','blueprint/CoarseBlueprint.lean']) for i,l in enumerate(open(f,encoding='utf-8').read().split(chr(10)),1) if len(l)>100]; print(chr(10).join(bad) or 'No line over 100 characters.'); sys.exit(1 if bad else 0)"
 
 clean-blueprint: ## Remove the rendered blueprint
 	rm -rf blueprint/web blueprint/lean_decls

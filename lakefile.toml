@@ -24,5 +24,8 @@ rev = "10dc7882b0311638b63e9aad5506f2cfcf4e61b8"
 [[lean_lib]]
 name = "Coarse"
 
+# The tags, one module next to the LaTeX sources. `mk_all` ignores `srcDir`, so it runs with
+# `--lib Coarse` only.
 [[lean_lib]]
 name = "CoarseBlueprint"
+srcDir = "blueprint"

@@ -31,7 +31,7 @@ jobs:
       - name: Build Coarse and CoarseBlueprint
         run: python3 scripts/build_check.py
       - name: Check the root import files
-        run: lake exe mk_all --check
+        run: lake exe mk_all --check --lib Coarse
       - uses: actions/setup-python@v6
         with:
           python-version: "3.13"
