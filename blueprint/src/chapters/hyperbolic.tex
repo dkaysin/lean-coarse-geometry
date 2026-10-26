@@ -77,24 +77,8 @@ $3\delta$ in both directions.
 
 \section*{Quasi-hyperbolic spaces}
 
-\begin{definition}[Quasi-geodesic, Bridson--Haefliger Def.~I.8.22, L\"oh Def.~5.3.4]
-  \label{Metric.IsQuasiGeodesicWith}
-  \uses{Metric.IsQuasiIsometricEmbeddingWith}
-  Let $X$ be a pseudometric space, $c, b \ge 0$ and $L \ge 0$. A map $\gamma \colon [0, L] \to X$
-  is a \emph{$(c, b)$-quasi-geodesic} from $x$ to $y$ if it is a $(c, b)$-quasi-isometric embedding
-  (Definition~\ref{Metric.IsQuasiIsometricEmbeddingWith}) with $\gamma(0) = x$ and $\gamma(L) =
-  y$. It need not be continuous.
-\end{definition}
-
-\paragraph{Differences from the references.} Bridson--Haefliger allow any interval of $\R$, or its
-intersection with $\Z$, as the domain; L\"oh any closed interval $[t, t']$, with $c > 0$. Here the
-interval is $[0, L]$, which loses nothing for closed intervals (translate the parameter), and the
-constants may be $0$, as for quasi-isometric embeddings (L\"oh's form of the lower bound is
-recovered for $c \ne 0$). Quasi-geodesics on integers appear only inside the proof of
-Theorem~\ref{Metric.HasSlimTrianglesWith.exists_hausdorffDist_le}, as chains; rays and lines are
-not needed. A geodesic (Definition~\ref{Metric.IsGeodesic}) is a $(1, 0)$-quasi-geodesic, and the
-composition of a $(c, b)$-quasi-isometric embedding with a $(c', b')$-quasi-geodesic is a
-quasi-geodesic with constants depending only on $c, b, c', b'$.
+Quasi-geodesics are defined in Chapter~\ref{chap:coarsely-geodesic}
+(Definition~\ref{Metric.IsQuasiGeodesicWith}).
 
 \begin{definition}[Quasi-hyperbolic space, cf.\ L\"oh Def.~7.2.6]
   \label{Metric.IsQuasiHyperbolic}
@@ -111,9 +95,10 @@ quasi-geodesic with constants depending only on $c, b, c', b'$.
 \paragraph{Differences from L\"oh's definition.} L\"oh asks that $X$ be $(c, b)$-quasi-geodesic
 for some $c, b > 0$, and that for all $c' \ge c$, $b' \ge b$ there be $\delta$ such that the
 $(c', b')$-quasi-geodesic triangles are $\delta$-slim. Here $X$ is coarsely geodesic instead, a
-chain condition equivalent to L\"oh's with other constants (Chapter~\ref{chap:coarsely-geodesic},
-``Why chains''), and the triangles are slim for all $c, b \ge 0$. Nothing is lost: a
-$(c, b)$-quasi-geodesic is a $(c', b')$-quasi-geodesic whenever $c \le c'$ and $b \le b'$, so the
+chain condition equivalent to L\"oh's with other constants
+(Theorem~\ref{Metric.isCoarselyGeodesic_iff_exists_isQuasiGeodesicWith}), and the triangles are
+slim for all $c, b \ge 0$. Nothing is lost: a $(c, b)$-quasi-geodesic is a
+$(c', b')$-quasi-geodesic whenever $c \le c'$ and $b \le b'$, so the
 triangles for small constants are among those for large ones. Without a hypothesis on $X$ the
 condition would hold in spaces where quasi-geodesics join only nearby points, such as
 $\{2^n \mid n \in \N\} \subseteq \R$. As for slim geodesic triangles, $\delta$-slimness is asked of

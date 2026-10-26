@@ -233,7 +233,7 @@ attribute [blueprint "Group.Generators.finite_setOf_wordLength_le" (latexEnv := 
   (proof := /-- It is the image of the finite set of words of length at most $n$. -/)]
   Group.Generators.finite_setOf_wordLength_le
 
-/-! ## Coarsely geodesic spaces
+/-! ## Coarsely geodesic spaces and quasi-geodesics
 
 Blueprint nodes for `Coarse/Topology/MetricSpace/CoarselyGeodesic.lean` and the word-metric
 instance in `Coarse/Geometry/Group/WordMetricBounds.lean` (milestone M3).

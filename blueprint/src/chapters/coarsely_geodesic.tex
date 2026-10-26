@@ -1,18 +1,23 @@
-\chapter{Coarsely geodesic spaces}
+\chapter{Coarsely geodesic spaces and quasi-geodesics}
 \label{chap:coarsely-geodesic}
 
 Milestone M3. An \emph{$r$-chain} from $x$ to $y$ is a sequence $x = x_0, \dots, x_n = y$ with
 $d(x_i, x_{i+1}) \le r$; $n$ is its number of steps. In Lean a chain is a walk in the Rips graph at
 scale $r$, so that $n$ is the length of the walk (design decisions D6, D13). The definitions follow
 Cornulier--de la Harpe, Def.~3.B.1 (a), (c) and Def.~3.B.5; their name for our coarsely geodesic
-spaces is \emph{large-scale geodesic}.
+spaces is \emph{large-scale geodesic}. The last section defines quasi-geodesics and shows that the
+coarsely geodesic spaces are exactly L\"oh's quasi-geodesic spaces
+(Theorem~\ref{Metric.isCoarselyGeodesic_iff_exists_isQuasiGeodesicWith}).
 
 \paragraph{Why chains.} The chain hypothesis replaces quasi-geodesic paths in the \v{S}varc--Milnor
 lemma (Chapter~\ref{chap:svarc-milnor}). It makes the proof a finite counting argument, needs no
 theory of geodesic spaces, and holds for word metrics themselves ($r = L = 1$, $C = 0$), so the
 corollaries follow by letting a group act on itself. No generality is lost: in every pseudometric
 space the chain condition is equivalent, with other constants, to L\"oh's (non-continuous)
-quasi-geodesic condition (Definition 5.3.4).
+quasi-geodesic condition (Definition 5.3.4,
+Theorem~\ref{Metric.isCoarselyGeodesic_iff_exists_isQuasiGeodesicWith}).
+
+\section*{Coarsely geodesic spaces}
 
 \inputleannode{Metric.ripsGraph}
 
@@ -47,3 +52,64 @@ quasi-geodesic condition (Definition 5.3.4).
 \end{proof}
 
 \inputleannode{Group.Generators.isCoarselyGeodesicWith}
+
+\section*{Quasi-geodesics}
+
+\begin{definition}[Quasi-geodesic, Bridson--Haefliger Def.~I.8.22, L\"oh Def.~5.3.4]
+  \label{Metric.IsQuasiGeodesicWith}
+  \uses{Metric.IsQuasiIsometricEmbeddingWith}
+  Let $X$ be a pseudometric space, $c, b \ge 0$ and $L \ge 0$. A map $\gamma \colon [0, L] \to X$
+  is a \emph{$(c, b)$-quasi-geodesic} from $x$ to $y$ if it is a $(c, b)$-quasi-isometric embedding
+  (Definition~\ref{Metric.IsQuasiIsometricEmbeddingWith}) with $\gamma(0) = x$ and $\gamma(L) =
+  y$. It need not be continuous.
+\end{definition}
+
+\paragraph{Differences from the references.} Bridson--Haefliger allow any interval of $\R$, or its
+intersection with $\Z$, as the domain; L\"oh any closed interval $[t, t']$, with $c > 0$. Here the
+interval is $[0, L]$, which loses nothing for closed intervals (translate the parameter), and the
+constants may be $0$, as for quasi-isometric embeddings (L\"oh's form of the lower bound is
+recovered for $c \ne 0$). Quasi-geodesics on integers appear only inside the proof of
+Theorem~\ref{Metric.HasSlimTrianglesWith.exists_hausdorffDist_le}, as chains; rays and lines are
+not needed. A geodesic (Definition~\ref{Metric.IsGeodesic}) is a $(1, 0)$-quasi-geodesic, and the
+composition of a $(c, b)$-quasi-isometric embedding with a $(c', b')$-quasi-geodesic is a
+quasi-geodesic with constants depending only on $c, b, c', b'$.
+
+L\"oh calls $X$ a \emph{$(c, b)$-quasi-geodesic space} if any two of its points are joined by a
+$(c, b)$-quasi-geodesic. That is the same as being coarsely geodesic, with other constants:
+
+\begin{theorem}[Coarsely geodesic and quasi-geodesic spaces]
+  \label{Metric.isCoarselyGeodesic_iff_exists_isQuasiGeodesicWith}
+  \uses{Metric.IsCoarselyGeodesic, Metric.IsCoarselyGeodesicWith, Metric.IsQuasiGeodesicWith}
+  A pseudometric space $X$ is coarsely geodesic if and only if there are $c, b \ge 0$ such that
+  any two points of $X$ are joined by a $(c, b)$-quasi-geodesic. More precisely:
+  \begin{itemize}
+    \item if any two points of $X$ are joined by a $(c, b)$-quasi-geodesic, then $X$ is
+          $(c + b, c, b + 1)$-coarsely geodesic;
+    \item if $X$ is $(r, L, C)$-coarsely geodesic, then any two points of $X$ are joined by a
+          $(\max\{r, L\}, \max\{r, C + 1\})$-quasi-geodesic.
+  \end{itemize}
+  \plannedlean{Metric.IsCoarselyGeodesicWith.of_forall_exists_isQuasiGeodesicWith,
+    Metric.IsCoarselyGeodesicWith.exists_isQuasiGeodesicWith}
+\end{theorem}
+\begin{proof}
+  \uses{Metric.exists_ripsGraph_walk_length_le, SimpleGraph.Walk.dist_le_mul_length}
+  \emph{Quasi-geodesics give chains.} Let $\gamma \colon [0, \ell] \to X$ be a
+  $(c, b)$-quasi-geodesic from $x$ to $y$ and $n = \lceil \ell \rceil$. The points $\gamma(0),
+  \gamma(1), \dots, \gamma(n - 1), \gamma(\ell)$ have parameters consecutively at most $1$ apart,
+  so they are consecutively at distance at most $c + b$, and
+  Lemma~\ref{Metric.exists_ripsGraph_walk_length_le} gives a walk from $x$ to $y$ in the Rips
+  graph at scale $c + b$ with at most $n$ steps. The lower bound of $\gamma$ at $0$ and $\ell$
+  gives $\ell \le c\,d(x, y) + b$, so $n \le \ell + 1 \le c\,d(x, y) + b + 1$.
+
+  \emph{Chains give quasi-geodesics.} Let $d_r$ be the distance of the Rips graph at scale $r$,
+  which is connected. Take a walk $x = x_0, \dots, x_n = y$ in it of length $n = d_r(x, y)$. For
+  $i \le j$, the triangle inequality $n \le d_r(x, x_i) + d_r(x_i, x_j) + d_r(x_j, y)$ with the
+  bounds $i$, $j - i$, $n - j$ given by the walk forces $d_r(x_i, x_j) = j - i$, so $j - i \le
+  L\,d(x_i, x_j) + C$ by hypothesis, and $d(x_i, x_j) \le r(j - i)$
+  (Lemma~\ref{SimpleGraph.Walk.dist_le_mul_length}). Put $\gamma(t) = x_{\lfloor t \rfloor}$ on
+  $[0, n]$. As $\lfloor s \rfloor - \lfloor t \rfloor$ and $s - t$ differ by less than $1$,
+  $d(\gamma(s), \gamma(t)) \le r|s - t| + r$ and $|s - t| \le L\,d(\gamma(s), \gamma(t)) + C + 1$.
+
+  The equivalence follows: the first part gives a coarsely geodesic space, the second the
+  constants $c = \max\{r, L\}$, $b = \max\{r, C + 1\}$.
+\end{proof}
