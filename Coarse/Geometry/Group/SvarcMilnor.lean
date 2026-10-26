@@ -172,7 +172,11 @@ theorem Subgroup.isQuasiIsometry_subtype (H : Subgroup G) [H.FiniteIndex] {ι κ
     [Finite ι] [Finite κ] (P : Group.Generators G ι) (Q : Group.Generators H κ) :
     Metric.IsQuasiIsometry fun h : Q.WithWordMetric ↦
       Group.Generators.WithWordMetric.toWordMetric P (h.ofWordMetric : G) := by
-  sorry
+  -- `H` acts on `P.WithWordMetric` by left multiplication; the orbit map of `1` is the inclusion.
+  convert Q.isQuasiIsometry_smul_const ⟨1, 1, 0, P.isCoarselyGeodesicWith⟩
+    ((Group.Generators.WithWordMetric.isMetricallyProperSMul P).subgroup H)
+    ((Group.Generators.WithWordMetric.isCoboundedSMul P).of_finiteIndex H) 1 using 2
+  exact congrArg (Group.Generators.WithWordMetric.toWordMetric P) (mul_one _).symm
 
 /-- `ℤⁿ` with the word metric of a finite generating family is quasi-isometric to `ℝⁿ`.
 

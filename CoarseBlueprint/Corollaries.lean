@@ -40,12 +40,12 @@ attribute [blueprint "Subgroup.isQuasiIsometry_subtype" (latexEnv := "corollary"
   (title := /-- Finite-index subgroups -/)
   (statement := /-- If $G$ is finitely generated and $H \le G$ has finite index, then the inclusion
     $H \to G$ is a quasi-isometry for any finite generating families of $H$ and $G$. -/)
-  (proof := /-- $H$ acts on $(G, d_P)$ by left multiplication; the action is metrically proper by
-    finiteness of balls and cobounded by finite index. Apply
-    Theorem~\ref{Group.Generators.isQuasiIsometry_smul_const} with $x_0 = 1$. -/)
-  (proofUses := ["Group.Generators.isQuasiIsometry_smul_const",
-    "Group.Generators.isCoarselyGeodesicWith", "Group.Generators.finite_setOf_wordLength_le",
-    "isMetricallyProperSMul_of_finite", "IsCoboundedSMul.of_finiteIndex"])]
+  (proof := /-- $H$ acts on $(G, d_P)$ by left multiplication, isometrically, metrically properly
+    (by restriction of the action of $G$,
+    Lemma~\ref{Group.Generators.WithWordMetric.isMetricallyProperSMul}) and coboundedly (by finite
+    index, Lemma~\ref{IsCoboundedSMul.of_finiteIndex}). Apply
+    Theorem~\ref{Group.Generators.isQuasiIsometry_smul_const} with $x_0 = 1$, whose orbit map is
+    the inclusion. -/)]
   Subgroup.isQuasiIsometry_subtype
 
 attribute [blueprint "Int.quasiIsometric_pi_euclideanSpace" (latexEnv := "corollary")
